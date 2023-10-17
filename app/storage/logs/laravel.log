@@ -1,0 +1,27 @@
+[2023-10-17 14:02:07] staging.ERROR: There are no commands defined in the "breeze" namespace. {"exception":"[object] (Symfony\\Component\\Console\\Exception\\NamespaceNotFoundException(code: 0): There are no commands defined in the \"breeze\" namespace. at /app/sk_marche/vendor/symfony/console/Application.php:657)
+[stacktrace]
+#0 /app/sk_marche/vendor/symfony/console/Application.php(708): Symfony\\Component\\Console\\Application->findNamespace('breeze')
+#1 /app/sk_marche/vendor/symfony/console/Application.php(262): Symfony\\Component\\Console\\Application->find('breeze:install')
+#2 /app/sk_marche/vendor/symfony/console/Application.php(174): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#3 /app/sk_marche/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(201): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#4 /app/sk_marche/artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#5 {main}
+"} 
+[2023-10-17 14:02:50] staging.ERROR: There are no commands defined in the "breeze" namespace. {"exception":"[object] (Symfony\\Component\\Console\\Exception\\NamespaceNotFoundException(code: 0): There are no commands defined in the \"breeze\" namespace. at /app/sk_marche/vendor/symfony/console/Application.php:657)
+[stacktrace]
+#0 /app/sk_marche/vendor/symfony/console/Application.php(708): Symfony\\Component\\Console\\Application->findNamespace('breeze')
+#1 /app/sk_marche/vendor/symfony/console/Application.php(262): Symfony\\Component\\Console\\Application->find('breeze:install')
+#2 /app/sk_marche/vendor/symfony/console/Application.php(174): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#3 /app/sk_marche/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(201): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#4 /app/sk_marche/artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#5 {main}
+"} 
+[2023-10-17 14:03:34] staging.ERROR: There are no commands defined in the "breeze" namespace. {"exception":"[object] (Symfony\\Component\\Console\\Exception\\NamespaceNotFoundException(code: 0): There are no commands defined in the \"breeze\" namespace. at /app/sk_marche/vendor/symfony/console/Application.php:657)
+[stacktrace]
+#0 /app/sk_marche/vendor/symfony/console/Application.php(708): Symfony\\Component\\Console\\Application->findNamespace('breeze')
+#1 /app/sk_marche/vendor/symfony/console/Application.php(262): Symfony\\Component\\Console\\Application->find('breeze:install')
+#2 /app/sk_marche/vendor/symfony/console/Application.php(174): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#3 /app/sk_marche/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(201): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#4 /app/sk_marche/artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#5 {main}
+"} 
