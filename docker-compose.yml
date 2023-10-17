@@ -6,6 +6,8 @@ services:
     build:
       context: .
       dockerfile: ./docker/Dockerfile
+    ports:
+      - 5173:5173  # 開発用vite（npm run dev）のポート
     env_file:
       - ./envs/_.env
       - ./envs/.env
