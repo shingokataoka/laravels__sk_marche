@@ -1,0 +1,21 @@
+version: "3.9"
+
+services:
+  # [プロジェクトごとに設定]webアプリケーションのコンテナ
+  sk_umarche:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    env_file:
+      - ./envs/_.env
+      - ./envs/.env
+      - ./../db_web_ssl/envs/db/_.env
+      - ./../db_web_ssl/envs/db/.env
+
+    volumes:
+      - ./app/:/app/sk_umarche
+
+networks:
+  default:
+    name: db_web_ssl
+    external: true
