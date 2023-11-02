@@ -7,7 +7,6 @@ use Illuminate\Database\Seeder;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-
 use Carbon\Carbon;
 
 class AdminSeeder extends Seeder
@@ -19,7 +18,7 @@ class AdminSeeder extends Seeder
     {
         $nowDatetime = Carbon::now()->format('Y-m-d H:i:s');
         $insertRows = [];
-        for ($i=1; $i<=1; $i++) {
+        for ($i=1; $i<=5; $i++) {
             $insertRows[] = [
                 'name' => "admin{$i}",
                 'email' => "admin{$i}@test.com",
