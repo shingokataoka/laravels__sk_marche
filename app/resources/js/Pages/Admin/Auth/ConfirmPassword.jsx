@@ -1,13 +1,14 @@
 import { useEffect } from 'react';
-import GuestLayout from '@/Layouts/GuestLayout';
+import AdminGuestLayout from '@/Layouts/AdminGuestLayout';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, useForm, usePage } from '@inertiajs/react';
 
 export default function ConfirmPassword() {
     const { data, setData, post, processing, errors, reset } = useForm({
+        _token: usePage().props._token,
         password: '',
     });
 
@@ -20,12 +21,12 @@ export default function ConfirmPassword() {
     const submit = (e) => {
         e.preventDefault();
 
-        post(route('password.confirm'));
+        post(route('admin.password.confirm'));
     };
 
     return (
-        <GuestLayout>
-            <Head title={ __("Confirm Password") } />
+        <AdminGuestLayout>
+            <Head title={ __('Admin') + __('Confirm Password') } />
 
             <div className="mb-4 text-sm text-gray-600 dark:text-gray-400">
                 This is a secure area of the application. Please confirm your password before continuing.
@@ -54,6 +55,6 @@ export default function ConfirmPassword() {
                     </PrimaryButton>
                 </div>
             </form>
-        </GuestLayout>
+        </AdminGuestLayout>
     );
 }

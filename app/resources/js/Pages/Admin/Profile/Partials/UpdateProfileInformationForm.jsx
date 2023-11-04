@@ -16,13 +16,13 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
     const submit = (e) => {
         e.preventDefault();
 
-        patch(route('profile.update'));
+        patch(route('admin.profile.update'));
     };
 
     return (
         <section className={className}>
             <header>
-                <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">{ __("Profile Information") }</h2>
+                <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">{ __('Admin') }{ __("Profile Information") }</h2>
 
                 <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
                     { __("Update your account's profile information and email address.") }
@@ -47,7 +47,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                 </div>
 
                 <div>
-                    <InputLabel htmlFor="email" value={ __("Email") } />
+                    <InputLabel htmlFor="email" value={ __('Email') } />
 
                     <TextInput
                         id="email"
@@ -67,7 +67,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                         <p className="text-sm mt-2 text-gray-800 dark:text-gray-200">
                             Your email address is unverified.
                             <Link
-                                href={route('verification.send')}
+                                href={route('admin.verification.send')}
                                 method="post"
                                 as="button"
                                 className="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"

@@ -4,10 +4,22 @@ import Dropdown from '@/Components/Dropdown';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link } from '@inertiajs/react';
+
+import {useForm, usePage } from '@inertiajs/react';
+
 import { DefaultThemeProvider } from '@/Components/DefaultThemeProvider';
 
 export default function Authenticated({ user, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
+
+    const { post } = useForm({
+        _token: usePage().props._token,
+    })
+
+    const submitLogout = e => {
+        e.preventDefault()
+        post( route('admin.logout') )
+    }
 
     return (<DefaultThemeProvider>
         <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
@@ -22,8 +34,8 @@ export default function Authenticated({ user, header, children }) {
                             </div>
 
                             <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <NavLink href={route('dashboard')} active={route().current('dashboard')}>
-                                { __("Dashboard") }
+                                <NavLink href={route('admin.dashboard')} active={route().current('admin.dashboard')}>
+                                    { __('Admin') + __('Dashboard') }
                                 </NavLink>
                             </div>
                         </div>
@@ -56,9 +68,9 @@ export default function Authenticated({ user, header, children }) {
                                     </Dropdown.Trigger>
 
                                     <Dropdown.Content>
-                                        <Dropdown.Link href={route('profile.edit')}>{ __("Profile") }</Dropdown.Link>
-                                        <Dropdown.Link href={route('logout')} method="post" as="button">
-                                            { __("Log Out") }
+                                        <Dropdown.Link href={route('admin.profile.edit')}>{ __("Profile") }</Dropdown.Link>
+                                        <Dropdown.Link href={route('admin.logout')} method="post" as="button" onClick={ e => submitLogout(e) }>
+                                        { __("Log Out") }
                                         </Dropdown.Link>
                                     </Dropdown.Content>
                                 </Dropdown>
@@ -93,8 +105,8 @@ export default function Authenticated({ user, header, children }) {
 
                 <div className={(showingNavigationDropdown ? 'block' : 'hidden') + ' sm:hidden'}>
                     <div className="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>
-                        { __("Dashboard") }
+                        <ResponsiveNavLink href={route('admin.dashboard')} active={route().current('admin.dashboard')}>
+                            { __('Dashboard') }
                         </ResponsiveNavLink>
                     </div>
 
@@ -105,8 +117,8 @@ export default function Authenticated({ user, header, children }) {
                         </div>
 
                         <div className="mt-3 space-y-1">
-                            <ResponsiveNavLink href={route('profile.edit')}>{ __("Profile") }</ResponsiveNavLink>
-                            <ResponsiveNavLink method="post" href={route('logout')} as="button">
+                            <ResponsiveNavLink href={route('admin.profile.edit')}>{ __("Profile") }</ResponsiveNavLink>
+                            <ResponsiveNavLink method="post" href={route('admin.logout')} as="button" onClick={ e => submitLogout(e) }>
                                 { __("Log Out") }
                             </ResponsiveNavLink>
                         </div>

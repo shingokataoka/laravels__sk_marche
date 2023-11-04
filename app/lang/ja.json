@@ -113,7 +113,18 @@
     "You are receiving this email because we received a password reset request for your account.": "このメールは、あなたのアカウントのパスワード リセット リクエストを受け取ったためにお送りしています。",
     "Reset Password": "パスワードを再設定する",
     "This password reset link will expire in :count minutes.": "このパスワード リセット リンクは :count 分後に有効期限が切れます。",
-    "If you did not request a password reset, no further action is required.": "パスワードのリセットを要求していない場合は、これ以上の操作は必要ありません。"
+    "If you did not request a password reset, no further action is required.": "パスワードのリセットを要求していない場合は、これ以上の操作は必要ありません。",
+
+    "Are you sure you want to delete your account?": "アカウントを削除してもよろしいですか？",
+    "Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.": "アカウントが削除されると、そのリソースとデータはすべて永久に削除されます。パスワードを入力して、アカウントを永久に削除することを確認してください。",
+    "Password reset": "パスワードリセット",
+    "Email Verification": "メール認証",
+    "saved.": "保存完了",
+    "Cancel": "キャンセル",
+    "Admin": "サイト管理者",
+    "Owner": "ショップオーナー",
+    "User": "一般ユーザー",
+    "": ""
 
 }
 

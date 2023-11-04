@@ -1,16 +1,15 @@
 import { useEffect } from 'react';
 import Checkbox from '@/Components/Checkbox';
-import GuestLayout from '@/Layouts/GuestLayout';
+import AdminGuestLayout from '@/Layouts/AdminGuestLayout';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
-import { Head, Link, useForm } from '@inertiajs/react';
-
-import { DefaultThemeProvider } from '@/Components/DefaultThemeProvider';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
 
 export default function Login({ status, canResetPassword }) {
     const { data, setData, post, processing, errors, reset } = useForm({
+        _token: usePage().props._token,
         email: '',
         password: '',
         remember: false,
@@ -25,20 +24,20 @@ export default function Login({ status, canResetPassword }) {
     const submit = (e) => {
         e.preventDefault();
 
-        post(route('login'));
+        post(route('admin.login'));
     };
 
-    return (<DefaultThemeProvider>
-        <GuestLayout>
-            <Head title={ __("Log in") } />
+    return (
+        <AdminGuestLayout>
+            <Head title={ __('Admin') + __("Log in") } />
 
-            <div>{ __('User') } { __('Login') }</div>
+            <div>{ __('Admin') } { __('Login') }</div>
 
             {status && <div className="mb-4 font-medium text-sm text-green-600">{status}</div>}
 
             <form onSubmit={submit}>
                 <div className="mt-4">
-                    <InputLabel htmlFor="email" value={ __('Email') } />
+                    <InputLabel htmlFor="email" value={ __("Email") } />
 
                     <TextInput
                         id="email"
@@ -84,7 +83,7 @@ export default function Login({ status, canResetPassword }) {
                 <div className="flex items-center justify-end mt-4">
                     {canResetPassword && (
                         <Link
-                            href={route('password.request')}
+                            href={route('admin.password.request')}
                             className="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
                         >
                             { __("Forgot your password?") }
@@ -96,6 +95,6 @@ export default function Login({ status, canResetPassword }) {
                     </PrimaryButton>
                 </div>
             </form>
-        </GuestLayout>
-    </DefaultThemeProvider>);
+        </AdminGuestLayout>
+    );
 }

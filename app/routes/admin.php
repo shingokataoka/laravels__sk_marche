@@ -17,7 +17,7 @@ use App\Http\Controllers\Admin\ProfileController;
 
 
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+    return Inertia::render('Admin/Dashboard');
 })->middleware(['auth:admin', 'verified'])->name('dashboard');
 
 Route::middleware('auth:admin')->group(function () {

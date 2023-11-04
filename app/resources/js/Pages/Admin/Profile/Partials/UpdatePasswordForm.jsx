@@ -19,7 +19,7 @@ export default function UpdatePasswordForm({ className = '' }) {
     const updatePassword = (e) => {
         e.preventDefault();
 
-        put(route('password.update'), {
+        put(route('admin.password.update'), {
             preserveScroll: true,
             onSuccess: () => reset(),
             onError: (errors) => {
@@ -39,7 +39,7 @@ export default function UpdatePasswordForm({ className = '' }) {
     return (
         <section className={className}>
             <header>
-                <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">{ __("Update Password") }</h2>
+                <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">{ __('Admin') }{ __("Update Password") }</h2>
 
                 <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
                     { __("Ensure your account is using a long, random password to stay secure.") }

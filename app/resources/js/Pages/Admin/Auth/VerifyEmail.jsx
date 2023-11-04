@@ -1,19 +1,21 @@
-import GuestLayout from '@/Layouts/GuestLayout';
+import AdminGuestLayout from '@/Layouts/AdminGuestLayout';
 import PrimaryButton from '@/Components/PrimaryButton';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
 
 export default function VerifyEmail({ status }) {
-    const { post, processing } = useForm({});
+    const { post, processing } = useForm({
+        _token: usePage().props._token,
+    });
 
     const submit = (e) => {
         e.preventDefault();
 
-        post(route('verification.send'));
+        post(route('admin.verification.send'));
     };
 
     return (
-        <GuestLayout>
-            <Head title={ __("Email Verification") } />
+        <AdminGuestLayout>
+            <Head title={ __('Email Verification') } />
 
             <div className="mb-4 text-sm text-gray-600 dark:text-gray-400">
                 Thanks for signing up! Before getting started, could you verify your email address by clicking on the
@@ -28,10 +30,10 @@ export default function VerifyEmail({ status }) {
 
             <form onSubmit={submit}>
                 <div className="mt-4 flex items-center justify-between">
-                    <PrimaryButton disabled={processing}>{ __("Resend Verification Email") }</PrimaryButton>
+                    <PrimaryButton disabled={processing}>{ __('Resend Verification Email') }</PrimaryButton>
 
                     <Link
-                        href={route('logout')}
+                        href={route('admin.logout')}
                         method="post"
                         as="button"
                         className="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
@@ -40,6 +42,6 @@ export default function VerifyEmail({ status }) {
                     </Link>
                 </div>
             </form>
-        </GuestLayout>
+        </AdminGuestLayout>
     );
 }
