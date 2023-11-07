@@ -8,6 +8,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
+// オーバーライドしたリセットリンクの内容のを 別名で use する
+use App\Vendor\Illuminate\Auth\Notifications\AdminResetPassword as ResetPasswordNotification;
+
+
+
 class Admin extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -42,4 +47,10 @@ class Admin extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    // リセットリンクを送るメソッドをオーバーライドして、
+    // 作ったリセットリンクので送信に設定
+    public function sendPasswordResetNotification($token){
+        $this->notify(new ResetPasswordNotification($token));
+    }
 }

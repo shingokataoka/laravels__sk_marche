@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
+use App\Lib\Get;
+
 class RedirectIfAuthenticated
 {
     /**
@@ -17,13 +19,21 @@ class RedirectIfAuthenticated
      */
     public function handle(Request $request, Closure $next, string ...$guards): Response
     {
-        $guards = empty($guards) ? [null] : $guards;
+        // $guards = empty($guards) ? [null] : $guards;
 
-        foreach ($guards as $guard) {
-            if (Auth::guard($guard)->check()) {
-                return redirect(RouteServiceProvider::HOME);
-            }
+        $homes = [
+            'admin' => routeServiceProvider::ADMIN_HOME,
+            'owner' => routeServiceProvider::OWNER_HOME,
+            'web' => routeServiceProvider::HOME,
+        ];
+
+        $guard = Get::guard();
+        $home = $homes[$guard];
+
+        if (Auth::guard($guard)->check()) {
+            return redirect($home);
         }
+
 
         return $next($request);
     }
