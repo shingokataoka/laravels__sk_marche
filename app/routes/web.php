@@ -31,3 +31,6 @@ require __DIR__.'/auth.php';
 Route::prefix('admin')->name('admin.')->group(function() {
     require __DIR__ . '/admin.php';
 });
+Route::prefix('owner')->name('owner.')->group(function() {
+    require __DIR__ . '/owner.php';
+});
