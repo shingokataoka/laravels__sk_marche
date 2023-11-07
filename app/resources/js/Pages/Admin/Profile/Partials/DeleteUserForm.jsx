@@ -5,7 +5,7 @@ import InputLabel from '@/Components/InputLabel';
 import Modal from '@/Components/Modal';
 import SecondaryButton from '@/Components/SecondaryButton';
 import TextInput from '@/Components/TextInput';
-import { useForm } from '@inertiajs/react';
+import { useForm, usePage } from '@inertiajs/react';
 
 export default function DeleteUserForm({ className = '' }) {
     const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false);
@@ -19,6 +19,7 @@ export default function DeleteUserForm({ className = '' }) {
         reset,
         errors,
     } = useForm({
+        _token: usePage().props._token,
         password: '',
     });
 

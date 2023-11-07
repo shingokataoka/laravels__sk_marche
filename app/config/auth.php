@@ -116,13 +116,13 @@ return [
         'admins' => [
             'provider' => 'admins',
             'table' => 'admin_password_reset_tokens',
-            'expire' => 60,
+            'expire' => 61,
             'throttle' => 60,
         ],
         'owners' => [
             'provider' => 'owners',
             'table' => 'owner_password_reset_tokens',
-            'expire' => 60,
+            'expire' => 62,
             'throttle' => 60,
         ],
     ],

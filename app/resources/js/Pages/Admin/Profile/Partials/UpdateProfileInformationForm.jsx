@@ -9,6 +9,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
     const user = usePage().props.auth.user;
 
     const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
+        _token: usePage().props._token,
         name: user.name,
         email: user.email,
     });

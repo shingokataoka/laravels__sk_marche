@@ -117,6 +117,7 @@ return [
     'url'         => ':attributeは、有効なURL形式で指定してください。',
     'uuid'        => ':attributeは、有効なUUIDでなければなりません。',
 
+    'current_password' => 'パスワードが間違っています。',
     /*
     |--------------------------------------------------------------------------
     | Custom Validation Language Lines

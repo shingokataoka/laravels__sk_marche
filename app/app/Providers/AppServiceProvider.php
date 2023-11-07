@@ -6,6 +6,8 @@ use Illuminate\Support\ServiceProvider;
 
 use Inertia\Inertia;
 
+use App\Lib\Get;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -22,6 +24,14 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         //
+
+
+        // prefixがuser・admin・ownerで、セッションファイルを分ける。
+        $prefix = Get::prefix();
+        if ( $prefix !== '' ) {
+            config(['session.cookie' => config("session.cookie_{$prefix}")]);
+        }
+
 
         // reactで__('Dashboard')など言語メソッドを使えるようにする
         $this->reactFuncTransCreate();
