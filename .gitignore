@@ -21,3 +21,5 @@ yarn-error.log
 /app/cron/logs/*.log
 /envs
 /app/ssl
+
+/storage
