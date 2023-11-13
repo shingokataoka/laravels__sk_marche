@@ -22,4 +22,4 @@ yarn-error.log
 /envs
 /app/ssl
 
-/storage
+/app/storage
