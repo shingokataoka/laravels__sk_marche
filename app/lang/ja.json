@@ -126,7 +126,12 @@
     "Admin": "サイト管理者",
     "Owner": "ショップオーナー",
     "User": "一般ユーザー",
-    "": ""
+
+    "Created at" : "作成日",
+    "Please enter in the :timezone time zone." : ":timezoneの時間帯で入力してください。",
+    "Asia/Tokyo" : "日本",
+    ":timezone time zone" : ":timezone時間",
+    "Manage Owners": "オーナー管理"
 
 }
 

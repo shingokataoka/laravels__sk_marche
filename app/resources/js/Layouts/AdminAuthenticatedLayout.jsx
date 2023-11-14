@@ -37,6 +37,9 @@ export default function Authenticated({ user, header, children }) {
                                 <NavLink href={route('admin.dashboard')} active={route().current('admin.dashboard')}>
                                     { __('Admin') + __('Dashboard') }
                                 </NavLink>
+                                <NavLink href={route('admin.owners.index')} active={route().current('admin.owners.index')}>
+                                   { __('Manage Owners') }
+                                </NavLink>
                             </div>
                         </div>
 
@@ -107,6 +110,9 @@ export default function Authenticated({ user, header, children }) {
                     <div className="pt-2 pb-3 space-y-1">
                         <ResponsiveNavLink href={route('admin.dashboard')} active={route().current('admin.dashboard')}>
                             { __('Dashboard') }
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink href={route('admin.owners.index')} active={route().current('admin.owners.index')}>
+                            { __('Manage Owners') }
                         </ResponsiveNavLink>
                     </div>
 

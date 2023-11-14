@@ -13,7 +13,12 @@ use Illuminate\Support\Facades\Route;
 
 use Inertia\Inertia;
 use App\Http\Controllers\Admin\ProfileController;
+use App\Http\Controllers\Admin\OwnersController;
 
+
+Route::resource('owners', OwnersController::class)
+    ->middleware('auth:admin')
+    ->except(['show']);
 
 
 Route::get('/dashboard', function () {
