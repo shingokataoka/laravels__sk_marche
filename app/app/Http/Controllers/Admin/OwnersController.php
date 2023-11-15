@@ -67,6 +67,8 @@ class OwnersController extends Controller
      */
     public function destroy(string $id)
     {
+        return 1;
+        dd($id);
         dd('Admin/OwnersController の ' . __FUNCTION__);
     }
 }

@@ -1,8 +1,9 @@
 import AdminAuthenticatedLayout from '@/Layouts/AdminAuthenticatedLayout';
-import { Head, Link, router } from '@inertiajs/react';
+import { Head, Link, router, usePage } from '@inertiajs/react';
+import { useState } from 'react';
 
+import Button from '@mui/lab/LoadingButton';
 
-import { Button} from '@mui/material'
 
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
@@ -32,10 +33,18 @@ const defaultTimezone = dayjs.tz.guess()
 
 /** @jsxImportSource @emotion/react */
 export default function Index( {auth, owners} ) {
-console.log(owners)
+    const [processingId, setProcessingId] = useState(false)
+    const [disabled, setDIsabled] = useState(false)
+    const [nowPage, setNowPage] = useState(1)
+    const useStates = {
+        processingId, setProcessingId,
+        disabled, setDIsabled,
+        nowPage, setNowPage,
+    }
 
     const PaginationChange = (e, page) => {
-        router.get(route('admin.owners.index'), {page:page})
+        setNowPage(page)
+        router.get( route('admin.owners.index'), {page:page} )
     }
     return (
         <AdminAuthenticatedLayout
@@ -50,18 +59,24 @@ console.log(owners)
                         <div className="p-6 text-gray-900 dark:text-gray-100 max-w-[700px] mx-auto">
                             <div css={css` text-align:right;`}>
                                 <Button variant="contained" size="large"
+                                    disabled={disabled}
                                     component={Link} href={route('admin.owners.create')}
                                 >新規登録する</Button>
                             </div>
 
                             <BasicTable
                                 owners={owners}
+                                useStates={useStates}
                                 className="mt-[16px]"
                             />
 
                             <Stack spacing={2} direction="row" justifyContent="flex-end" className="mt-[16px]">
-                                <Pagination count={owners.last_page} defaultPage={owners.current_page} siblingCount={2} boundaryCount={2} onChange={PaginationChange}  />
+                                <Pagination count={owners.last_page} defaultPage={owners.current_page} siblingCount={2} boundaryCount={2}
+                                    disabled={disabled}
+                                    onChange={PaginationChange}
+                                />
                             </Stack>
+
                         </div>
                     </div>
                 </div>
@@ -74,7 +89,14 @@ console.log(owners)
 
 
 
-function BasicTable({owners, className}) {
+function BasicTable({owners, useStates, className}) {
+    const {
+        processingId, setProcessingId,
+        disabled, setDIsabled,
+        nowPage, setNowPage,
+    } = useStates
+    const _token = usePage().props._token
+
     // デフォルトtimezoneを翻訳して取得する。
     const langTimezone = __(defaultTimezone)
 
@@ -86,7 +108,19 @@ function BasicTable({owners, className}) {
     `
 
     const deleteSubmit = (e, owner_id) => {
-        console.log(owner_id)
+        setProcessingId(owner_id)
+        setDIsabled(true)
+        router.visit( route('admin.owners.destroy', owner_id), {
+            method: 'delete',
+            data: {
+                _token: _token,
+                page:nowPage
+            },
+            onFinish: visit => {
+                setProcessingId(false)
+                setDIsabled(false)
+            },
+        })
     }
 
 
@@ -122,10 +156,16 @@ function BasicTable({owners, className}) {
               <TableCell align="right">{row.email}</TableCell>
               <TableCell align="right">{dayjs(row.created_at).format('YYYY-MM-DD HH:mm:ss')}</TableCell>
               <TableCell align="right">
-                <Button variant="contained" component={Link} href={route('admin.owners.edit', row.id)}>編集</Button>
+                <Button variant="contained" component={Link} href={route('admin.owners.edit', row.id)}
+                    disabled={disabled}
+                >編集</Button>
               </TableCell>
               <TableCell align="right">
-                <Button variant="contained" color="error" onClick={ e => deleteSubmit(e, row.id) }>削除</Button>
+                <Button variant="contained" color="error"
+                    disabled={disabled}
+                    loading={ row.id === processingId }
+                    onClick={ e => deleteSubmit(e, row.id) }
+                >削除</Button>
               </TableCell>
             </TableRow>
           ))}

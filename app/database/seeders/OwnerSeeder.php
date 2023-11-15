@@ -18,7 +18,7 @@ class OwnerSeeder extends Seeder
     {
         $nowDatetime = Carbon::now()->format('Y-m-d H:i:s');
         $insertRows = [];
-        for ($i=1; $i<=125; $i++) {
+        for ($i=1; $i<=75; $i++) {
             $insertRows[] = [
                 'name' => "owner{$i}",
                 'email' => "owner{$i}@test.com",
