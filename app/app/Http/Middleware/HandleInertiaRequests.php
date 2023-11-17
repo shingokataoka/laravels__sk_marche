@@ -40,6 +40,10 @@ class HandleInertiaRequests extends Middleware
                 'location' => $request->url(),
             ],
             '_token' => csrf_token(),
+            'flash' => [
+                'status' => session('status'),
+                'message' => session('message')
+            ],
         ];
     }
 }

@@ -9,6 +9,8 @@ import {useForm, usePage } from '@inertiajs/react';
 
 import { DefaultThemeProvider } from '@/Components/DefaultThemeProvider';
 
+import Flash from '@/Components/Flash';
+
 export default function Authenticated({ user, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
 
@@ -138,7 +140,10 @@ export default function Authenticated({ user, header, children }) {
                 </header>
             )}
 
-            <main>{children}</main>
+            <main>
+                <Flash />
+                {children}
+            </main>
         </div>
     </DefaultThemeProvider>);
 }

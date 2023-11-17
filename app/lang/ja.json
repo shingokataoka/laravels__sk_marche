@@ -60,6 +60,8 @@
     "Store these recovery codes in a secure password manager. They can be used to recover access to your account if your two factor authentication device is lost.": "これらの回復コードを安全なパスワードマネージャーに保存します。これらのコードは、二要素認証デバイスを紛失した場合にアカウントへのアクセスを回復するために使用することができます。",
     "Delete API Token": "API トークンの削除",
     "Register": "登録",
+    "register": "登録する",
+    "back": "戻る",
     "Email": "メールアドレス",
     "Enable": "有効化",
     "This device": "この装置",
