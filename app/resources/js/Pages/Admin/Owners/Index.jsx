@@ -108,6 +108,9 @@ function BasicTable({owners, useStates, className}) {
     `
 
     const deleteSubmit = (e, owner_id) => {
+        const alertText = __("Once deleted, it cannot be restored. \r\nAre you sure you want to delete it?")
+        if (!confirm(alertText) ) return
+
         setProcessingId(owner_id)
         setDIsabled(true)
         router.visit( route('admin.owners.destroy', owner_id), {

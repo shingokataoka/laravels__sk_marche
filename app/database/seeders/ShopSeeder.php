@@ -18,7 +18,7 @@ class ShopSeeder extends Seeder
         $nowDate = Carbon::parse()->format('Y-m-d H:i:s');
 
         $rows = [];
-        for ($i=1; $i<=2; $i++) {
+        for ($i=1; $i<=30; $i++) {
             $rows[] = [
                 'owner_id' => $i,
                 'name' => 'ここにショップ名が入ります。',

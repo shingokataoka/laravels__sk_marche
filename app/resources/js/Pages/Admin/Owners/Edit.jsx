@@ -2,6 +2,7 @@ import AdminAuthenticatedLayout from '@/Layouts/AdminAuthenticatedLayout';
 import { Head, router, usePage } from '@inertiajs/react';
 
 import { useState } from 'react';
+import { defaultTheme } from '@/Components/DefaultThemeProvider';
 import {Link} from '@inertiajs/react';
 import { Stack } from '@mui/material';
 import TextField from '@mui/material/TextField';
@@ -20,19 +21,21 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import FormHelperText from '@mui/material/FormHelperText';
 
 
-export default function Create({ auth }) {
+
+export default function Edit({ auth, owner, shop }) {
+    const palette = defaultTheme().palette
     const _token = usePage().props._token
     const errors = usePage().props.errors
 
-    const [name, setName] = useState('')
-    const [email, setEmail] = useState('')
+    const [name, setName] = useState(owner.name)
+    const [email, setEmail] = useState(owner.email)
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
 
     const [showPassword, setShowPassword] = React.useState(false);
 
     const formSubmit = e => {
-        router.post( route('admin.owners.store'), {
+        router.put( route('admin.owners.update', owner.id), {
             _token,
             name,
             email,
@@ -45,9 +48,9 @@ export default function Create({ auth }) {
     return (
         <AdminAuthenticatedLayout
             user={auth.user}
-            header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">{ __("Admin") +'/'+ __("Owner") + __('Register') }</h2>}
+            header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">{ __("Admin") +'/'+ __("Owner") + __('Edit') }</h2>}
         >
-            <Head title={ __("Admin") +'/'+ __("Owner") + __('Register') } />
+            <Head title={ __("Admin") +'/'+ __("Owner") + __('Edit') } />
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -71,6 +74,11 @@ export default function Create({ auth }) {
                             <TextField label={__('Name')} variant="outlined" name="name" autoComplete="off" error={ undefined !== errors.name}  helperText={errors.name} value={name} onChange={ e => setName(e.target.value) } />
 
                             <TextField label={__('Email')} variant="outlined" name="email" autoComplete="off" error={ undefined !== errors.email} helperText={errors.email} value={email} onChange={ e => setEmail(e.target.value) } />
+
+                            <TextField label={__('Shop name')} variant="outlined" name="email" autoComplete="off"
+                                disabled={true}
+                                value={owner.shop.name || 'ここにショップ名が入ります。'}
+                            />
 
                             <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
                                 <InputLabel error={ undefined !== errors.password} htmlFor="outlined-adornment-password">{  __('Password')}</InputLabel>
@@ -142,7 +150,7 @@ export default function Create({ auth }) {
                                 variant="contained"
                                 onClick={ e => formSubmit(e) }
                             >
-                                { __('register') }
+                                { __('update') }
                             </Button>
                         </Stack>
 

@@ -5,6 +5,8 @@ import { Fade } from '@mui/material';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 
+import nl2br from '@/Functions/nl2br';
+
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
@@ -25,7 +27,10 @@ function hide(props) {
 export default function Flash() {
   const flash = usePage().props.flash
 
-const [state, setState] = React.useState({
+  // フラッシュがなければ空を返す。
+  if (null === flash.message) return(<></>)
+
+  const [state, setState] = React.useState({
     open: (flash.message !== null),
     vertical: 'top',
     horizontal: 'center',
@@ -61,7 +66,7 @@ const [state, setState] = React.useState({
               width: '100%',
               maxWidth: '300px',
             }}>
-            { flash.message }
+            { nl2br(flash.message) }
           </Alert>
 
         </Snackbar>

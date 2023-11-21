@@ -18,13 +18,14 @@ class OwnerSeeder extends Seeder
     {
         $nowDatetime = Carbon::now()->format('Y-m-d H:i:s');
         $insertRows = [];
-        for ($i=1; $i<=75; $i++) {
+        for ($i=1; $i<=30; $i++) {
             $insertRows[] = [
                 'name' => "owner{$i}",
                 'email' => "owner{$i}@test.com",
                 'password' => Hash::make("owner{$i}{$i}{$i}{$i}"),
                 'created_at' => $nowDatetime,
                 'updated_at' => $nowDatetime,
+                'deleted_at' => null,
             ];
         }
         DB::table('owners')->insert($insertRows);

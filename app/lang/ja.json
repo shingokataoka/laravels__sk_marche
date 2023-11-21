@@ -128,13 +128,23 @@
     "Admin": "サイト管理者",
     "Owner": "ショップオーナー",
     "User": "一般ユーザー",
+    "Shop name": "店名",
+    "Edit": "編集",
+    "update": "更新する",
+    "data update completed": "データが更新されました。",
+    "Update Completed": "更新完了",
 
     "Created at" : "作成日",
     "Please enter in the :timezone time zone." : ":timezoneの時間帯で入力してください。",
     "Asia/Tokyo" : "日本",
     ":timezone time zone" : ":timezone時間",
-    "Manage Owners": "オーナー管理"
+    "Manage Owners": "オーナー管理",
 
+    "Not registered due to an error.\r\n Please try again.": "エラーのため登録されませんでした\r\nもう一度やり直してください。",
+    "Added owner \":name.\"": "オーナー「:name」を追加しました。",
+    "The owner information for ID \":id\" has been updated.": "ID「:id」のオーナー情報を更新しました。",
+    "Owner \":name\" has been deleted.": "オーナー「:name」を削除しました。",
+    "Once deleted, it cannot be restored. \r\nAre you sure you want to delete it?": "削除すると復元できません。\r\n本当に削除してもよろしいですか？"
 }
 
 

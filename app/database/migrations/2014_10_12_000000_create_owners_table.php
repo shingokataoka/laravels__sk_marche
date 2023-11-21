@@ -20,6 +20,7 @@ return new class extends Migration
             $table->rememberToken();
             $table->datetime('created_at')->nullable();
             $table->datetime('updated_at')->nullable();
+            $table->datetime('deleted_at')->nullable();
         });
     }
 

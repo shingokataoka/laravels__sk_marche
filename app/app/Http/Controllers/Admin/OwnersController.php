@@ -12,15 +12,25 @@ use App\Models\Owner;
 use App\Models\Admin;
 use App\Models\Shop;
 use App\Http\Requests\Admin\OwnerStoreRequest;
-
+use App\Http\Requests\Admin\OWnerUpdateRequest;
 
 class OwnersController extends Controller
 {
 
     // ページネーションでownersを取得のメソッド。（indexとstoreで共通化のため）
-    protected function get_owners()
+    protected function getOwnersToPaginate()
     {
         return Owner::orderBy('id', 'asc')->paginate(3);
+    }
+
+    // 特定idのデータが、何ページ目にあるのかを返す。
+    protected function getIdToPage($id)
+    {
+        // 特定idが何番目か取得する。id以下の数をCOUNTでいける。
+        $count = Owner::where('id', '<=', $id)->count();
+        // 何番目をページ掲載数3で割るとページ数がわかる。
+        return (int)ceil($count / 3);
+        // return $nowPage;
     }
 
     /**
@@ -28,7 +38,7 @@ class OwnersController extends Controller
      */
     public function index()
     {
-        $owners = $this->get_owners();
+        $owners = $this->getOwnersToPaginate();
         return Inertia::render('Admin/Owners/Index', compact('owners'));
     }
 
@@ -63,16 +73,19 @@ class OwnersController extends Controller
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
-            session()->flash('エラーのため登録されませんでした。<br />もう一度やり直してください。');
-            return to_route('admin.owners.create');
+            session()->flash('status', 'error');
+            session()->flash('message', __("Not registered due to an error.\r\n Please try again.") );
+            return to_route('admin.owners.index');
         }
 
         // ownersの最後のページ番号を取得
         // （indexの最後のページにリダイレクトするため）
-        $lastPage = $this->get_owners()->lastPage();
+        $lastPage = $this->getOwnersToPaginate()->lastPage();
 
         session()->flash('status', 'success');
-        session()->flash('message', "オーナー「{$request->name}」を追加しました。");
+
+        session()->flash('message', __("Added owner \":name.\"", ['name' => $request->name]));
+
         return to_route('admin.owners.index', ['page' => $lastPage]);
     }
 
@@ -81,7 +94,7 @@ class OwnersController extends Controller
      */
     public function show(string $id)
     {
-        dd('Admin/OwnersController の ' . __FUNCTION__);
+       dd(__FUNCTION__);
     }
 
     /**
@@ -89,16 +102,26 @@ class OwnersController extends Controller
      */
     public function edit(string $id)
     {
-        dd($id);
-        dd('Admin/OwnersController の ' . __FUNCTION__);
+        $owner = Owner::with('shop')->findOrFail($id);
+        return Inertia::render('Admin/Owners/Edit', compact('owner'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(OWnerUpdateRequest $request, string $id)
     {
-        dd('Admin/OwnersController の ' . __FUNCTION__);
+        $owner = Owner::findOrFail($id);
+        $owner->name = $request->name;
+        $owner->email = $request->email;
+        $owner->password = Hash::make($request->password);
+        $owner->save();
+
+        $page = $this->getIdToPage($id);
+
+        session()->flash('status', 'success');
+        session()->flash('message', __('The owner information for ID ":id" has been updated.', ['id' => $id]));
+        return to_route('admin.owners.index', ['page' => $page]);
     }
 
     /**
@@ -106,8 +129,14 @@ class OwnersController extends Controller
      */
     public function destroy(string $id)
     {
-        return 1;
-        dd($id);
-        dd('Admin/OwnersController の ' . __FUNCTION__);
+        $owner = Owner::findOrFail($id);
+        $ownerName = $owner->name;
+        $owner->delete();
+
+        $page = $this->getIdToPage($id);
+
+        session()->flash('status', 'error');
+        session()->flash('message', __("Owner \":name\" has been deleted.", ['name' => $ownerName]));
+        return to_route('admin.owners.index', ['page' => $page]);
     }
 }
