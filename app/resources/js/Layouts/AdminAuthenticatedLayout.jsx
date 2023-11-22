@@ -9,6 +9,8 @@ import {useForm, usePage } from '@inertiajs/react';
 
 import { DefaultThemeProvider } from '@/Components/DefaultThemeProvider';
 
+import Flash from '@/Components/Flash';
+
 export default function Authenticated({ user, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
 
@@ -36,6 +38,12 @@ export default function Authenticated({ user, header, children }) {
                             <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <NavLink href={route('admin.dashboard')} active={route().current('admin.dashboard')}>
                                     { __('Admin') + __('Dashboard') }
+                                </NavLink>
+                                <NavLink href={route('admin.owners.index')} active={route().current('admin.owners.index')}>
+                                   { __('Manage Owners') }
+                                </NavLink>
+                                <NavLink href={route('admin.expired-owners.index')} active={route().current('admin.expired-owners.index')}>
+                                   { __('Expired Owners') }
                                 </NavLink>
                             </div>
                         </div>
@@ -108,6 +116,12 @@ export default function Authenticated({ user, header, children }) {
                         <ResponsiveNavLink href={route('admin.dashboard')} active={route().current('admin.dashboard')}>
                             { __('Dashboard') }
                         </ResponsiveNavLink>
+                        <ResponsiveNavLink href={route('admin.owners.index')} active={route().current('admin.owners.index')}>
+                            { __('Manage Owners') }
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink href={route('admin.expired-owners.index')} active={route().current('admin.expired-owners.index')}>
+                            { __('Expired Owners') }
+                        </ResponsiveNavLink>
                     </div>
 
                     <div className="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
@@ -132,7 +146,10 @@ export default function Authenticated({ user, header, children }) {
                 </header>
             )}
 
-            <main>{children}</main>
+            <main>
+                <Flash />
+                {children}
+            </main>
         </div>
     </DefaultThemeProvider>);
 }

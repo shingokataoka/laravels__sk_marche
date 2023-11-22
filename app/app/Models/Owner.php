@@ -11,11 +11,13 @@ use Laravel\Sanctum\HasApiTokens;
 // オーバーライドしたリセットリンクの内容のを 別名で use する
 use App\Vendor\Illuminate\Auth\Notifications\OwnerResetPassword as ResetPasswordNotification;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 
 class Owner extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
+    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -52,5 +54,10 @@ class Owner extends Authenticatable
     // 作ったリセットリンクので送信に設定
     public function sendPasswordResetNotification($token){
         $this->notify(new ResetPasswordNotification($token));
+    }
+
+    public function shop ()
+    {
+        return $this->hasOne(Shop::class);
     }
 }

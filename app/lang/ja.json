@@ -60,6 +60,8 @@
     "Store these recovery codes in a secure password manager. They can be used to recover access to your account if your two factor authentication device is lost.": "これらの回復コードを安全なパスワードマネージャーに保存します。これらのコードは、二要素認証デバイスを紛失した場合にアカウントへのアクセスを回復するために使用することができます。",
     "Delete API Token": "API トークンの削除",
     "Register": "登録",
+    "register": "登録する",
+    "back": "戻る",
     "Email": "メールアドレス",
     "Enable": "有効化",
     "This device": "この装置",
@@ -126,8 +128,33 @@
     "Admin": "サイト管理者",
     "Owner": "ショップオーナー",
     "User": "一般ユーザー",
-    "": ""
+    "Shop name": "店名",
+    "add new": "新規登録する",
+    "Edit": "編集",
+    "update": "更新する",
+    "Restore": "復元",
+    "data update completed": "データが更新されました。",
+    "Update Completed": "更新完了",
+    "Delete Completely": "完全に削除",
 
+    "Created at" : "作成日",
+    "Deleted at": "削除日",
+    "Please enter in the :timezone time zone." : ":timezoneの時間帯で入力してください。",
+    "Asia/Tokyo" : "日本",
+    ":timezone time zone" : ":timezone時間",
+    "Manage Owners": "オーナー管理",
+    "Expired Owners": "期限切れオーナー一覧",
+
+    "Not registered due to an error.\r\n Please try again.": "エラーのため登録されませんでした\r\nもう一度やり直してください。",
+    "Added owner \":name.\"": "オーナー「:name」を追加しました。",
+    "The owner information for ID \":id\" has been updated.": "ID「:id」のオーナー情報を更新しました。",
+    "Owner \":name\" has been deleted.": "オーナー「:name」を削除しました。",
+    "Owner \":name\" has been permanently deleted.": "オーナー「:name」を完全に削除しました。",
+    "Becomes an \"expired owner\". \r\nDo you want to run it?": "「期限切れオーナー」に入れる事になります。\r\n実行しますか？",
+    "Once deleted, it cannot be restored. \r\nAre you sure you want to delete it?": "削除すると復元できません。\r\n本当に削除してもよろしいですか？",
+
+    "It will be “owner managed”. \r\nDo you want to run it?": "「オーナー管理」に戻す事になります。\r\n実行しますか？",
+    "Owner \":name\" has been restored.": "オーナー「:name」を復元しました。"
 }
 
 
