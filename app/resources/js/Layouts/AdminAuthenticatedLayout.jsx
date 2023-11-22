@@ -42,6 +42,9 @@ export default function Authenticated({ user, header, children }) {
                                 <NavLink href={route('admin.owners.index')} active={route().current('admin.owners.index')}>
                                    { __('Manage Owners') }
                                 </NavLink>
+                                <NavLink href={route('admin.expired-owners.index')} active={route().current('admin.expired-owners.index')}>
+                                   { __('Expired Owners') }
+                                </NavLink>
                             </div>
                         </div>
 
@@ -115,6 +118,9 @@ export default function Authenticated({ user, header, children }) {
                         </ResponsiveNavLink>
                         <ResponsiveNavLink href={route('admin.owners.index')} active={route().current('admin.owners.index')}>
                             { __('Manage Owners') }
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink href={route('admin.expired-owners.index')} active={route().current('admin.expired-owners.index')}>
+                            { __('Expired Owners') }
                         </ResponsiveNavLink>
                     </div>
 

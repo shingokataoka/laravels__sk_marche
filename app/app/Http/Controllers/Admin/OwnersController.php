@@ -129,14 +129,54 @@ class OwnersController extends Controller
      */
     public function destroy(string $id)
     {
+        $page = request()->page;
+
         $owner = Owner::findOrFail($id);
         $ownerName = $owner->name;
         $owner->delete();
 
-        $page = $this->getIdToPage($id);
-
         session()->flash('status', 'error');
         session()->flash('message', __("Owner \":name\" has been deleted.", ['name' => $ownerName]));
         return to_route('admin.owners.index', ['page' => $page]);
+    }
+
+
+
+
+
+    public function expiredOwnersIndex ()
+    {
+        // 期限切れオーナーをページネーションで取得。
+        $owners = Owner::onlyTrashed()->orderBy('id', 'asc')->paginate(3);
+        return Inertia::render('Admin/Owners/ExpiredOwnersIndex', compact('owners'));
+    }
+
+
+    public function expiredOwnersRestore ($id)
+    {
+        $page = request()->page;
+
+        $owner = Owner::onlyTrashed()->findOrFail($id);
+        $name = $owner->name;
+        $owner->restore();
+
+        session()->flash('status', 'success');
+        session()->flash('message', __("Owner \":name\" has been restored.", ['name' => $name]) );
+
+        return to_route('admin.expired-owners.index', ['page' => $page]);
+    }
+
+
+    public function expiredOwnersDestroy ($id)
+    {
+        $page = request()->page;
+
+        $owner = Owner::onlyTrashed()->findOrFail($id);
+        $name = $owner->name;
+        $owner->forceDelete();
+
+        session()->flash('status', 'error');
+        session()->flash('message', __("Owner \":name\" has been permanently deleted.", ['name' => $name]) );
+        return to_route('admin.expired-owners.index', ['page' => $page]);
     }
 }

@@ -34,35 +34,31 @@ const defaultTimezone = dayjs.tz.guess()
 /** @jsxImportSource @emotion/react */
 export default function Index( {auth, owners} ) {
     const [processingId, setProcessingId] = useState(false)
-    const [disabled, setDIsabled] = useState(false)
+    const [disabled, setDisabled] = useState(false)
+    const [pushedButtonType, setPushedButtonType] = useState('')
     const [nowPage, setNowPage] = useState(owners.current_page)
     const useStates = {
         processingId, setProcessingId,
-        disabled, setDIsabled,
+        disabled, setDisabled,
+        pushedButtonType, setPushedButtonType,
         nowPage, setNowPage,
     }
 
     const PaginationChange = (e, page) => {
         setNowPage(page)
-        router.get( route('admin.owners.index'), {page:page} )
+        router.get( route('admin.expired-owners.index'), {page:page} )
     }
     return (
         <AdminAuthenticatedLayout
             user={auth.user}
-            header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">{ __("Admin") +'/'+ __('Manage Owners') }</h2>}
+            header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">{ __("Admin") +'/'+ __('Expired Owners') }</h2>}
         >
-            <Head title={ __("Admin") +'/'+ __('Manage Owners') } />
+            <Head title={ __("Admin") +'/'+ __('Expired Owners') } />
 
             <div className="py-12">
-                <div className="max-w-7xl mx-auto md:px-6 lg:px-8">
+                <div className="max-w-7xl mx-auto sm:px-0 md:px-8">
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="py-6 text-gray-900 dark:text-gray-100 max-w-[700px] mx-auto">
-                            <div css={css` text-align:right;`}>
-                                <Button variant="contained" size="large"
-                                    disabled={disabled}
-                                    component={Link} href={route('admin.owners.create')}
-                                >{ __('add new') }</Button>
-                            </div>
 
                             <BasicTable
                                 owners={owners}
@@ -92,7 +88,8 @@ export default function Index( {auth, owners} ) {
 function BasicTable({owners, useStates, className}) {
     const {
         processingId, setProcessingId,
-        disabled, setDIsabled,
+        disabled, setDisabled,
+        pushedButtonType, setPushedButtonType,
         nowPage, setNowPage,
     } = useStates
     const _token = usePage().props._token
@@ -108,45 +105,69 @@ function BasicTable({owners, useStates, className}) {
         :hover{ background:${palette.bg2}; }
     `
 
-    const deleteSubmit = (e, owner_id) => {
-        const alertText = __("Becomes an \"expired owner\". \r\nDo you want to run it?")
-        if (!confirm(alertText) ) return
+    const restoreSubmit = (e, owner_id) => {
+        const alertText = __("It will be “owner managed”. \r\nDo you want to run it?")
+        if ( !confirm(alertText) ) return
 
         setProcessingId(owner_id)
-        setDIsabled(true)
-        router.visit( route('admin.owners.destroy', owner_id), {
+        setDisabled(true)
+        setPushedButtonType('restore')
+        return router.visit( route('admin.expired-owners.restore', owner_id), {
+          method: 'put',
+          data: {
+            _token,
+            page: nowPage,
+          },
+          onfinish: visit => {
+            setProcessingId(false)
+            setDisabled(false)
+            setPushedButtonType('')
+          }
+        })
+    }
+
+    const deleteSubmit = (e, owner_id) => {
+        const alertText = __("Once deleted, it cannot be restored. \r\nAre you sure you want to delete it?")
+        if ( !confirm(alertText) ) return
+
+        setProcessingId(owner_id)
+        setDisabled(true)
+        setPushedButtonType('delete')
+        router.visit( route('admin.expired-owners.destroy', owner_id), {
             method: 'delete',
             data: {
                 _token: _token,
-                page:nowPage
+                page: nowPage
             },
             onFinish: visit => {
                 setProcessingId(false)
-                setDIsabled(false)
+                setDisabled(false)
+                setPushedButtonType('')
             },
         })
     }
 
-
   return (<>
-    {/* tablet幅未満のjsx */}
+
+    {/* tablet幅未満で表示されるテーブル */}
     <TableContainer component={Paper} className={className}
-        css={css`
-            ${bp.up('tablet')} { display:none; }
-        `}
+      css={css`
+        ${bp.up('tablet')} { display:none; }
+        th, td { padding-left:0; padding-right:0; }
+      `}
     >
-      <Table aria-label="simple table">
+      <Table  aria-label="simple table">
         <TableHead>
           <TableRow>
             <TableCell align="right">ID</TableCell>
             <TableCell align="center">
-                <div>{ __('Name') }</div>
-                <div>{ __('Email') }</div>
-                <div>{
-                    `${__('Created at')} (${
-                        __(':timezone time zone', {timezone:langTimezone})
-                    })`
-                }</div>
+            <div>{ __('Name') }</div>
+            <div>{ __('Email') }</div>
+            <div>{
+                `${__('Deleted at')} (${
+                    __(':timezone time zone', {timezone:langTimezone})
+                })`
+            }</div>
             </TableCell>
             <TableCell align="center"></TableCell>
 
@@ -163,21 +184,24 @@ function BasicTable({owners, useStates, className}) {
                 {row.id}
               </TableCell>
               <TableCell align="center">
-                <div>{row.name}</div>
-                <div>{row.email}</div>
-                <div>{dayjs(row.created_at).format('YYYY-MM-DD HH:mm:ss')}</div>
+              <div>{row.name}</div>
+              <div>{row.email}</div>
+              <div>{dayjs(row.created_at).format('YYYY-MM-DD HH:mm:ss')}</div>
               </TableCell>
-              <TableCell align="right">
-                <Button variant="contained" component={Link} href={route('admin.owners.edit', row.id)}
+
+              <TableCell align="center">
+                <Button variant="contained" color="secondary"
                     disabled={disabled}
-                >{ __('Edit') }</Button>
+                    loading={ row.id === processingId && pushedButtonType === 'restore' }
+                    onClick={ e => restoreSubmit(e, row.id) }
+                >{ __('Restore') }</Button>
                 <br />
                 <Button variant="contained" color="error"
-                    css={css` margin-top: 16px; `}
+                    css={css`margin-top: 16px;`}
                     disabled={disabled}
-                    loading={ row.id === processingId }
+                    loading={ row.id === processingId && pushedButtonType === 'delete' }
                     onClick={ e => deleteSubmit(e, row.id) }
-                >{ __('Delete') }</Button>
+                >{ __('Delete Completely') }</Button>
               </TableCell>
             </TableRow>
           ))}
@@ -186,20 +210,20 @@ function BasicTable({owners, useStates, className}) {
     </TableContainer>
 
 
-    {/* tablet幅以上のjsx */}
+    {/* tablet幅以上で表示されるテーブル */}
     <TableContainer component={Paper} className={className}
-        css={css`
-            ${bp.down('tablet')} { display: none; }
-        `}
+      css={css`
+        ${bp.down('tablet')} { display:none; }
+      `}
     >
-      <Table aria-label="simple table">
+      <Table  aria-label="simple table">
         <TableHead>
           <TableRow>
             <TableCell align="right">ID</TableCell>
             <TableCell align="center">{ __('Name') }</TableCell>
             <TableCell align="center">{ __('Email') }</TableCell>
             <TableCell align="center">{
-                `${__('Created at')} (${
+                `${__('Deleted at')} (${
                     __(':timezone time zone', {timezone:langTimezone})
                 })`
             }</TableCell>
@@ -221,17 +245,21 @@ function BasicTable({owners, useStates, className}) {
               <TableCell align="right">{row.name}</TableCell>
               <TableCell align="right">{row.email}</TableCell>
               <TableCell align="right">{dayjs(row.created_at).format('YYYY-MM-DD HH:mm:ss')}</TableCell>
+
               <TableCell align="right">
-                <Button variant="contained" component={Link} href={route('admin.owners.edit', row.id)}
+                <Button variant="contained" color="secondary"
                     disabled={disabled}
-                >{ __('Edit') }</Button>
+                    loading={ row.id === processingId && pushedButtonType === 'restore' }
+                    onClick={ e => restoreSubmit(e, row.id) }
+                >{ __('Restore') }</Button>
               </TableCell>
+
               <TableCell align="right">
                 <Button variant="contained" color="error"
                     disabled={disabled}
-                    loading={ row.id === processingId }
+                    loading={ row.id === processingId && pushedButtonType === 'delete' }
                     onClick={ e => deleteSubmit(e, row.id) }
-                >{ __('Delete') }</Button>
+                >{ __('Delete Completely') }</Button>
               </TableCell>
             </TableRow>
           ))}

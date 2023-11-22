@@ -20,6 +20,19 @@ Route::resource('owners', OwnersController::class)
     ->middleware('auth:admin')
     ->except(['show']);
 
+Route::prefix('expired-owners')
+    ->middleware('auth:admin')->group(function () {
+
+        Route::get('/', [OwnersController::class, 'expiredOwnersIndex'])
+            ->name('expired-owners.index');
+
+        Route::put('{owner}/restore', [OwnersController::class, 'expiredOwnersRestore'])
+            ->name('expired-owners.restore');
+
+        Route::delete('{owner}', [OwnersController::class, 'expiredOwnersDestroy'])
+            ->name('expired-owners.destroy');
+    });
+
 
 Route::get('/dashboard', function () {
     return Inertia::render('Admin/Dashboard');
