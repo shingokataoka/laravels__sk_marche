@@ -187,7 +187,8 @@
     "File size is up to 1MB." : "ファイルサイズは1MBまでです。",
 
     "Added an image.": "画像を追加しました。",
-    "Image data has been updated.": "画像情報を更新しました。"
+    "Image data has been updated.": "画像情報を更新しました。",
+    "Image \":title\" has been deleted.": "画像「:title」を削除しました。"
 }
 
 

@@ -121,7 +121,12 @@ class ImageController extends Controller
      */
     public function destroy(Image $image)
     {
+        $page = $this->getIdToPage($image->id);
+        $title = $image->title;
         $image->delete();
-        dd(__FUNCTION__);
+        session()->flash('status', 'error');
+        session()->flash( 'message', __("Image \":title\" has been deleted.", ['title' => $title]) );
+
+        return to_route('owner.images.index', compact('page'));
     }
 }
