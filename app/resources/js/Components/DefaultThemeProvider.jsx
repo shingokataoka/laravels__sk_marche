@@ -37,6 +37,10 @@ const lightTheme = {
          bg3: colors.grey[300],
          bg4: colors.grey[400],
          bg5: colors.grey[500],
+         bg6: colors.grey[600],
+         bg7: colors.grey[700],
+         bg8: colors.grey[800],
+         bg9: colors.grey[900],
     }
 }
 
@@ -57,6 +61,10 @@ const darkTheme = {
          bg3: colors.grey[700],
          bg4: colors.grey[600],
          bg5: colors.grey[500],
+         bg6: colors.grey[400],
+         bg7: colors.grey[300],
+         bg8: colors.grey[200],
+         bg9: colors.grey[100],
     }
 }
 

@@ -125,10 +125,7 @@
     "Regards": "　",
     "saved.": "保存完了",
     "Cancel": "キャンセル",
-    "Admin": "サイト管理者",
-    "Owner": "ショップオーナー",
     "User": "一般ユーザー",
-    "Shop name": "店名",
     "add new": "新規登録する",
     "Edit": "編集",
     "update": "更新する",
@@ -139,22 +136,58 @@
 
     "Created at" : "作成日",
     "Deleted at": "削除日",
-    "Please enter in the :timezone time zone." : ":timezoneの時間帯で入力してください。",
+
+    "Image": "画像",
+
     "Asia/Tokyo" : "日本",
+
+    "Select image file.": "画像ファイルを選択。",
+    "click or drag and drop.": "クリックまたはドラッグ&ドロップします。",
+
+    "Please enter in the :timezone time zone." : ":timezoneの時間帯で入力してください。",
     ":timezone time zone" : ":timezone時間",
+
+    "Not registered due to an error.\r\n Please try again.": "エラーのため登録されませんでした\r\nもう一度やり直してください。",
+
+    "Once deleted, it cannot be restored. \r\nAre you sure you want to delete it?": "削除すると復元できません。\r\n本当に削除してもよろしいですか？",
+
+
+    "メモです。": " --- 以下はサイトオリジナル --- ",
+
+
+    "Shop name": "店名",
+    "Admin": "サイト管理者",
+    "Owner": "ショップオーナー",
     "Manage Owners": "オーナー管理",
     "Expired Owners": "期限切れオーナー一覧",
 
-    "Not registered due to an error.\r\n Please try again.": "エラーのため登録されませんでした\r\nもう一度やり直してください。",
+    "Store Information": "店舗情報",
+    "Manage Images": "画像管理",
+    "Manage Products": "商品管理",
+
+    "Information": "情報",
+    "On Sale": "販売中",
+    "Sales Stopped": "停止中",
+
+    "Add New": "新規登録",
+    "no image": "画像なしにする",
+
+    "Title": "タイトル",
+
     "Added owner \":name.\"": "オーナー「:name」を追加しました。",
     "The owner information for ID \":id\" has been updated.": "ID「:id」のオーナー情報を更新しました。",
     "Owner \":name\" has been deleted.": "オーナー「:name」を削除しました。",
     "Owner \":name\" has been permanently deleted.": "オーナー「:name」を完全に削除しました。",
     "Becomes an \"expired owner\". \r\nDo you want to run it?": "「期限切れオーナー」に入れる事になります。\r\n実行しますか？",
-    "Once deleted, it cannot be restored. \r\nAre you sure you want to delete it?": "削除すると復元できません。\r\n本当に削除してもよろしいですか？",
 
     "It will be “owner managed”. \r\nDo you want to run it?": "「オーナー管理」に戻す事になります。\r\n実行しますか？",
-    "Owner \":name\" has been restored.": "オーナー「:name」を復元しました。"
+    "Owner \":name\" has been restored.": "オーナー「:name」を復元しました。",
+
+    "Shop data has been updated." : "ショップ情報を更新しました。",
+    "File size is up to 1MB." : "ファイルサイズは1MBまでです。",
+
+    "Added an image.": "画像を追加しました。",
+    "Image data has been updated.": "画像情報を更新しました。"
 }
 
 
