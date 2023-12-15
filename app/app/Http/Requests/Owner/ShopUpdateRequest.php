@@ -25,14 +25,14 @@ class ShopUpdateRequest extends FormRequest
             'name' => ['string', 'min:2', 'max:255', 'required'],
             'information' => ['string', 'min:2', 'max:1000', 'required'],
             'is_selling' => ['boolean', 'required'],
-            'file' => ['image', 'mimes:jpeg,jpg,png', 'max:1024', 'nullable'],
+            'file' => ['image', 'mimes:jpeg,jpg,png', 'max:2048', 'nullable'],
         ];
     }
 
     public function messages()
     {
         return [
-            'file.max' => __('File size is up to 1MB.'),
+            'file.max' => __('File size is up to 2MB.'),
         ];
     }
 }

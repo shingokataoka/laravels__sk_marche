@@ -138,11 +138,19 @@
     "Deleted at": "削除日",
 
     "Image": "画像",
+    "Select image :no": "画像:noを選択",
+    "Quantity": "数量",
+    "Initial quantity": "初期数量",
+    "Sort order": "表示順",
+    "Price": "価格",
+    "Unselected": "未選択",
 
     "Asia/Tokyo" : "日本",
 
     "Select image file.": "画像ファイルを選択。",
     "click or drag and drop.": "クリックまたはドラッグ&ドロップします。",
+
+    "Select from image list": "画像一覧から選択",
 
     "Please enter in the :timezone time zone." : ":timezoneの時間帯で入力してください。",
     ":timezone time zone" : ":timezone時間",
@@ -173,6 +181,7 @@
     "no image": "画像なしにする",
 
     "Title": "タイトル",
+    "Category": "カテゴリ",
 
     "Added owner \":name.\"": "オーナー「:name」を追加しました。",
     "The owner information for ID \":id\" has been updated.": "ID「:id」のオーナー情報を更新しました。",
@@ -188,7 +197,8 @@
 
     "Added an image.": "画像を追加しました。",
     "Image data has been updated.": "画像情報を更新しました。",
-    "Image \":title\" has been deleted.": "画像「:title」を削除しました。"
+    "Image \":title\" has been deleted.": "画像「:title」を削除しました。",
+    "There is an invalid image specification.": "画像の指定に不正があります。"
 }
 
 

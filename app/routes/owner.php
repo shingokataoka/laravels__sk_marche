@@ -17,6 +17,7 @@ use App\Http\Controllers\Owner\ProfileController;
 use App\Http\Controllers\Owner\ShopController;
 use App\Http\Controllers\Owner\ImageController;
 use App\Http\Controllers\Owner\ProductController;
+use App\Http\Controllers\Owner\ApiProductController;
 
 
 Route::middleware('auth:owner')->group(function() {
@@ -43,6 +44,10 @@ Route::middleware('auth:owner')->group(function() {
     Route::post('products/{product}/update', [ProductController::class, 'update'])
         ->where(['product' => '^[0-9]+$'])
         ->name('products.update');
+
+    // apiでimagesをpaginateで返す。
+    Route::post('api/products/get_images', [ApiProductController::class, 'getImages'])
+        ->name('api.products.get_images');
 });
 
 

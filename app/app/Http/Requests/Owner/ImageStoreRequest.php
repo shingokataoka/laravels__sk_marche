@@ -30,7 +30,7 @@ class ImageStoreRequest extends FormRequest
     public function messages()
     {
         return [
-            'image.max' => __('File size is up to 1MB.'),
+            'image.max' => __('File size is up to 2MB.'),
         ];
     }
 }
