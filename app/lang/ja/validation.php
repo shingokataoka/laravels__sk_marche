@@ -176,5 +176,7 @@ return [
 
         'title' => 'タイトル',
         'image' => '画像',
+        'secondary_category_id' => 'カテゴリ',
+        'sort_order' => '表示順',
     ],
 ];

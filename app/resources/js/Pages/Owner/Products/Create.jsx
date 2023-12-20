@@ -143,8 +143,8 @@ export default function Edit({
                                     type="number"
                                     value={quantity}
                                     onChange={ e => setQuantity(e.target.value) }
-                                    error={ undefined !== errors.name }
-                                    helperText={ errors.name }
+                                    error={ undefined !== errors.quantity }
+                                    helperText={ errors.quantity }
                                 />
 
                                 <SelectCategory
@@ -192,7 +192,6 @@ export default function Edit({
                                         width:100%;
                                         ${ !errors.is_selling || `
                                             * {
-                                                color: ${palette.error.main};
                                                 border-color:${palette.error.main} !important;
                                             }
                                         ` }

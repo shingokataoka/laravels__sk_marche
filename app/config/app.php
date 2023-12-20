@@ -189,6 +189,9 @@ return [
 
         // 画像ライブラリInterventionをImageという名前でファサードに登録。
         'InterventionImage' => Intervention\Image\Facades\Image::class,
+
+        // 共通の定数があるCommonクラスをConstant（定数）エイリアスに登録。
+        'Constant' => App\Constants\Common::class,
     ])->toArray(),
 
 ];

@@ -40,6 +40,7 @@ export default function SelectImage ({
     setImage,
     firstPageImages,
     imageDirUrl,
+    oldFilename,
     disabled,
 }) {
     const errorText = usePage().props.errors[column]
@@ -48,7 +49,7 @@ export default function SelectImage ({
 
     const [open, setOpen] = useState(false);
 
-    const [filename, setFilename] = useState(null)
+    const [filename, setFilename] = useState(oldFilename)
     const [imageUrl, setImageUrl] = useState("/images/no_image.png")
 
     useEffect(() => {

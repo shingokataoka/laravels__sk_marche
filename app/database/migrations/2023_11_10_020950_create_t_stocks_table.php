@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('product_id')->constrained()
                 ->onUpdate('cascade');
-            $table->boolean('type');
-            $table->integer('quantity')->unsigned();
+            $table->tinyInteger('type');
+            $table->integer('quantity');
             $table->datetime('created_at')->nullable();
             $table->datetime('updated_at')->nullable();
 

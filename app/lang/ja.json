@@ -141,9 +141,23 @@
     "Select image :no": "画像:noを選択",
     "Quantity": "数量",
     "Initial quantity": "初期数量",
+    "Current quantity": "現在数量",
+    "add quantity": "数量を追加",
+    "reduce quantity": "数量を削減",
+    "Add": "追加",
+    "Reduce": "削減",
     "Sort order": "表示順",
     "Price": "価格",
     "Unselected": "未選択",
+    "Keyword": "キーワード",
+    "Display order": "表示順",
+    "search": "検索する",
+
+    "Recommend": "おすすめ順",
+    "Higher price": "価格が高い順",
+    "Lower price": "価格が安い順",
+    "Later": "新しい順",
+    "Older": "古い順",
 
     "Asia/Tokyo" : "日本",
 
@@ -190,6 +204,7 @@
     "Becomes an \"expired owner\". \r\nDo you want to run it?": "「期限切れオーナー」に入れる事になります。\r\n実行しますか？",
 
     "It will be “owner managed”. \r\nDo you want to run it?": "「オーナー管理」に戻す事になります。\r\n実行しますか？",
+
     "Owner \":name\" has been restored.": "オーナー「:name」を復元しました。",
 
     "Shop data has been updated." : "ショップ情報を更新しました。",
@@ -198,7 +213,15 @@
     "Added an image.": "画像を追加しました。",
     "Image data has been updated.": "画像情報を更新しました。",
     "Image \":title\" has been deleted.": "画像「:title」を削除しました。",
-    "There is an invalid image specification.": "画像の指定に不正があります。"
+    "There is an invalid image specification.": "画像の指定に不正があります。",
+
+    "Added an product.": "商品を追加しました。",
+    "An error has occurred. Please try again.": "エラーが発生しました。もう一度やり直してください。",
+
+    "Product data has been updated.": "商品情報を更新しました。",
+    "Becomes an \"deleted product\". \r\nDo you want to run it?": "「削除した商品一覧」に入れる事になります。\r\n実行しますか？",
+    "Product \":name\" has been deleted.": "商品「:name」を削除しました。",
+    "Product \":name\" has been permanently deleted.": "商品「:name」を完全に削除しました。"
 }
 
 

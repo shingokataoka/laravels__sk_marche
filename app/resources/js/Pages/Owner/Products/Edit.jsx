@@ -23,6 +23,8 @@ import FormControl from '@mui/material/FormControl';
 /** @jsxImportSource @emotion/react */
 export default function Edit({
         auth,
+        product,
+        current_quantity,
         imageDirUrl,
         firstPageImages,
         primaryCategories,
@@ -32,40 +34,48 @@ export default function Edit({
     const bp = defaultTheme().breakpoints
 
     const errors = usePage().props.errors
+    const Constant = usePage().props.Constant
 
     // 「更新する」送信中ならtrue。
     const [processing, setProcessing] = useState(false)
+    // 「削除」送信中ならtrue。
+    const [deleteProcessing, setDeleteProcessing] = useState(false)
     // ボタンを無効にするならtrue。
     const [disabled, setDisabled] = useState(false)
 
-    const [name, setName] = useState('')
-    const [information, setInformation] = useState('')
-    const [price, setPrice] = useState(0);
-    const [sort_order, setSortOrder] = useState(1);
-    const [quantity, setQuantity] = useState(1);
-    const [secondary_category_id, setSecondaryCategoryId] = useState('')
+    const [name, setName] = useState(product.name)
+    const [information, setInformation] = useState(product.information)
+    const [price, setPrice] = useState(product.price);
+    const [sort_order, setSortOrder] = useState(product.sort_order);
+    const [quantity, setQuantity] = useState(0);
+    const [secondary_category_id, setSecondaryCategoryId] = useState(product.secondary_category_id)
     // image1〜image4のid
-    const [image1, setImage1] = useState(null);
-    const [image2, setImage2] = useState(null);
-    const [image3, setImage3] = useState(null);
-    const [image4, setImage4] = useState(null);
+    const [image1, setImage1] = useState(product.image1);
+    const [image2, setImage2] = useState(product.image2);
+    const [image3, setImage3] = useState(product.image3);
+    const [image4, setImage4] = useState(product.image4);
 
-    const [is_selling, setIsSelling] = useState(null)
+    const [is_selling, setIsSelling] = useState(product.is_selling)
+
+    // 追加or削減
+    const [type, setType] = useState( Constant.PRODUCT.add );
 
 
+    // どれかが送信中ならdisabled=trueにする
     useEffect(() => {
         if ( processing ) { setDisabled(true) }
+        else if ( deleteProcessing ) { setDisabled(true) }
         else { setDisabled(false) }
-    }, [processing])
+    }, [processing, deleteProcessing])
 
 
 
 
-    const storeSubmit = e => {
+    const updateSubmit = e => {
         setProcessing(true)
-        router.visit( route('owner.products.store'), {
+        router.visit( route('owner.products.update', {'product':product.id}), {
             method: 'post',
-            data: { _token, name, information, price, sort_order, quantity, secondary_category_id, image1, image2, image3, image4, is_selling },
+            data: { _token, name, information, price, sort_order, type, quantity, secondary_category_id, image1, image2, image3, image4, is_selling },
             preserveState: true,
             onFinish: visit => {
                 setProcessing(false)
@@ -74,13 +84,22 @@ export default function Edit({
     }
 
 
+    const deleteSubmit = e => {
+        if ( !confirm( __('Becomes an \"deleted product\". \r\nDo you want to run it?') ) ) return
+        setDeleteProcessing(true)
+        router.visit( route('owner.products.destroy', {product: product.id}), {
+            method: 'delete',
+            data: {_token}
+        } )
+    }
+
 
     return (
         <OwnerAuthenticatedLayout
             user={auth.user}
-            header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">{ __("Owner") +'/'+ __("Manage Products") +'/'+ __("Register") }</h2>}
+            header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">{ __("Owner") +'/'+ __("Manage Products") +'/'+ __("Edit") }</h2>}
         >
-            <Head title={ __("Owner") +'/'+ __("Manage Products") +'/'+ __("Register") } />
+            <Head title={ __("Owner") +'/'+ __("Manage Products") +'/'+ __("Edit") } />
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -139,13 +158,58 @@ export default function Edit({
                                 />
 
                                 <TextField variant="outlined"
-                                    label={ __('Initial quantity') }
+                                    label={ __('Current quantity') }
                                     type="number"
-                                    value={quantity}
-                                    onChange={ e => setQuantity(e.target.value) }
-                                    error={ undefined !== errors.name }
-                                    helperText={ errors.name }
+                                    // inputProps={{ readOnly: true }}
+                                    disabled={true}
+                                    value={current_quantity}
                                 />
+
+                                <div css={css`
+
+                                `}>
+                                    <FormControl css={css`
+                                        width: 100%;
+                                        * { border: none !important; }
+                                    `}>
+                                    <RadioGroup
+                                        row
+                                        aria-labelledby="demo-row-radio-buttons-group-label"
+                                        name="row-radio-buttons-group"
+                                        value={type}
+                                        onChange={ e => setType(e.target.value) }
+                                        css={css`
+                                            display: flex;
+                                            justify-content: space-around;
+                                            border: 1px ${palette.bg3} solid;
+                                            border-radius: 4px;
+                                        `}
+                                    >
+                                        <FormControlLabel control={<Radio />}
+                                            label={ __('add quantity') }
+                                            value={ Constant.PRODUCT.add }
+                                        />
+                                        <FormControlLabel
+                                            control={<Radio />}
+                                            label={ __('reduce quantity') }
+                                            value={ Constant.PRODUCT.reduce }
+                                        />
+                                    </RadioGroup>
+                                    </FormControl>
+
+                                    <TextField variant="outlined"
+                                        label={ __('Quantity') }
+                                        type="number"
+                                        value={quantity}
+                                        onChange={ e => setQuantity(e.target.value) }
+                                        error={ undefined !== errors.quantity }
+                                        helperText={ errors.quantity }
+                                        css={css`
+                                            width: 100%;
+                                        `}
+                                    />
+                                </div>
+
 
                                 <SelectCategory
                                     primaryCategories={primaryCategories}
@@ -159,6 +223,7 @@ export default function Edit({
                                     firstPageImages={firstPageImages}
                                     imageDirUrl={imageDirUrl}
                                     setImage={setImage1}
+                                    oldFilename={ (!product.image_1)? null :product.image_1.filename }
                                     disabled={disabled}
                                 />
                                 <SelectImage
@@ -167,6 +232,7 @@ export default function Edit({
                                     firstPageImages={firstPageImages}
                                     imageDirUrl={imageDirUrl}
                                     setImage={setImage2}
+                                    oldFilename={ (!product.image_2)? null :product.image_2.filename }
                                     disabled={disabled}
                                 />
                                 <SelectImage
@@ -175,6 +241,7 @@ export default function Edit({
                                     firstPageImages={firstPageImages}
                                     imageDirUrl={imageDirUrl}
                                     setImage={setImage3}
+                                    oldFilename={ (!product.image_3)? null :product.image_3.filename }
                                     disabled={disabled}
                                 />
                                 <SelectImage
@@ -183,6 +250,7 @@ export default function Edit({
                                     firstPageImages={firstPageImages}
                                     imageDirUrl={imageDirUrl}
                                     setImage={setImage4}
+                                    oldFilename={ (!product.image_4)? null :product.image_4.filename }
                                     disabled={disabled}
                                 />
 
@@ -192,7 +260,6 @@ export default function Edit({
                                         width:100%;
                                         ${ !errors.is_selling || `
                                             * {
-                                                color: ${palette.error.main};
                                                 border-color:${palette.error.main} !important;
                                             }
                                         ` }
@@ -228,19 +295,35 @@ export default function Edit({
                                     spacing={2}
                                     css={css` padding-top: 16px; `}
                                 >
-                                <Button variant="contained" color="secondary"
-                                    disabled={ disabled }
-                                    component={Link}
-                                    href={ route('owner.products.index') }
-                                >{ __('back') }</Button>
+                                    <Button variant="contained" color="secondary"
+                                        disabled={ disabled }
+                                        component={Link}
+                                        href={ route('owner.products.index') }
+                                    >{ __('back') }</Button>
 
-                                <LoadingButton variant="contained"
-                                    disabled={disabled}
-                                    loading={ processing }
-                                    onClick={ storeSubmit }
-                                >{ __('register') }</LoadingButton>
+                                    <LoadingButton variant="contained"
+                                        disabled={disabled}
+                                        loading={ processing }
+                                        onClick={ updateSubmit }
+                                    >{ __('update') }</LoadingButton>
+                                </Stack>
+
+                                <Stack
+                                    direction="row"
+                                    justifyContent="space-around"
+                                    alignItems="center"
+                                    spacing={2}
+                                    css={css` padding-top: 16px; `}
+                                >
+                                    <LoadingButton variant="contained" color="error"
+                                        loading={ deleteProcessing }
+                                        disabled={ disabled }
+                                        onClick={ deleteSubmit }
+                                    >{ __('Delete') }</LoadingButton>
                                 </Stack>
                             </Stack>
+
+
 
                         </div>
                     </div>

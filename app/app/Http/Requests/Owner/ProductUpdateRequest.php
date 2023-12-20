@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 use App\Models\Image;
 
-class ProductStoreRequest extends FormRequest
+class ProductUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -38,7 +38,7 @@ class ProductStoreRequest extends FormRequest
             'information' => ['nullable', 'string', 'between:0,5000'],
             'price' => ['required', 'integer', 'min:0', 'max:910001000'],
             'sort_order' => ['required', 'integer', 'min:1'],
-            'quantity' => ['required', 'integer', 'between:1,9999'],
+            'quantity' => ['nullable', 'integer', 'between:0,9999'],
             'secondary_category_id' => ['required','exists:secondary_categories,id'],
             'image1' => ['nullable', 'exists:images,id', $imageRute],
             'image2' => ['nullable', 'exists:images,id', $imageRute],
@@ -48,7 +48,7 @@ class ProductStoreRequest extends FormRequest
         ];
     }
 
-    public function mesages()
+    public function messages()
     {
         return [
             'image1.max' => __('File size is up to 2MB.'),
