@@ -13,12 +13,31 @@ use Illuminate\Support\Facades\Route;
 
 use Inertia\Inertia;
 use App\Http\Controllers\ProfileController;
-
+use App\Http\Controllers\User\ProductController;
+use App\Http\Controllers\User\CartController;
+use App\Http\Controllers\User\SettlementController;
 
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+
+Route::middleware('auth')->name('user.')->group(function () {
+
+    Route::resource('products', ProductController::class)
+        ->only(['index', 'show']);
+
+    Route::resource('cart', CartController::class);
+
+    Route::get('checkout', [SettlementController::class, 'checkout'])
+        ->name('user.selletement.checkout');
+
+});
+
+
+
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

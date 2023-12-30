@@ -42,6 +42,32 @@ class ImageService
         // 保存ファイル名を返す。
         return $filename;
     }
+
+    // $productの画像があるぶんだけのURLを配列で返す。
+    // ない場合は、no_imageのURLを持つ配列を返す。
+    public static function getProductImageUrls($product)
+    {
+        if ( empty($product->image_1->filename) ) {
+            $image1Url = self::getNoImageUrl();
+        } else {
+            $image1Url = self::getProductImageUrl($product->image_1->filename);
+        }
+
+        $imageUrls = [ $image1Url ];
+        $filenames = [
+            $product->image_2->filename ?? null,
+            $product->image_3->filename ?? null,
+            $product->image_4->filename ?? null,
+        ];
+        foreach ($filenames as $filename) {
+            if ( !empty($filename) ) {
+                $imageUrls[] = self::getProductImageUrl($filename);
+            }
+        }
+        return $imageUrls;
+    }
+
+
     // 商品画像ファイルを保存する。戻り値はファイル名を返す。
     public static function saveProductImage($file)
     {

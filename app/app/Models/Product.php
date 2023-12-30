@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 
-use App\Models\SecondaryCategory;
+
+
 
 
 
@@ -181,6 +182,22 @@ class Product extends Model
             $query->orderBy('sort_order');
         }
         return $query;
+    }
+
+
+
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'carts')
+        ->withPivot('id', 'quantity');
+    }
+
+
+
+    public function shop()
+    {
+        return $this->belongsTo(Shop::class);
     }
 
 

@@ -51,4 +51,13 @@ class User extends Authenticatable
     public function sendPasswordResetNotification($token){
         $this->notify(new ResetPasswordNotification($token));
     }
+
+
+
+
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'carts')
+            ->withPivot('id', 'quantity');
+    }
 }

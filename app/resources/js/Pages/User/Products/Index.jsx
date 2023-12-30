@@ -1,4 +1,4 @@
-import OwnerAuthenticatedLayout from '@/Layouts/OwnerAuthenticatedLayout';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, usePage } from '@inertiajs/react';
 
 import { defaultTheme } from '@/Components/DefaultThemeProvider';
@@ -40,6 +40,7 @@ dayjs.tz.setDefault(defaultTimezone);
 
 /** @jsxImportSource @emotion/react */
 export default function Index({ auth, products, productDirUrl, primaryCategories, initialCategoryId, initialKeyword, initialSortType }) {
+
     const palette = defaultTheme().palette
     const bp = defaultTheme().breakpoints
 
@@ -55,7 +56,7 @@ export default function Index({ auth, products, productDirUrl, primaryCategories
     // 検索とページネーションの連動が必要。
     // 検索時は1ページだから連動は不要。
     const clickedSearch = e => {
-        router.visit( route('owner.products.index'), {
+        router.visit( route('user.products.index'), {
             method: 'get',
             data: { categoryId, keyword, sortType }
         }
@@ -65,7 +66,7 @@ export default function Index({ auth, products, productDirUrl, primaryCategories
     }
     // 検索後にページめくりは、検索結果と連動が必要。
     const PaginationChange = (e, page) => {
-        router.visit( route('owner.products.index'), {
+        router.visit( route('user.products.index'), {
             method: 'get',
             data: {page, categoryId, keyword, sortType },
         })
@@ -114,12 +115,13 @@ export default function Index({ auth, products, productDirUrl, primaryCategories
 
 
 
+
     return (<DefaultThemeProvider>
-        <OwnerAuthenticatedLayout
+        <AuthenticatedLayout
             user={auth.user}
-            header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">{ __("Owner") +'/'+ __("Manage Products") }</h2>}
+            header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">{ __('Product list') }</h2>}
         >
-            <Head title={ __("Owner") +'/'+ __("Manage Products") } />
+            <Head title={ __('Product list') } />
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -165,10 +167,8 @@ export default function Index({ auth, products, productDirUrl, primaryCategories
                     </Stack>
 
 
-
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900 dark:text-gray-100 max-w-[790px] mx-auto">
-
 
                             <Stack
                             direction="row"
@@ -204,9 +204,11 @@ export default function Index({ auth, products, productDirUrl, primaryCategories
                     </div>
                 </div>
             </div>
-        </OwnerAuthenticatedLayout>
+        </AuthenticatedLayout>
     </DefaultThemeProvider>);
 }
+
+
 
 function ImageCard ({product, productDirUrl}) {
     const palette = defaultTheme().palette
@@ -214,7 +216,7 @@ function ImageCard ({product, productDirUrl}) {
     const url =(!product.image_1)? '/images/no_image.png' : productDirUrl + product.image_1.filename
 
     return (<Link
-        href={ route('owner.products.edit', {product: product.id}) }
+        href={ route('user.products.show', {product: product.id}) }
         css={css`
             margin-top: 8px;
             border: 1px ${palette.bg4} solid;
@@ -223,6 +225,8 @@ function ImageCard ({product, productDirUrl}) {
             min-width: 135px;
             overflow: hidden;
             font-size: 0.9rem;
+            pointer:cursor;
+            :hover { opacity: 0.7; }
         `}
     >
         <Stack alignItems="center" >
@@ -238,9 +242,8 @@ function ImageCard ({product, productDirUrl}) {
             <div>{ product.name }</div>
             <div>{ product.secondary_category.name }</div>
             <div>{ product.price.toLocaleString() } 円</div>
-            <div>{ dayjs(product.created_at).tz().format('YYYY-MM-DD') }</div>
+            {/* <div>{ dayjs(product.created_at).tz().format('YYYY-MM-DD') }</div> */}
         </div>
     </Link>);
 
 }
-

@@ -5,6 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
+
+use App\Services\ImageService;
+
 class Image extends Model
 {
     use HasFactory;
@@ -14,6 +18,7 @@ class Image extends Model
         'filename',
         'title',
     ];
+
 
     public function owner()
     {
