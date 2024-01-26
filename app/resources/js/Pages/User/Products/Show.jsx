@@ -90,7 +90,7 @@ export default function Dashboard({ auth, product, maxQuantity, imageUrls, shop,
     // 価格を表示
     const PriceJsx = (<div css={css` font-size:1.7rem; `}>
         { product.price.toLocaleString() }
-        <span css={css`font-size:0.85rem;`}>{ __('Yen (tax included)') }</span>
+        <span css={css`font-size:0.85rem;`}>{ __('JPY (tax included)') }</span>
     </div>)
 
     // 「数量」入力欄

@@ -125,7 +125,7 @@ export default function Index({ auth, user, productImageDirUrl, noImageUrl }) {
                                 <div css={css` font-size:1.5rem; `}>
                                     { totalPrice.toLocaleString() }
                                     <span css={css` font-size:1rem`}>
-                                        { __('Yen (tax included)') }
+                                        { __('JPY (tax included)') }
                                     </span>
                                 </div>
                                 <div>
@@ -266,7 +266,7 @@ function QuantityJsx({allProps}) {
             <div css={css` display:inline-block; `}>
                 <span css={css` font-size:0.8rem `} >{ __('Unit price') } </span>
                 { product.price.toLocaleString() }
-                <span css={css` font-size:0.75rem `} >{ __('Yen (tax included)') }</span>
+                <span css={css` font-size:0.75rem `} >{ __('JPY (tax included)') }</span>
             </div>
             <div css={css` display:inline-block; margin-left:8px; `}>
                 { product.pivot.quantity } { __('') }
@@ -282,7 +282,7 @@ function ProductTotalJsx({allProps}) {
                 (product.price * product.pivot.quantity )
                 .toLocaleString()
             }
-            <span css={css`font-size:0.8rem;`}>{ __('Yen (tax included)') }</span>
+            <span css={css`font-size:0.8rem;`}>{ __('JPY (tax included)') }</span>
         </div>)
 }
 
