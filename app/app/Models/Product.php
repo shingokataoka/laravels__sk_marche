@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 
+use App\Services\ImageService;
 
 
 
@@ -231,6 +232,19 @@ class Product extends Model
     public function image_4()
     {
         return $this->belongsTo(Image::class, 'image4');
+    }
+
+
+    // アクセサ。画像1のURLを返す。なければno image画像を返す。
+    // $products->iamge1_urlで取得
+    public function getImage1UrlAttribute()
+    {
+        $filename = $this->image_1->filename;
+        if ( !empty($filename) ) {
+          return ImageService::getProductImageUrl($filename);
+        } else {
+          return ImageService::getNoImageUrl();
+        }
     }
 
 }

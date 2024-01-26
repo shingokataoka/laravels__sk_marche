@@ -16,11 +16,17 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\ProductController;
 use App\Http\Controllers\User\CartController;
 use App\Http\Controllers\User\SettlementController;
+use App\Http\Controllers\User\CheckoutController;
+use App\Http\Controllers\User\StripeController;
+use App\Http\Controllers\User\SubscriptionController;
+use App\Http\Controllers\User\PurchaseController;
+use App\Http\Controllers\User\ContractController;
 
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
 
 
 Route::middleware('auth')->name('user.')->group(function () {
@@ -30,8 +36,52 @@ Route::middleware('auth')->name('user.')->group(function () {
 
     Route::resource('cart', CartController::class);
 
-    Route::get('checkout', [SettlementController::class, 'checkout'])
-        ->name('user.selletement.checkout');
+    // 購入履歴のルーティング。
+    Route::get('orders', function(){ dd('購入履歴のルーティング'); })
+        ->name('orders.index');
+    // 契約内容のルーティング。
+    Route::get('contracts', [ContractController::class, 'index'])
+        ->name('contracts.index');
+
+
+    // サブスク関係のルーティング。
+    Route::prefix('subscription')->name('subscription.')
+    ->controller(SubscriptionController::class)->group(function (){
+        Route::get('/', 'index')->name('index');
+        Route::post('create', 'create')->name('create');
+        Route::delete('destroy', 'destroy')->name('destroy');
+    });
+
+
+    // カート内の支払い関係のルーティング。
+    Route::prefix('purchase')->name('purchase.')
+    ->controller(PurchaseController::class)->group(function (){
+        Route::get('/', 'index')->name('index');
+        Route::post('create', 'create')->name('create');
+    });
+
+
+    // // サブスクの支払いページのビューを表示
+    // Route::get('/subscription', function() {
+    //     $intent = auth()->user()->createSetupIntent();
+    //     return view('user.stripe.subscription', compact('intent'));
+    // })->name('stripe.subscription');
+
+    // サブスクの支払い処理をする。
+    // 上記支払いページで「支払い」ボタンでのPOST送信先である。
+    // Route::post('/subscribe', function () {
+    //     auth()->user()->newSubscription(
+    //         'default', 'price_1OWZ8NAaxxyh99REeXyVNmGp'
+    //     )->create( request()->post('paymentMethodId') );
+    //         // 支払い完了後の処理。ここでは、ダッシュボードにリダイレクトしている。
+    //         return redirect('/dashboard');
+    // })->name('stripe.subscribe.post');
+
+    // // 一回払いページのビューを表示。
+    // Route::get('/purchase', function(){
+    //     return view('user.stripe.purchase');
+    // })->name('stripe.purchase');
+
 
 });
 

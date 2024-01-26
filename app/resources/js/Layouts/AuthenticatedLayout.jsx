@@ -6,6 +6,9 @@ import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link } from '@inertiajs/react';
 import { DefaultThemeProvider } from '@/Components/DefaultThemeProvider';
 
+import Flash from '@/Components/Flash';
+
+
 export default function Authenticated({ user, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
 
@@ -30,6 +33,12 @@ export default function Authenticated({ user, header, children }) {
                                 </NavLink>
                                 <NavLink href={route('user.cart.index')} active={route().current('user.cart.index')}>
                                 { __("Cart") }
+                                </NavLink>
+                                <NavLink href={route('user.orders.index')} active={route().current('user.orders.index')}>
+                                { __("Purchase history") }
+                                </NavLink>
+                                <NavLink href={route('user.contracts.index')} active={route().current('user.contracts.index')}>
+                                { __("Contract information") }
                                 </NavLink>
                             </div>
                         </div>
@@ -108,6 +117,12 @@ export default function Authenticated({ user, header, children }) {
                         <ResponsiveNavLink href={route('user.cart.index')} active={route().current('user.cart.index')}>
                         { __("Cart") }
                         </ResponsiveNavLink>
+                        <ResponsiveNavLink href={route('user.orders.index')} active={route().current('user.orders.index')}>
+                        { __("Purchase history") }
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink href={route('user.contracts.index')} active={route().current('user.cart.index')}>
+                        { __("Contract information") }
+                        </ResponsiveNavLink>
                     </div>
 
                     <div className="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
@@ -132,7 +147,10 @@ export default function Authenticated({ user, header, children }) {
                 </header>
             )}
 
-            <main>{children}</main>
+            <main>
+                <Flash />
+                {children}
+            </main>
         </div>
     </DefaultThemeProvider>);
 }

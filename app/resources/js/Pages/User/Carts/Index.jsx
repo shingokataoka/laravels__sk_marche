@@ -9,6 +9,7 @@ import { css, useMediaQuery } from '@mui/material';
 import { Stack } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { LoadingButton } from '@mui/lab';
+import {Link} from '@inertiajs/react';
 
 
 
@@ -67,9 +68,6 @@ export default function Index({ auth, user, productImageDirUrl, noImageUrl }) {
         })
     }
 
-    const orderSubmit = e => {
-        setOrderProcessing(true)
-    }
 
     const allProps = {
         user, productImageDirUrl, noImageUrl,
@@ -109,12 +107,20 @@ export default function Index({ auth, user, productImageDirUrl, noImageUrl }) {
                             </Stack>
 
                             {/* 合計金額 */}
+                            <div
+                                css={css`
+                                margin-top: 32px;
+                                margin-bottom: 8px;
+                                    text-align:center;
+                                    font-size: 1.5rem;
+                                `}
+                            >{ __('Total price') } </div>
                             <Stack
                                 direction="row"
                                 justifyContent="center"
                                 alignItems="center"
                                 spacing={2}
-                                css={css` margin-top: 32px; `}
+                                css={css`  `}
                             >
                                 <div css={css` font-size:1.5rem; `}>
                                     { totalPrice.toLocaleString() }
@@ -123,13 +129,27 @@ export default function Index({ auth, user, productImageDirUrl, noImageUrl }) {
                                     </span>
                                 </div>
                                 <div>
-                                    <LoadingButton variant="contained"
-                                        disabled={disabled}
-                                        loading={orderProcessing}
-                                        onClick={ orderSubmit }
-                                    >
-                                        {__('Order submit')}
-                                    </LoadingButton>
+                                    { (user.products.length === 0) ?
+                                        <LoadingButton variant="outlined"
+                                            color="warning"
+                                        >
+                                            {__('There are no items in your cart.')}
+                                        </LoadingButton>
+                                    :
+                                        <a href={
+                                            (disabled || orderProcessing)? '' :
+                                            route('user.purchase.index')
+                                        }>
+                                            <LoadingButton variant="contained"
+                                                disabled={disabled}
+                                                loading={orderProcessing}
+                                                // component={ Link }
+                                                // href={ route('user.purchase.index') }
+                                            >
+                                                {__('Proceed to Checkout')}
+                                            </LoadingButton>
+                                        </a>
+                                    }
                                 </div>
                             </Stack>
 
@@ -161,13 +181,15 @@ function TabletProductsJsx({allProps}) {
                 css={css`
                     width: 100%;
                     > :nth-of-type(1) { flex:0.3; }
-                    > :nth-of-type(2) { flex:0.2; }
-                    > :nth-of-type(3) { flex:0.4; }
-                    > :nth-of-type(4) { flex:0.1; min-width:90px; }
+                    > :nth-of-type(2) { flex:0.1; }
+                    > :nth-of-type(3) { flex:0.25; }
+                    > :nth-of-type(4) { flex:0.25; }
+                    > :nth-of-type(5) { flex:0.1; min-width:160px; }
                 `}
             >
                 <ImageJsx allProps={ {...allProps, product} } />
                 <div>{ product.name }</div>
+                {/* <UnitPriceJsx allProps={ {...allProps, product} } /> */}
                 <QuantityJsx allProps={ {...allProps, product} } />
                 <ProductTotalJsx allProps={ {...allProps, product} } />
                 <DeleteButtonJsx allProps={ {...allProps, product} }  />
@@ -207,15 +229,9 @@ function MobileProductsJsx({allProps}) {
                     <div>{ product.name }</div>
                     <DeleteButtonMobileJsx allProps={ {...allProps, product} }/>
                 </Stack>
-                <Stack
-                    direction="row"
-                    justifyContent="center"
-                    alignItems="center"
-                    spacing={2}
-                >
-                    <QuantityJsx allProps={ {...allProps, product} }/>
-                    <ProductTotalJsx allProps={ {...allProps, product} }/>
-                </Stack>
+
+                <QuantityJsx allProps={ {...allProps, product} }/>
+                <ProductTotalJsx allProps={ {...allProps, product} }/>
             </Stack>
             <Hr allProps={allProps} />
         </div>) )}
@@ -241,11 +257,20 @@ function ImageJsx({allProps}) {
     </div>)
 }
 
-// 商品数量Jsx
+
+
+// 単価 と 商品数量Jsx
 function QuantityJsx({allProps}) {
     const { product } = allProps
     return (<div>
-            { product.pivot.quantity } { __('') }
+            <div css={css` display:inline-block; `}>
+                <span css={css` font-size:0.8rem `} >{ __('Unit price') } </span>
+                { product.price.toLocaleString() }
+                <span css={css` font-size:0.75rem `} >{ __('Yen (tax included)') }</span>
+            </div>
+            <div css={css` display:inline-block; margin-left:8px; `}>
+                { product.pivot.quantity } { __('') }
+            </div>
         </div>)
 }
 

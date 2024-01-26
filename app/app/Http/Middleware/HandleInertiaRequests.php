@@ -50,6 +50,12 @@ class HandleInertiaRequests extends Middleware
                 'PRODUCT' => \Constant::PRODUCT_LIST,
                 'SORT_ORDER' => \Constant::SORT_ORDER,
             ],
+            'Stripe' => [
+                'PUBLIC_KEY' => env('STRIPE_PUBLIC_KEY'),
+            ],
+            'system' => [
+                'postage' => \App\Services\SystemService::getPostage(),
+            ],
         ];
     }
 }

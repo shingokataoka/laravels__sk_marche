@@ -11,9 +11,13 @@ use Laravel\Sanctum\HasApiTokens;
 // オーバーライドしたリセットリンクの内容のを 別名で use する
 use App\Vendor\Illuminate\Auth\Notifications\UserResetPassword as ResetPasswordNotification;
 
+// Cashier関係。
+use Laravel\Cashier\Billable;
+
+
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, Billable;
 
     /**
      * The attributes that are mass assignable.

@@ -188,9 +188,13 @@
     "Manage Products": "商品管理",
 
     "Product list": "商品一覧",
+    "Purchase history": "購入履歴",
+    "Contract information": "契約情報",
+
     "Product details": "商品の詳細",
     "": "個",
-    "Yen (tax included)": "円（税込）",
+    "JPY (tax included)": "円（税込）",
+    "Unit price": "単価",
     "View shop details": "ショップの詳細を見る",
     "Shops selling this product": "この商品を販売しているショップ",
     "Cart": "カート",
@@ -199,7 +203,43 @@
     "Remove from cart": "カートから削除",
     "Do you want to remove item \":name\" from your cart?": "カートから商品「:name」を削除しますか？",
     "Purchase quantity not specified.": "購入数量が指定されていません。",
+    "Total price": "合計",
+    "Proceed to Checkout": "購入画面へ",
     "Order submit": "購入する",
+    "There are no items in your cart.": "カートに商品がありません。",
+
+    "Free shipping for premium members!": "プレミアム会員になれば送料！",
+    "Loading": "読込中",
+    "Checkout": "購入画面",
+    "Place your order": "注文を確定する",
+
+    "Payment completion.": "支払いが完了しました。",
+    "Payment processing failed.\r\nPlease try again.": "支払い処理に失敗しました。\r\nもう一度やり直してください。",
+
+
+    "Your contract details.": "あなたの契約内容。",
+    "Member rank": "会員ランク",
+    "General member": "一般会員",
+    "Premium member": "プレミアム会員",
+    "Contract date": "登録した日",
+    "Cancellation date": "解約日",
+    "The date you applied": "申請した日",
+    "Premium membership until :date": "残り :date までプレミアム会員",
+    "Cancel the contract": "解約する",
+    "Do you really want to cancel your premium membership?": "本当にプレミアム会員を解約しますか？",
+
+    "Premium membership registration": "プレミアム会員 登録",
+    "- Premium member benefits -": "- プレミアム会員の特典 -",
+    "Shipping will be free.": "送料が無料になります。",
+    "Monthly fee: 550": "月額 550",
+    "Confirm registration": "登録を確定する",
+
+    "Payment has been completed.\r\n From today you are a premium member.": "支払いが完了しました。\r\n 今日からあなたもプレミアム会員です。",
+    "I'm sorry. Payment failed.\r\n Please start over from the beginning.": "申し訳ございません。\r\n支払いに失敗しました。最初からやり直してくだい。",
+
+    "Your cancellation request has been completed.\r\n After :date, you will no longer be a premium member.": "解約申請が完了しました。\r\n:dateを過ぎるとプレミアム会員ではなくなります。",
+    "": "",
+
     "Information": "情報",
     "On Sale": "販売中",
     "Sales Stopped": "停止中",

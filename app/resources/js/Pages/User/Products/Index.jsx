@@ -172,15 +172,6 @@ export default function Index({ auth, products, productDirUrl, primaryCategories
 
                             <Stack
                             direction="row"
-                            justifyContent="flex-end"
-                            >
-                                <Button variant="contained" component={Link}
-                                    href={ route('owner.products.create') }
-                                >{ __('add new') }</Button>
-                            </Stack>
-
-                            <Stack
-                            direction="row"
                             justifyContent="flex-start"
                             alignItems="flex-start"
                             useFlexGap={true}
