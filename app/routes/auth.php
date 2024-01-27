@@ -62,29 +62,6 @@ Route::middleware('auth')->name('user.')->group(function () {
         Route::post('create', 'create')->name('create');
     });
 
-
-    // // サブスクの支払いページのビューを表示
-    // Route::get('/subscription', function() {
-    //     $intent = auth()->user()->createSetupIntent();
-    //     return view('user.stripe.subscription', compact('intent'));
-    // })->name('stripe.subscription');
-
-    // サブスクの支払い処理をする。
-    // 上記支払いページで「支払い」ボタンでのPOST送信先である。
-    // Route::post('/subscribe', function () {
-    //     auth()->user()->newSubscription(
-    //         'default', 'price_1OWZ8NAaxxyh99REeXyVNmGp'
-    //     )->create( request()->post('paymentMethodId') );
-    //         // 支払い完了後の処理。ここでは、ダッシュボードにリダイレクトしている。
-    //         return redirect('/dashboard');
-    // })->name('stripe.subscribe.post');
-
-    // // 一回払いページのビューを表示。
-    // Route::get('/purchase', function(){
-    //     return view('user.stripe.purchase');
-    // })->name('stripe.purchase');
-
-
 });
 
 
