@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class PrimaryCategory extends Model
 {
     use HasFactory;
+
+    public function secondary_categories()
+    {
+        return $this->hasMany(SecondaryCategory::class);
+    }
 }

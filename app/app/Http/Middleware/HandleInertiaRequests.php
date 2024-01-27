@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tightenco\Ziggy\Ziggy;
 
+// use App\Constants\Common as Constant;
+
 class HandleInertiaRequests extends Middleware
 {
     /**
@@ -43,6 +45,16 @@ class HandleInertiaRequests extends Middleware
             'flash' => [
                 'status' => session('status'),
                 'message' => session('message')
+            ],
+            'Constant' => [
+                'PRODUCT' => \Constant::PRODUCT_LIST,
+                'SORT_ORDER' => \Constant::SORT_ORDER,
+            ],
+            'Stripe' => [
+                'PUBLIC_KEY' => env('STRIPE_PUBLIC_KEY'),
+            ],
+            'system' => [
+                'postage' => \App\Services\SystemService::getPostage(),
             ],
         ];
     }

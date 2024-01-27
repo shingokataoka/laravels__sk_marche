@@ -173,5 +173,10 @@ return [
         'address' => '住所',
         'birthday' => '誕生日',
         'gender' => '性別',
+
+        'title' => 'タイトル',
+        'image' => '画像',
+        'secondary_category_id' => 'カテゴリ',
+        'sort_order' => '表示順',
     ],
 ];

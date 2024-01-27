@@ -1,13 +1,33 @@
 FROM php:8.1-fpm
 
-ENV TZ Asia/Tokyo
+ENV TZ UTC
 
+
+# &&について。「コマンド１ && コマンド2」のようにつないで書ける。
+# \ はRUNの中のコマンドを改行できる。
+# apt-get updateはインストールリストを更新する。
+# つまり、最初にapt-get updateしないとapt-get installはできない。
 RUN apt-get update && \
-	apt-get install -y git unzip libzip-dev libicu-dev libonig-dev nodejs npm libfreetype6-dev libjpeg62-turbo-dev libpng-dev && \
-    docker-php-ext-install intl pdo_mysql zip bcmath gd
+	apt-get install -y \
+  # 必要そうなのをインストール。
+  git unzip libzip-dev libicu-dev libonig-dev nodejs npm libfreetype6-dev \
+  # gdライブラリ関連をインストール
+  libpng-dev libjpeg62-turbo-dev &&\
+  #  -- docker-php-ext-configureはphp拡張モジュールの設定を変更できるコマンド --
+  docker-php-ext-configure \
+  # gdライブラリのphp拡張モジュールの設定を変更する
+   gd --with-jpeg &&\
+  # -- 設定変換後なので、インストールし直すコマンド --
+  docker-php-ext-install \
+  # 必要そうなのをインストール（し直す？）。
+  intl pdo_mysql zip bcmath \
+  # gdライブラリをインストールし直す。-j$(nproc)はコア数を教えて速く動作するらしい。
+  -j$(nproc) gd
 
+
+# 左側は、docker compose up -d でするなら、docker-compose.ymlからのパス。
 COPY ./docker/php.ini /usr/local/etc/php/php.ini
-
+# 「--from=イメージA イメージA内のファイルパス 今コンテナ内のパス」で、直接composerイメージのファイルを今コンテナにコピペする。
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
 # コンテナ内で使えるalias
@@ -37,4 +57,5 @@ RUN echo "alias ..='cd ..'"  >> ~/.bashrc && \
   echo "alias gs='git status'"  >> ~/.bashrc && \
   echo "alias gp='git pull'"  >> ~/.bashrc
 
+# docker compose exec サービスコンテナ名 bash で入った時のフォルダ
 WORKDIR /app/sk_marche

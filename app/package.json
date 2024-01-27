@@ -27,6 +27,9 @@
         "@mui/lab": "^5.0.0-alpha.153",
         "@mui/material": "^5.14.18",
         "@mui/x-data-grid": "^6.18.1",
-        "dayjs": "^1.11.10"
+        "@stripe/react-stripe-js": "^2.4.0",
+        "@stripe/stripe-js": "^2.3.0",
+        "dayjs": "^1.11.10",
+        "swiper": "^11.0.5"
     }
 }

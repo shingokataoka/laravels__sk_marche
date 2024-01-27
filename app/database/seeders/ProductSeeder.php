@@ -18,9 +18,23 @@ class ProductSeeder extends Seeder
         $nowDate = Carbon::now()->format('Y-m-d H:i:s');
 
         $rows = [];
+        // データ的には商品「送料」などを追加する。
+        $rows[] = [
+            'shop_id' => 1,    // 店舗「システム」のID
+            'secondary_category_id' => 1,
+            'image1' => null,
+            'name' => "送料",
+            'information' => "送料、国内一律550円（税込）です。",
+            'price' => 550,
+            'is_selling' => 0,
+            'sort_order' => 9999999999,
+            'created_at' => $nowDate,
+            'updated_at' => $nowDate,
+        ];
+        // ダミー商品を追加。
         for ($i=1; $i<=4; $i++) {
             $rows[] = [
-                'shop_id' => 1,
+                'shop_id' => 2,
                 'secondary_category_id' => $i,
                 'image1' => $i,
                 'name' => "商品{$i}",
@@ -32,6 +46,8 @@ class ProductSeeder extends Seeder
                 'updated_at' => $nowDate,
             ];
         }
+
+
         DB::table('products')->insert($rows);
     }
 }

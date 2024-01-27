@@ -14,8 +14,45 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\Owner\ProfileController;
 
+use App\Http\Controllers\Owner\ShopController;
+use App\Http\Controllers\Owner\ImageController;
+use App\Http\Controllers\Owner\ProductController;
+use App\Http\Controllers\Owner\ApiProductController;
 
 
+Route::middleware('auth:owner')->group(function() {
+
+    // owner/shop/系ルーティング
+    Route::resource('shops', ShopController::class)
+        ->only(['index', 'edit']);
+    // postしかファイルのアップロードできないから、'update'のルーティングは自作。
+    Route::post('shops/{shop}/update', [ShopController::class, 'update'])
+        ->where(['shop' => '^[0-9]+$'])
+        ->name('shops.update');
+
+    // owner/image/系ルーティング
+    Route::resource('images', ImageController::class)
+        ->except(['show', 'update']);
+    Route::post('images/{image}/update', [ImageController::class, 'update'])
+        ->where('image', '^[0-9]+$')
+        ->name('images.update');
+
+    // owner/products/系ルーテイング
+    Route::resource('products', ProductController::class)
+        ->except(['show', 'update']);
+    // owner/products/updateは画像更新もあるから、postで自作。
+    Route::post('products/{product}/update', [ProductController::class, 'update'])
+        ->where(['product' => '^[0-9]+$'])
+        ->name('products.update');
+
+    // apiでimagesをpaginateで返す。
+    Route::post('api/products/get_images', [ApiProductController::class, 'getImages'])
+        ->name('api.products.get_images');
+});
+
+
+
+// --- 以下、ownerの認証関連 ---
 Route::get('/dashboard', function () {
     return Inertia::render('Owner/Dashboard');
 })->middleware(['auth:owner', 'verified'])->name('dashboard');

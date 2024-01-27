@@ -18,7 +18,7 @@ return new class extends Migration
                 ->onDelete('cascade');
             $table->string('name');
             $table->text('information');
-            $table->string('filename');
+            $table->string('filename')->nullable();
             $table->boolean('is_selling');
             $table->datetime('created_at')->nullable();
             $table->datetime('updated_at')->nullable();

@@ -18,6 +18,16 @@ class OwnerSeeder extends Seeder
     {
         $nowDatetime = Carbon::now()->format('Y-m-d H:i:s');
         $insertRows = [];
+        // オーナー「システム」を追加。
+        $insertRows[] = [
+            'name' => "system1",
+            'email' => "system1@test.com",
+            'password' => Hash::make("system1111"),
+            'created_at' => $nowDatetime,
+            'updated_at' => $nowDatetime,
+            'deleted_at' => null,
+        ];
+        // オーナーダミーを追加。
         for ($i=1; $i<=30; $i++) {
             $insertRows[] = [
                 'name' => "owner{$i}",

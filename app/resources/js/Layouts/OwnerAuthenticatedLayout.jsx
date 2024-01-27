@@ -9,6 +9,8 @@ import {useForm, usePage } from '@inertiajs/react';
 
 import { DefaultThemeProvider } from '@/Components/DefaultThemeProvider';
 
+import Flash from '@/Components/Flash';
+
 export default function Authenticated({ user, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
 
@@ -36,6 +38,15 @@ export default function Authenticated({ user, header, children }) {
                             <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <NavLink href={route('owner.dashboard')} active={route().current('owner.dashboard')}>
                                     { __('Owner') + __('Dashboard') }
+                                </NavLink>
+                                <NavLink href={route('owner.shops.index')} active={route().current('owner.shops')}>
+                                    { __('Store Information') }
+                                </NavLink>
+                                <NavLink href={route('owner.images.index')} active={route().current('owner.images.index')}>
+                                    { __('Manage Images') }
+                                </NavLink>
+                                <NavLink href={route('owner.products.index')} active={route().current('owner.products.index')}>
+                                    { __('Manage Products') }
                                 </NavLink>
                             </div>
                         </div>
@@ -108,6 +119,15 @@ export default function Authenticated({ user, header, children }) {
                         <ResponsiveNavLink href={route('owner.dashboard')} active={route().current('owner.dashboard')}>
                             { __('Dashboard') }
                         </ResponsiveNavLink>
+                        <ResponsiveNavLink href={route('owner.shops.index')} active={route().current('owner.shops')}>
+                            { __('Store Information') }
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink href={route('owner.images.index')} active={route().current('owner.images.index')}>
+                            { __('Manage Images') }
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink href={route('owner.products.index')} active={route().current('owner.products.index')}>
+                            { __('Manage Products') }
+                        </ResponsiveNavLink>
                     </div>
 
                     <div className="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
@@ -132,7 +152,10 @@ export default function Authenticated({ user, header, children }) {
                 </header>
             )}
 
-            <main>{children}</main>
+            <main>
+                <Flash />
+                {children}
+            </main>
         </div>
     </DefaultThemeProvider>);
 }

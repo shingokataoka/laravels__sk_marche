@@ -21,8 +21,8 @@ class StockFactory extends Factory
         $nowDatetime = Carbon::parse()->format('Y-m-d H:i:s');
         return [
             'product_id' => Product::factory(),
-            'type' => fake()->boolean(),
-            'quantity' => fake()->NumberBetween(1,99),
+            'type' => fake()->NumberBetween(1,3),
+            'quantity' => fake()->NumberBetween(-99,99),
             'created_at' => $nowDatetime,
             'updated_at' => $nowDatetime,
         ];

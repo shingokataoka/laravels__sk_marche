@@ -18,7 +18,18 @@ class ShopSeeder extends Seeder
         $nowDate = Carbon::parse()->format('Y-m-d H:i:s');
 
         $rows = [];
-        for ($i=1; $i<=30; $i++) {
+        // システムをデータ的にはお店として追加。
+        $rows[] = [
+            'owner_id' => 1,
+            'name' => 'システム',
+            'information' => '例えばデータ的には商品「送料」などがこれの管理下になりまう。',
+            'filename' => "shop1.jpg",
+            'is_selling' => false,
+            'created_at' => $nowDate,
+            'updated_at' => $nowDate,
+        ];
+        // ダミーの店舗を追加。
+        for ($i=2; $i<=30; $i++) {
             $rows[] = [
                 'owner_id' => $i,
                 'name' => 'ここにショップ名が入ります。',
