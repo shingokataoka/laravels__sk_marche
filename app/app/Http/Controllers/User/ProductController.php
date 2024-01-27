@@ -60,6 +60,10 @@ class ProductController extends Controller
     public function show(string $id)
     {
         $product = Product::with(['image_1', 'secondary_category', 'stocks', 'shop'])->findOrFail($id);
+
+        // もしショップ「システム」の商品データなら、404 not found にする。
+        if ($product->shop->id === 1) abort(404);
+
         // 最大で購入できる個数を取得。
         $productQuantity = $product->stocks->sum('quantity');
         if ($productQuantity > 99 ) { $maxQuantity = 99; }

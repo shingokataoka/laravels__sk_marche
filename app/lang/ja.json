@@ -216,6 +216,11 @@
     "Payment completion.": "支払いが完了しました。",
     "Payment processing failed.\r\nPlease try again.": "支払い処理に失敗しました。\r\nもう一度やり直してください。",
 
+    "Purchase history list": "購入履歴 一覧",
+
+    "Purchase date": "購入日",
+    "Order ID": "注文番号",
+
 
     "Your contract details.": "あなたの契約内容。",
     "Member rank": "会員ランク",
@@ -238,7 +243,6 @@
     "I'm sorry. Payment failed.\r\n Please start over from the beginning.": "申し訳ございません。\r\n支払いに失敗しました。最初からやり直してくだい。",
 
     "Your cancellation request has been completed.\r\n After :date, you will no longer be a premium member.": "解約申請が完了しました。\r\n:dateを過ぎるとプレミアム会員ではなくなります。",
-    "": "",
 
     "Information": "情報",
     "On Sale": "販売中",

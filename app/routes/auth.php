@@ -21,6 +21,7 @@ use App\Http\Controllers\User\StripeController;
 use App\Http\Controllers\User\SubscriptionController;
 use App\Http\Controllers\User\PurchaseController;
 use App\Http\Controllers\User\ContractController;
+use App\Http\Controllers\User\OrderController;
 
 
 Route::get('/dashboard', function () {
@@ -37,8 +38,9 @@ Route::middleware('auth')->name('user.')->group(function () {
     Route::resource('cart', CartController::class);
 
     // 購入履歴のルーティング。
-    Route::get('orders', function(){ dd('購入履歴のルーティング'); })
-        ->name('orders.index');
+    Route::resource('orders', OrderController::class)
+        ->only(['index']);
+
     // 契約内容のルーティング。
     Route::get('contracts', [ContractController::class, 'index'])
         ->name('contracts.index');
