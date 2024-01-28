@@ -201,6 +201,11 @@
         style="margin-top:32px;"
     >
         @csrf
+
+        <div style="text-align:center; padding-bottom:24px;">{!! nl2br('決済システムは<span style="text-decoration:underline;">テスト動作</span>です。
+        よって、ここで会計しても<span style="text-decoration:underline;">実際の決済・支払いはいっさい発生しません</span>。
+        この画面下部「テスト用カード番号」を入力して、安心してお試しください。') !!}</div>
+
         {{-- Stripeのjsコードにより、クレジットカード入力欄になる。 --}}
         <div id="card-element">
             <div style="
@@ -233,7 +238,7 @@
 
 <div>stripeテスト用のクレジットカード番号。コピペ用。</div>
 <div>テスト用カード番号<input value="4242424242424242"></div>
-<div>不正解カード番号<input value="4242324242424242"></div>
+<div style="margin-bottom:64px;">不正解カード番号<input value="4242324242424242"></div>
 
 
 

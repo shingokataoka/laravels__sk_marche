@@ -15,7 +15,7 @@ class OrderController extends Controller
     public function index()
     {
         $user = auth()->user();
-        $orders = Order::with(['ordered_products.product.image_1', 'ordered_products.product.shop'])->where('user_id', $user->id)->orderByDesc('id')->paginate(2);
+        $orders = Order::with(['ordered_products.product.image_1', 'ordered_products.product.shop'])->where('user_id', $user->id)->orderByDesc('id')->paginate(10);
         return Inertia::render('User/Orders/Index', compact('orders') );
     }
 

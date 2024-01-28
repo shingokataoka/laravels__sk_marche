@@ -9,8 +9,6 @@ import { css, useMediaQuery } from '@mui/material';
 import ImageService from '@/Services/ImageService';
 
 import { Stack } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { LoadingButton } from '@mui/lab';
 import {Link} from '@inertiajs/react';
 import {Pagination} from '@mui/material';
 
@@ -62,30 +60,40 @@ export default function Index({ auth, user, orders }) {
                                 padding-bottom:32px;
                             `}>{ __('Purchase history list') }</h1>
 
-                            {/* スマホ用表示のJSX */}
-                            <div css={css` ${bp.up('tablet')}{ display:none; } `}>
-                                <MobileJsx allProps={allProps} />
-                            </div>
+                                { (orders.data.length === 0)?
+                                    /* 購入履歴がないなら表示 */
+                                    <div css={css`
+                                        padding-bottom:64px;
+                                        text-align:center;
+                                    `}>{ __('There is no purchase history yet.') }</div>
+                                :<>
+                                    {/* 購入履歴があるなら表示 */}
+                                    {/* スマホ用表示のJSX */}
+                                    <div css={css` ${bp.up('tablet')}{ display:none; } `}>
+                                        <MobileJsx allProps={allProps} />
+                                    </div>
 
-                            {/* タブレット幅以上用の表示のJSX */}
-                            <div css={css` ${bp.down('tablet')}{ display:none; } `}>
-                                <TabletJsx allProps={allProps} />
-                            </div>
+                                    {/* タブレット幅以上用の表示のJSX */}
+                                    <div css={css` ${bp.down('tablet')}{ display:none; } `}>
+                                        <TabletJsx allProps={allProps} />
+                                    </div>
 
-                            {/* ページネーション */}
-                            <Stack
-                                direction="row"
-                                justifyContent="center"
-                                alignItems="center"
-                                css={css`margin:32px 0;`}
-                            >
-                                <Pagination
-                                    count={ orders.last_page }
-                                    page={ orders.current_page }
-                                    disabled={processing}
-                                    onChange={pageChange}
-                                />
-                            </Stack>
+                                    {/* ページネーション */}
+                                    <Stack
+                                        direction="row"
+                                        justifyContent="center"
+                                        alignItems="center"
+                                        css={css`margin:32px 0;`}
+                                    >
+                                        <Pagination
+                                            count={ orders.last_page }
+                                            page={ orders.current_page }
+                                            disabled={processing}
+                                            onChange={pageChange}
+                                        />
+                                    </Stack>
+
+                                </>}
 
                         </div>
                     </div>
