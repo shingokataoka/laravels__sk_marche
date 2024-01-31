@@ -23,5 +23,6 @@ yarn-error.log
 /app/ssl
 
 /app/storage/public
+/app/storage/debugbar
 /app/storage/debugbar/*.json
 /docker-compose.yml
