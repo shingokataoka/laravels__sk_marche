@@ -87,8 +87,12 @@ class ShopController extends Controller
         $file = request()->file('file');
         $status = request()->status;
         if ($status === 'new') {
-            $newFilename = ImageService::saveShopImage($file);
+            $oldFilename = $shop->filename;
+            // 新画像を保存。
+            $newFilename = ImageService::saveShopImage($file, $shop->id);
             $shop->filename = $newFilename;
+            // 旧画像を削除する。
+            ImageService::deleteShopImage($oldFilename);
         } elseif ($status === 'none') {
             ImageService::deleteShopImage($shop->filename);
             $shop->filename = null;

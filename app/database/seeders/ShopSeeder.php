@@ -7,6 +7,8 @@ use Illuminate\Database\Seeder;
 
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class ShopSeeder extends Seeder
 {
@@ -16,6 +18,20 @@ class ShopSeeder extends Seeder
     public function run(): void
     {
         $nowDate = Carbon::parse()->format('Y-m-d H:i:s');
+
+        // 古いstorage内のshopsフォルダを消しておく。
+        Storage::deleteDirectory('shops');
+
+        // まず「アプリフォルダ/dummy_data」からshop系画像をstorageにコピペする。
+        Storage::makeDirectory('shops/images/');
+        $dummyDir = 'dummy_data/storage/public/shops/images/';
+        $newDir = Storage::path('shops/images/');
+        for($i=1; $i<=2; $i++) {
+            $filename = "shop{$i}.jpg";
+            $dummyPath = $dummyDir . $filename;
+            $newPath = $newDir . $filename;
+            File::copy($dummyPath, $newPath);
+        }
 
         $rows = [];
         // システムをデータ的にはお店として追加。
