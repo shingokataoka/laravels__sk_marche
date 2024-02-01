@@ -19,8 +19,12 @@ class ShopSeeder extends Seeder
     {
         $nowDate = Carbon::parse()->format('Y-m-d H:i:s');
 
-        // 古いstorage内のshopsフォルダを消しておく。
-        Storage::deleteDirectory('shops');
+        // storage内のshops/images内の古いファイルを全て消しておく。
+        $oldFiles = Storage::files('shops/images');
+        foreach ($oldFiles as $oldFile) {
+            $oldFilename = basename($oldFile);
+            Storage::delete( 'shops/images/' . $oldFilename );
+        }
 
         // まず「アプリフォルダ/dummy_data」からshop系画像をstorageにコピペする。
         Storage::makeDirectory('shops/images/');

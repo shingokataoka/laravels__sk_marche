@@ -20,12 +20,15 @@ class ImageSeeder extends Seeder
         $carbonObj = new Carbon();
         $nowDatetime = $carbonObj->format('Y-m-d H:i:s');
 
-        // 古いstorage内のproductsを消しておく。
-        Storage::deleteDirectory('products');
+        // storage内のproducts/images/内の古いファイルを全て消しておく。
+        $oldFiles = Storage::files('products/images');
+        foreach ($oldFiles as $oldFile) {
+            $oldFilename = basename($oldFile);
+            Storage::delete( 'products/images/' . $oldFilename );
+        }
 
         // まず、storage内にproducts系画像を用意する。
         // 「アプリ直下/dummy_data」内からproducts系の画像一覧をstorage内にコピペする。
-        Storage::makeDirectory('products/images/');
         $dummyDir = 'dummy_data/storage/public/products/images/';
         $storageDir = Storage::path('products/images/');
         // product0〜9.jpgをstorageのproductsにコピペする。
