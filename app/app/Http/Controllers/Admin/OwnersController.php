@@ -12,7 +12,7 @@ use App\Models\Owner;
 use App\Models\Admin;
 use App\Models\Shop;
 use App\Http\Requests\Admin\OwnerStoreRequest;
-use App\Http\Requests\Admin\OWnerUpdateRequest;
+use App\Http\Requests\Admin\OwnerUpdateRequest;
 
 class OwnersController extends Controller
 {
@@ -109,7 +109,7 @@ class OwnersController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(OWnerUpdateRequest $request, string $id)
+    public function update(OwnerUpdateRequest $request, string $id)
     {
         $owner = Owner::findOrFail($id);
         $owner->name = $request->name;
