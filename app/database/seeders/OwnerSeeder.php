@@ -18,7 +18,7 @@ class OwnerSeeder extends Seeder
     {
         $nowDatetime = Carbon::now()->format('Y-m-d H:i:s');
         $insertRows = [];
-        // オーナー「システム」を追加。
+        // オーナー「システム」を追加。id=1となる。
         $insertRows[] = [
             'name' => "system1",
             'email' => "system1@test.com",
@@ -28,7 +28,9 @@ class OwnerSeeder extends Seeder
             'deleted_at' => null,
         ];
         // オーナーダミーを追加。
-        for ($i=1; $i<=30; $i++) {
+        // shopに合わせるため、id2〜id30まで作る。
+        // よって$iは1〜29までになる。
+        for ($i=1; $i<=29; $i++) {
             $insertRows[] = [
                 'name' => "owner{$i}",
                 'email' => "owner{$i}@test.com",

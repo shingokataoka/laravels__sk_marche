@@ -44,6 +44,25 @@ export default function Edit({ auth, owner, shop }) {
         })
     }
 
+    // このオーナーのショップがDBになければ表示。
+    if (owner.shop === null) return (<AdminAuthenticatedLayout
+            user={auth.user}
+            header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">{ __("Admin") +'/'+ __("Owner") + __('Edit') }</h2>}
+        >
+            <Head title={ __("Admin") +'/'+ __("Owner") + __('Edit') } />
+
+            <div className="py-12">
+                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                    <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                        <div className="p-6 text-gray-900 dark:text-gray-100">
+                            このオーナーのショップ情報がありません。<br />
+                            確認し直してください。<br />
+                            まだ運用していないオーナーなら、削除して作り直す事をお勧めします。
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </AdminAuthenticatedLayout>)
 
     return (
         <AdminAuthenticatedLayout
