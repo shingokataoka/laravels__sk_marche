@@ -20,12 +20,16 @@ class ImageSeeder extends Seeder
         $carbonObj = new Carbon();
         $nowDatetime = $carbonObj->format('Y-m-d H:i:s');
 
-        // storage内のproducts/images/内の古いファイルを全て消しておく。
-        $oldFiles = Storage::files('products/images');
-        foreach ($oldFiles as $oldFile) {
-            $oldFilename = basename($oldFile);
-            Storage::delete( 'products/images/' . $oldFilename );
-        }
+        // storage内のproducts内のimagesごとファイルを消す。
+        Storage::deleteDirectory('products/images');
+        // products/imagesフォルダを作成する。
+        Storage::makeDirectory('products/images');
+        // 所有者と所有グループを修正。
+        $username = 'vpsuser';
+        chown( Storage::path('products') , $username);
+        chgrp( Storage::path('products') , 'www-data');
+        chown( Storage::path('products/images') , $username);
+        chgrp( Storage::path('products/images') , 'www-data');
 
         // まず、storage内にproducts系画像を用意する。
         // 「アプリ直下/dummy_data」内からproducts系の画像一覧をstorage内にコピペする。
@@ -47,6 +51,14 @@ class ImageSeeder extends Seeder
             $oldFilePath = $dirPath . "product{$oldI}.jpg";
             $newFilePath = $dirPath . $filename;
             Storage::copy($oldFilePath, $newFilePath);
+        }
+
+        // この画像一覧の所有者と所有グループを修正。
+        $imageFiles = Storage::files('products/images');
+        foreach ($imageFiles as $imageFile) {
+            $imagePath = Storage::path(  $imageFile );
+            chown($imagePath, $username);
+            chgrp($imagePath, 'www-data');
         }
 
         // insert用の配列を用意。

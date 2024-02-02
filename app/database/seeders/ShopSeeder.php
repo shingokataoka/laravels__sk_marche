@@ -19,12 +19,16 @@ class ShopSeeder extends Seeder
     {
         $nowDate = Carbon::parse()->format('Y-m-d H:i:s');
 
-        // storage内のshops/images内の古いファイルを全て消しておく。
-        $oldFiles = Storage::files('shops/images');
-        foreach ($oldFiles as $oldFile) {
-            $oldFilename = basename($oldFile);
-            Storage::delete( 'shops/images/' . $oldFilename );
-        }
+        // storage内のshops/imagesごとの古いファイルを全て消す。
+        Storage::deleteDirectory('shops/images');
+        // 消したimagesフォルダを作り直す。
+        Storage::makeDirectory('shops/images');
+        // 所有者と所有グループを修正。
+        $username = 'vpsuser';
+        chown( Storage::path('shops'), $username );
+        chgrp( Storage::path('shops'), 'www-data' );
+        chown( Storage::path('shops/images'), $username );
+        chgrp( Storage::path('shops/images'), 'www-data' );
 
         // まず「アプリフォルダ/dummy_data」からshop系画像をstorageにコピペする。
         Storage::makeDirectory('shops/images/');
@@ -35,6 +39,13 @@ class ShopSeeder extends Seeder
             $dummyPath = $dummyDir . $filename;
             $newPath = $newDir . $filename;
             File::copy($dummyPath, $newPath);
+        }
+        // この画像一覧の権限を修正。
+        $imageFiles = Storage::files('shops/images');
+        foreach ($imageFiles as $imageFile) {
+            $imagePath = Storage::path($imageFile);
+            chown($imagePath, $username);
+            chgrp($imagePath, 'www-data');
         }
 
         $rows = [];

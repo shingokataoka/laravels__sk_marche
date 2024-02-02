@@ -2,6 +2,10 @@ FROM php:8.1-fpm
 
 ENV TZ UTC
 
+# コンテナ内にユーザーを作成する。
+RUN groupadd -g 1001 1001 && \
+    useradd -m -u 1001 -g 1001 vpsuser
+
 
 # &&について。「コマンド１ && コマンド2」のようにつないで書ける。
 # \ はRUNの中のコマンドを改行できる。
@@ -24,6 +28,9 @@ RUN apt-get update && \
   # gdライブラリをインストールし直す。-j$(nproc)はコア数を教えて速く動作するらしい。
   -j$(nproc) gd
 
+
+# 作成したユーザーに権限を与える。
+COPY --chown=$UID:$GID ./app/ /usr/src/app
 
 # 左側は、docker compose up -d でするなら、docker-compose.ymlからのパス。
 COPY ./docker/php.ini /usr/local/etc/php/php.ini
