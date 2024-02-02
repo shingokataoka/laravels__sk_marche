@@ -24,14 +24,15 @@ class ShopSeeder extends Seeder
         // 消したimagesフォルダを作り直す。
         Storage::makeDirectory('shops/images');
         // 所有者と所有グループを修正。
-        $username = 'vpsuser';
+        $username = 'username';
         chown( Storage::path('shops'), $username );
-        chgrp( Storage::path('shops'), 'www-data' );
         chown( Storage::path('shops/images'), $username );
+        chgrp( Storage::path('shops'), 'www-data' );
         chgrp( Storage::path('shops/images'), 'www-data' );
+        chmod( Storage::path('shops'), 0775 );
+        chmod( Storage::path('shops/images'), 0775 );
 
         // まず「アプリフォルダ/dummy_data」からshop系画像をstorageにコピペする。
-        Storage::makeDirectory('shops/images/');
         $dummyDir = 'dummy_data/storage/public/shops/images/';
         $newDir = Storage::path('shops/images/');
         for($i=1; $i<=2; $i++) {
@@ -46,6 +47,7 @@ class ShopSeeder extends Seeder
             $imagePath = Storage::path($imageFile);
             chown($imagePath, $username);
             chgrp($imagePath, 'www-data');
+            chmod($imagePath, 0664);
         }
 
         $rows = [];

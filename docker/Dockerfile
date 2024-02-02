@@ -4,7 +4,7 @@ ENV TZ UTC
 
 # コンテナ内にユーザーを作成する。
 RUN groupadd -g 1001 1001 && \
-    useradd -m -u 1001 -g 1001 vpsuser
+    useradd -m -u 1001 -g 1001 username
 
 
 # &&について。「コマンド１ && コマンド2」のようにつないで書ける。

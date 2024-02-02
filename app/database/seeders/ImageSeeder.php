@@ -25,11 +25,13 @@ class ImageSeeder extends Seeder
         // products/imagesフォルダを作成する。
         Storage::makeDirectory('products/images');
         // 所有者と所有グループを修正。
-        $username = 'vpsuser';
+        $username = 'username';
         chown( Storage::path('products') , $username);
-        chgrp( Storage::path('products') , 'www-data');
         chown( Storage::path('products/images') , $username);
+        chgrp( Storage::path('products') , 'www-data');
         chgrp( Storage::path('products/images') , 'www-data');
+        chmod( Storage::path('products'), 0775 );
+        chmod( Storage::path('products/images'), 0775 );
 
         // まず、storage内にproducts系画像を用意する。
         // 「アプリ直下/dummy_data」内からproducts系の画像一覧をstorage内にコピペする。
@@ -59,6 +61,7 @@ class ImageSeeder extends Seeder
             $imagePath = Storage::path(  $imageFile );
             chown($imagePath, $username);
             chgrp($imagePath, 'www-data');
+            chmod($imagePath, 0664);
         }
 
         // insert用の配列を用意。
