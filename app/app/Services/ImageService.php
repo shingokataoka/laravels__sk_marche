@@ -8,6 +8,8 @@ use InterventionImage;
 // ショップ画像や商品画像ファイルを扱うクラス。
 class ImageService
 {
+    const USER_NAME = 'username';
+
     // no image画像のURLを返す。
     public static function getNoImageUrl()
     {
@@ -39,6 +41,10 @@ class ImageService
         $filename = $basename .'.'. $extension;
         // StorageのデフォDisk（publicに設定）のshops/images/直下に保存。
         Storage::put("shops/images/{$filename}", $resizeImage);
+        // 所有系や権限系を修正。
+        chmod( Storage::path("shops/images/{$filename}"), 0664 );
+        chown( Storage::path("shops/images/{$filename}"), self::USER_NAME );
+        chgrp( Storage::path("shops/images/{$filename}"), 'www-data' );
         // 保存ファイル名を返す。
         return $filename;
     }
@@ -79,6 +85,10 @@ class ImageService
         $filename = $basename .'.'. $extension;
         // StorageのデフォDisk（publicに設定）のproducts/images/直下に保存。
         Storage::put("products/images/{$filename}", $resizeImage);
+        // 所有系や権限系を修正。
+        chmod( Storage::path("products/images/{$filename}"), 0664 );
+        chown( Storage::path("products/images/{$filename}"), self::USER_NAME );
+        chgrp( Storage::path("products/images/{$filename}"), 'www-data' );
         // 保存ファイル名を返す。
         return $filename;
     }
