@@ -41,10 +41,10 @@ class ImageService
         $filename = $basename .'.'. $extension;
         // StorageのデフォDisk（publicに設定）のshops/images/直下に保存。
         Storage::put("shops/images/{$filename}", $resizeImage);
-        // 所有系や権限系を修正。
+        // 権限を修正。
+        // 所有者をvps上のユーザーにはできなかった（www-dataにはその権限がないから）。
+        // だが、vpsのユーザーがwww-dataに所属しているので、グループ権限も6にすれば問題ない。
         chmod( Storage::path("shops/images/{$filename}"), 0664 );
-        chown( Storage::path("shops/images/{$filename}"), self::USER_NAME );
-        chgrp( Storage::path("shops/images/{$filename}"), 'www-data' );
         // 保存ファイル名を返す。
         return $filename;
     }
@@ -85,10 +85,10 @@ class ImageService
         $filename = $basename .'.'. $extension;
         // StorageのデフォDisk（publicに設定）のproducts/images/直下に保存。
         Storage::put("products/images/{$filename}", $resizeImage);
-        // 所有系や権限系を修正。
+        // 権限を修正。
+        // 所有者をvps上のユーザーにはできなかった（www-dataにはその権限がないから）。
+        // だが、vpsのユーザーがwww-dataに所属しているので、グループ権限も6にすれば問題ない。
         chmod( Storage::path("products/images/{$filename}"), 0664 );
-        chown( Storage::path("products/images/{$filename}"), self::USER_NAME );
-        chgrp( Storage::path("products/images/{$filename}"), 'www-data' );
         // 保存ファイル名を返す。
         return $filename;
     }
