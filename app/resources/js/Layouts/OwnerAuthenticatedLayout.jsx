@@ -12,6 +12,7 @@ import { DefaultThemeProvider } from '@/Components/DefaultThemeProvider';
 import Flash from '@/Components/Flash';
 
 export default function Authenticated({ user, header, children }) {
+    const SORT_ORDER = usePage().props.Constant.SORT_ORDER
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
 
     const { post } = useForm({
@@ -47,6 +48,9 @@ export default function Authenticated({ user, header, children }) {
                                 </NavLink>
                                 <NavLink href={route('owner.products.index')} active={route().current('owner.products.index')}>
                                     { __('Manage Products') }
+                                </NavLink>
+                                <NavLink href={route('owner.expired-products.index', {sortType:SORT_ORDER.deleted_later})} active={route().current('owner.expired-products.index', {sortType:SORT_ORDER.deleted_later})}>
+                                    { __('Expired Products') }
                                 </NavLink>
                             </div>
                         </div>
@@ -127,6 +131,9 @@ export default function Authenticated({ user, header, children }) {
                         </ResponsiveNavLink>
                         <ResponsiveNavLink href={route('owner.products.index')} active={route().current('owner.products.index')}>
                             { __('Manage Products') }
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink href={route('owner.expired-products.index', {sortType:SORT_ORDER.deleted_later})} active={route().current('owner.expired-products.index', {sortType:SORT_ORDER.deleted_later})}>
+                            { __('Expired Products') }
                         </ResponsiveNavLink>
                     </div>
 

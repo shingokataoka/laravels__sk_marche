@@ -21,6 +21,8 @@ class Common
     const ORDER_LOWER_PRICE = 3;
     const ORDER_LATER = 4;
     const ORDER_OLDER = 5;
+    const DELETED_ORDER_LATER = 6;
+    const DELETED_ORDER_OLDER = 7;
     // 上記を配列でも宣言。
     const SORT_ORDER = [
         'recommend' => self::ORDER_RECOMMEND,
@@ -28,5 +30,7 @@ class Common
         'lower_price' => self::ORDER_LOWER_PRICE,
         'later' => self::ORDER_LATER,
         'older' => self::ORDER_OLDER,
+        'deleted_later' => self::DELETED_ORDER_LATER,
+        'deleted_older' => self::DELETED_ORDER_OLDER,
     ];
 }

@@ -178,6 +178,12 @@ class Product extends Model
         // 古い順の場合のソートをする。
         } else if ( $sortType === \Constant::ORDER_OLDER ) {
             $query->orderBy('created_at');
+        // ソフトデリートが新しい順の場合のソートをする。
+        } else if ( $sortType === \Constant::DELETED_ORDER_LATER ) {
+            $query->orderByDesc('deleted_at');
+        // ソフトデリートが古い順の場合のソートをする。
+        } else if ( $sortType === \Constant::DELETED_ORDER_OLDER ) {
+            $query->orderBy('deleted_at');
         // 上記以外なら、おすすめ順の場合のソートをする。
         } else {
             $query->orderBy('sort_order');
@@ -235,16 +241,44 @@ class Product extends Model
     }
 
 
+
+
+    // 以下のimage_1〜4の画像URLを返すアクセサの共通処理のメソッド。
+    // なければno imageURLを返す。
+    protected function getImageUrl($image) {
+        // 画像がない場合はno imageのURLを返す。
+        if ( empty($image) ) return ImageService::getNoImageUrl();
+        if ( empty($image->filename) ) return ImageService::getNoImageUrl();
+        // 画像のURLを返す。
+        return ImageService::getProductImageUrl($image->filename);
+    }
+
     // アクセサ。画像1のURLを返す。なければno image画像を返す。
     // $products->iamge1_urlで取得
     public function getImage1UrlAttribute()
     {
-        $filename = $this->image_1->filename;
-        if ( !empty($filename) ) {
-          return ImageService::getProductImageUrl($filename);
-        } else {
-          return ImageService::getNoImageUrl();
-        }
+        return $this->getImageUrl($this->image_1);
+    }
+
+    // アクセサ。画像2のURLを返す。なければno image画像を返す。
+    // $products->iamge2_urlで取得
+    public function getImage2UrlAttribute()
+    {
+        return $this->getImageUrl($this->image_2);
+    }
+
+    // アクセサ。画像3のURLを返す。なければno image画像を返す。
+    // $products->iamge3_urlで取得
+    public function getImage3UrlAttribute()
+    {
+        return $this->getImageUrl($this->image_3);
+    }
+
+    // アクセサ。画像4のURLを返す。なければno image画像を返す。
+    // $products->iamge4_urlで取得
+    public function getImage4UrlAttribute()
+    {
+        return $this->getImageUrl($this->image_4);
     }
 
 }

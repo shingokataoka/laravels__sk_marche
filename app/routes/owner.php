@@ -18,6 +18,7 @@ use App\Http\Controllers\Owner\ShopController;
 use App\Http\Controllers\Owner\ImageController;
 use App\Http\Controllers\Owner\ProductController;
 use App\Http\Controllers\Owner\ApiProductController;
+use App\Http\Controllers\Owner\ExpiredProductController;
 
 
 Route::middleware('auth:owner')->group(function() {
@@ -48,6 +49,11 @@ Route::middleware('auth:owner')->group(function() {
     // apiでimagesをpaginateで返す。
     Route::post('api/products/get_images', [ApiProductController::class, 'getImages'])
         ->name('api.products.get_images');
+
+    // owner/expired/系ルーティング（削除した商品一覧系）。
+    Route::resource('expired-products', ExpiredProductController::class)
+        ->only(['index', 'show', 'update',]);
+
 });
 
 

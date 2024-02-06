@@ -24,4 +24,15 @@ class Image extends Model
         return $this->belongsTo(Owner::class);
     }
 
+
+
+    // このimageを持つproductの数を返す。
+    public function countProducts()
+    {
+        return Product::where('image1', $this->id)
+            ->orWhere('image2', $this->id)
+            ->orWhere('image3', $this->id)
+            ->orWhere('image4', $this->id)
+            ->count();
+    }
 }

@@ -99,6 +99,7 @@ class ImageService
     {
         Storage::Delete("shops/images/{$filename}");
     }
+
     // 商品の画像ファイルを削除する。
     public static function deleteProductImage($filename)
     {

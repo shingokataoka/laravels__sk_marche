@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Services\ImageService;
 use App\Models\Image;
+use App\Models\Product;
 use App\Http\Requests\Owner\ImageStoreRequest;
 use App\Http\Requests\Owner\ImageUpdateRequest;
 
@@ -121,9 +122,23 @@ class ImageController extends Controller
      */
     public function destroy(Image $image)
     {
+        // 親商品があるなら、「削除できない」趣旨表示する処理。
+        if ($image->countProducts() ) {
+            session()->flash('status', 'warning');
+            session()->flash('message', __("There is product data that uses this image.\r\nTherefore, it cannot be deleted.") );
+            return to_route('owner.images.edit', $image->id);
+        }
+
+        // imagesレコードを削除する前に画像ファイルも削除する。
+        ImageService::deleteProductImage($image->filename);
+
+        // 削除後のリダイレクト先ページを取得しておく。
         $page = $this->getIdToPage($image->id);
+        // 「タイトル」を削除しました。で使うタイトルを取得。
         $title = $image->title;
+        // imagesテーブルからレコードを削除する。
         $image->delete();
+        // 「〇〇を削除しました。」のフラッシュをerrorでセット（削除なので赤く表示するため）。
         session()->flash('status', 'error');
         session()->flash( 'message', __("Image \":title\" has been deleted.", ['title' => $title]) );
 

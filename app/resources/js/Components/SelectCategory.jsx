@@ -15,6 +15,7 @@ export default function SelectCategory({
     className,
     primaryCategories,
     secondary_category_id, setSecondaryCategoryId,
+    readOnly,
 }) {
     const palette = defaultTheme().palette
     const errorText = usePage().props.errors.secondary_category_id
@@ -35,6 +36,8 @@ export default function SelectCategory({
         onChange={ e => setSecondaryCategoryId(e.target.value)}
         id="grouped-select"
         label={ __('Category') }
+       inputProps={{ readOnly: (readOnly? true : false) }}
+
     >
         <MenuItem value="">
         <em>{ __('Unselected') }</em>

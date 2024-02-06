@@ -158,6 +158,8 @@
     "Lower price": "価格が安い順",
     "Later": "新しい順",
     "Older": "古い順",
+    "Deleted Later": "削除日が新しい順",
+    "Deleted Older": "削除日が古い順",
 
     "Asia/Tokyo" : "日本",
 
@@ -186,6 +188,7 @@
     "Store Information": "店舗情報",
     "Manage Images": "画像管理",
     "Manage Products": "商品管理",
+    "Expired Products": "削除した商品一覧",
 
     "Product list": "商品一覧",
     "Purchase history": "購入履歴",
@@ -272,13 +275,18 @@
     "Image \":title\" has been deleted.": "画像「:title」を削除しました。",
     "There is an invalid image specification.": "画像の指定に不正があります。",
 
+    "There is product data that uses this image.\r\nTherefore, it cannot be deleted.": "この画像を使用している商品データがあります。\r\nよって、削除できません。",
+
     "Added an product.": "商品を追加しました。",
     "An error has occurred. Please try again.": "エラーが発生しました。もう一度やり直してください。",
 
     "Product data has been updated.": "商品情報を更新しました。",
     "Becomes an \"deleted product\". \r\nDo you want to run it?": "「削除した商品一覧」に入れる事になります。\r\n実行しますか？",
     "Product \":name\" has been deleted.": "商品「:name」を削除しました。",
-    "Product \":name\" has been permanently deleted.": "商品「:name」を完全に削除しました。"
+    "Product \":name\" has been permanently deleted.": "商品「:name」を完全に削除しました。",
+
+    "It will be “product managed”. \r\nDo you want to run it?": "「商品管理」に戻す事になります。\r\n実行しますか？",
+    "Product \":name\" has been restored.": "商品「:name」を復元しました。"
 }
 
 
