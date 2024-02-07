@@ -35,7 +35,7 @@ class ShopSeeder extends Seeder
         // まず「アプリフォルダ/dummy_data」からshop系画像をstorageにコピペする。
         $dummyDir = 'dummy_data/storage/public/shops/images/';
         $newDir = Storage::path('shops/images/');
-        for($i=1; $i<=2; $i++) {
+        for($i=1; $i<=3; $i++) {
             $filename = "shop{$i}.jpg";
             $dummyPath = $dummyDir . $filename;
             $newPath = $newDir . $filename;
