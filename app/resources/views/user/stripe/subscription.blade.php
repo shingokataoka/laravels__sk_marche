@@ -62,7 +62,7 @@
         text-align:center;
         font-size:1.5rem;
     ">
-        {{ __('Monthly fee: 550') }}
+        {{ __('Monthly fee: 500') }}
         <span style="font-size:1rem">
             {{ __('JPY (tax included)') }}
         </span>
