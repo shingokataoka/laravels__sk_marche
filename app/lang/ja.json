@@ -234,6 +234,7 @@
     "The date you applied": "申請した日",
     "Premium membership until :date": "残り :date までプレミアム会員",
     "Cancel the contract": "解約する",
+    "\"No remaining period\"": "（残り期間なし）",
     "Do you really want to cancel your premium membership?": "本当にプレミアム会員を解約しますか？",
 
     "Premium membership registration": "プレミアム会員 登録",
@@ -246,6 +247,7 @@
     "I'm sorry. Payment failed.\r\n Please start over from the beginning.": "申し訳ございません。\r\n支払いに失敗しました。最初からやり直してくだい。",
 
     "Your cancellation request has been completed.\r\n After :date, you will no longer be a premium member.": "解約申請が完了しました。\r\n:dateを過ぎるとプレミアム会員ではなくなります。",
+    "Your cancellation request has been completed.\r\nYou are no longer a premium member.": "解約申請が完了しました。\r\nあなたはすでにプレミアム会員ではありません。",
 
     "Information": "情報",
     "On Sale": "販売中",

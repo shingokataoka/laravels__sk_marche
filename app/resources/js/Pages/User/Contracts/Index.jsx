@@ -38,7 +38,7 @@ export default function Index({ auth, isPremium, addDate, cancelDate, lastDate,}
 
 
     // 「解約する」を押した処理
-    const clickedCancel = e => {
+    const clickedCancel = (e, period) => {
         // アラート「本当にプレミアム会員を解約しますか？」を表示。
         if ( !confirm( __('Do you really want to cancel your premium membership?') ) ) { return }
         // ボタンを読み込み中にする。
@@ -46,7 +46,7 @@ export default function Index({ auth, isPremium, addDate, cancelDate, lastDate,}
         // 解約処理へdelete送信。
         router.visit( route('user.subscription.destroy'), {
             method:'delete',
-            data:{ _token, },
+            data:{ _token, period},
             // エラーで失敗などしたら、ボタンの読み込み終了。
             onFinish: visit => { setProcessing(false) }
         } );
@@ -276,22 +276,46 @@ function CancelDateJsx({ allProps }) {
         {lastDateStr}
     </div>)
 
-    // 契約中（解約日なし）。「解約する」ボタンJSX。
+    // 契約中（解約日なし）。「解約する（残り期間あり）」ボタンと「解約するボタン（残り期間なし）」JSX。
     if (isPremium && lastDateStr === null) return (<div>
         <LoadingButton variant="outlined" color="error"
             loading={ processing }
-            onClick={ clickedCancel }
+            onClick={ e => clickedCancel(e, false) }
         >
             { __('Cancel the contract') }
+        </LoadingButton>
+        <LoadingButton variant="outlined" color="error"
+            loading={ processing }
+            // 残り期間なし解約なら、trueを渡す。
+            onClick={ e => clickedCancel(e, true) }
+            css={css`margin-left:16px;`}
+        >
+            { __('Cancel the contract') }<br />{ __("\"No remaining period\"") }
         </LoadingButton>
     </div>)
 
     // 契約中（解約を送信済）。「解約した日付」「残りY-m-dまでプレミアム会員」JSX。
-    if (isPremium && lastDateStr !== null) return (<div>
-        { __('The date you applied') }：{ cancelDateStr }
-        <br />
-        （ { __('Premium membership until :date', {'date':lastDateStr}) } ）
-    </div>)
+    if (isPremium && lastDateStr !== null) return (<Stack
+        direction="row"
+        justifyContent="flex-start"
+        alignItems="center"
+        spacing={2}
+    >
+        <div>
+            { __('The date you applied') }：{ cancelDateStr }
+            <br />
+            （ { __('Premium membership until :date', {'date':lastDateStr}) } ）
+        </div>
+        <div>
+            <LoadingButton variant="outlined" color="error"
+                loading={ processing }
+                // 残り期間なし解約なら、trueを渡す。
+                onClick={ e => clickedCancel(e, true) }
+            >
+                { __('Cancel the contract') }<br />{ __("\"No remaining period\"") }
+            </LoadingButton>
+        </div>
+    </Stack>)
 
 
 

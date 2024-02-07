@@ -66,6 +66,35 @@ class SubscriptionController extends Controller
     // サブスクの解約処理をする（「解約する」を押した処理）。
     public function destroy()
     {
+        $user = auth()->user();
+
+        // --- 「解約ボタン（残り日数なし）を押した処理。
+        if (request()->post('period') === true) {
+            // 現在プレミアム会員（解約送信済を含む）でないなら、
+            // 「契約情報」ページにリダイレクト。
+            if ( !$user->subscribed('default') ) {
+                return to_route('user.contracts.index');
+            }
+            // 現在プレミアム会員（解約送信済を含む）なら解約（残り期間なし）処理をする。
+            try {
+               $user->subscription('default')->cancelNow();
+                // 「解約申請が完了した」趣旨のフラッシュをセット。
+                $lastDate = Subscription::getLastDate();
+                $lastDateStr = substr($lastDate, 0, 10);
+                session()->flash('status', 'success');
+                session()->flash('message', __("Your cancellation request has been completed.\r\nYou are no longer a premium member.") );
+            } catch( IncompletePayment $exception ) {
+                // 「解約申請が失敗。やり直し」趣旨のフラッシュをセット。
+                session()->flash('status', 'error');
+                session()->flash('message', __('An error has occurred. Please try again.'));
+            }
+
+            // 「契約情報」ページにリダイレクト移動。
+            return to_route('user.contracts.index');
+        }
+
+
+        // --- 「解約ボタン（残り日数あり）を押した処理。
         // （プレミアム会員じゃない
         // or 解約予定日がある）
         // なら「契約情報」ページにリダイレクト移動する。
@@ -77,7 +106,6 @@ class SubscriptionController extends Controller
         }
 
         // 解約処理をする。
-        $user = auth()->user();
         try {
             $user->subscription('default')->cancel();
             // 「解約申請が完了した」趣旨のフラッシュをセット。
