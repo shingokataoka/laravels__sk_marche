@@ -68,7 +68,8 @@ class ProductController extends Controller
         // 最大で購入できる個数を取得。
         $productQuantity = $product->stocks->sum('quantity');
         // すでにカートに入れた数量を引いた最大購入可能な個数にする。
-        $cartQuantity = $user->products->find($id)->pivot->quantity;
+        $cartProduct = $user->products->find($id);
+        $cartQuantity =($cartProduct)? $cartProduct->pivot->quantity : 0;
         $productQuantity -= $cartQuantity;
 
         if ($productQuantity > 99 ) { $maxQuantity = 99; }
