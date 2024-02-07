@@ -59,6 +59,7 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
+        $user = auth()->user();
         $product = Product::with(['image_1', 'secondary_category', 'stocks', 'shop'])->findOrFail($id);
 
         // もしショップ「システム」の商品データなら、404 not found にする。
@@ -66,6 +67,10 @@ class ProductController extends Controller
 
         // 最大で購入できる個数を取得。
         $productQuantity = $product->stocks->sum('quantity');
+        // すでにカートに入れた数量を引いた最大購入可能な個数にする。
+        $cartQuantity = $user->products->find($id)->pivot->quantity;
+        $productQuantity -= $cartQuantity;
+
         if ($productQuantity > 99 ) { $maxQuantity = 99; }
         else if ($productQuantity < 0) { $maxQuantity = 0; }
         else { $maxQuantity = $productQuantity; }

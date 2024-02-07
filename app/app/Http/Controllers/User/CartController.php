@@ -40,8 +40,9 @@ class CartController extends Controller
      */
     public function store(Request $request)
     {
-        // 指定した数量がゼ0なら404で処理しない。
+        // 指定した数量が0なら404で処理しない。
         if ( (int)$request->post('quantity') <= 0 ) abort(404);
+
         // ログインuserのカートに商品idと購入数を入れる。
         $user = auth()->user();
         $productId = $request->post('product_id');
@@ -51,9 +52,15 @@ class CartController extends Controller
         $oldQuantity = Cart::where('user_id', $user->id)
             ->where('product_id', $productId)->sum('quantity');
 
+        // 上書きの数量=「カート内の数量」+「追加する数量」を算出。
+        $updateQuantity = $oldQuantity + $addQuantity;
+        // この「上書きの数量」が「商品のストック数量」を超えないようにする。
+        $stockQuantity = Product::findOrFail($productId)->stocks->sum('quantity');
+        if ($updateQuantity > $stockQuantity) $updateQuantity = $stockQuantity;
+
         // user,productなcartレコードに、追加した数量で上書き更新する。
         $user->products()->syncWithoutDetaching([
-            $productId => ['quantity' => $oldQuantity + $addQuantity]
+            $productId => ['quantity' => $updateQuantity]
         ]);
 
         return to_route('user.cart.index');
