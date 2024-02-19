@@ -50,18 +50,18 @@ class ProductSeeder extends Seeder
 
         // ソフトデリートされたダミー商品を追加。
         $rows = [];
-        for ($i=1; $i<80; $i++) {
+        for ($i=1; $i<720; $i++) {
             $rows[] = [
                 'shop_id' => mt_rand(2,3),
                 'secondary_category_id' => mt_rand(1,9),
                 'image1' => mt_rand(1,40),
-                'name' => "削除した商品{$i}",
+                'name' => "削除した " . fake()->name,
                 'information' => "商品の説明文{$i}。" .PHP_EOL. "削除した商品の説明文{$i}。",
                 'price' => mt_rand(1, 999999),
                 'is_selling' => fake()->boolean(),
                 'sort_order' => fake()->unique()->randomNumber(),
-                'created_at' => $nowDate,
-                'updated_at' => $nowDate,
+                'created_at' => fake()->datetimeBetween('-5 year', 'now'),
+                'updated_at' => fake()->datetimeBetween('-5 year', 'now'),
                 'deleted_at' => fake()->datetimeBetween('-5 year', 'now'),
             ];
         }
