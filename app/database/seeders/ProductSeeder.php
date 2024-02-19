@@ -46,8 +46,25 @@ class ProductSeeder extends Seeder
                 'updated_at' => $nowDate,
             ];
         }
+        DB::table('products')->insert($rows);
 
-
+        // ソフトデリートされたダミー商品を追加。
+        $rows = [];
+        for ($i=1; $i<80; $i++) {
+            $rows[] = [
+                'shop_id' => mt_rand(2,3),
+                'secondary_category_id' => mt_rand(1,9),
+                'image1' => mt_rand(1,40),
+                'name' => "削除した商品{$i}",
+                'information' => "商品の説明文{$i}。" .PHP_EOL. "削除した商品の説明文{$i}。",
+                'price' => mt_rand(1, 999999),
+                'is_selling' => fake()->boolean(),
+                'sort_order' => fake()->unique()->randomNumber(),
+                'created_at' => $nowDate,
+                'updated_at' => $nowDate,
+                'deleted_at' => $nowDate,
+            ];
+        }
         DB::table('products')->insert($rows);
     }
 }
