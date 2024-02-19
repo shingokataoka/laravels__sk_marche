@@ -62,7 +62,7 @@ class ProductSeeder extends Seeder
                 'sort_order' => fake()->unique()->randomNumber(),
                 'created_at' => $nowDate,
                 'updated_at' => $nowDate,
-                'deleted_at' => $nowDate,
+                'deleted_at' => fake()->datetimeBetween('-5 year', 'now'),
             ];
         }
         DB::table('products')->insert($rows);
