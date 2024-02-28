@@ -17,7 +17,7 @@ return new class extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             // 返金処理やstripe側で直で検索時に必要。
-            $table->string('payment_id')->nullable();
+            $table->string('payment_id');
             $table->datetime('created_at')->nullable();
             $table->datetime('updated_at')->nullable();
         });

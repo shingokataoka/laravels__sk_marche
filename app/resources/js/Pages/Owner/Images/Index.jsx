@@ -4,6 +4,7 @@ import { Head } from '@inertiajs/react';
 import { defaultTheme } from '@/Components/DefaultThemeProvider';
 import { DefaultThemeProvider } from '@/Components/DefaultThemeProvider';
 import { css } from '@emotion/react';
+import {useMediaQuery} from '@mui/material';
 
 import { router } from '@inertiajs/react';
 
@@ -30,6 +31,8 @@ dayjs.tz.setDefault(defaultTimezone);
 /** @jsxImportSource @emotion/react */
 export default function Index({ auth, images, imageDirUrl }) {
     const palette = defaultTheme().palette
+    const bp = defaultTheme().breakpoints
+    const isMobile = useMediaQuery(`(max-width:${bp.values.tablet - 0.1}px)`)
 
     const [disabled, setDisabled] = useState(false)
     const [nowPage, setNowPage] = useState(images.current_page)
@@ -67,7 +70,7 @@ export default function Index({ auth, images, imageDirUrl }) {
 
                             <Stack
                             direction="row"
-                            justifyContent="flex-start"
+                            justifyContent={ isMobile? 'center' : 'flex-start' }
                             alignItems="flex-start"
                             useFlexGap={true}
                             flexWrap="wrap"
@@ -104,7 +107,7 @@ function ImageCard ({image, imageDirUrl}) {
             border: 1px ${palette.bg4} solid;
             border-radius: 8px;
             width: 135px;
-            min-width: 135px;
+            max-width:calc(100% - 8px);
             overflow: hidden;
             font-size: 0.9rem;
         `}

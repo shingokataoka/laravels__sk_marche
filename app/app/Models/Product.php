@@ -49,12 +49,27 @@ class Product extends Model
         return $images[$key - 1];
     }
 
+    // 表示順orderに連番を振り直す。
+    // 下記のinsertRowメソッドとupdateRowメソッドで使う共有の処理。
+    public static function orderSort($shopId) {
+        DB::unprepared("
+            set @cnt_i:=0;
+            update products set sort_order = (@cnt_i := @cnt_i + 1 )
+            WHERE shop_id={$shopId} AND deleted_at IS NULL
+            ORDER BY sort_order;
+        ");
+    }
+
     // 追加処理。
     public static function insertRow()
     {
         $shopId = auth()->user()->shop->id;
 
         // sort_orderの連番で保存の方法。
+
+        // 最初に、全体のsort_orderの連番を振り直しておく。
+        // （飛び飛びや重複番号があると、正しくorderが触れない。）
+        self::orderSort($shopId);
 
         // まず、新規登録のsort_order以上の全レコードを+1する。
         // （新規登録のsort_order番号を開けるため。）
@@ -81,19 +96,15 @@ class Product extends Model
 
         // 全体のsort_orderの連番を振り直す。
         // （全体のsort_orderが飛び飛びや重複を防ぐため。）
-        DB::unprepared("
-            set @cnt_i:=0;
-            update products set sort_order = (@cnt_i := @cnt_i + 1 )
-            WHERE shop_id={$shopId} AND deleted_at IS NULL
-            ORDER BY sort_order;
-        ");
+        self::orderSort($shopId);
 
         // ソフトデリート済の商品は、sort_order=0にする。
         $trashedProducts = Product::onlyTrashed()->where('shop_id', $shopId)->update(['sort_order' => 0]);
 
-
         return $product;
     }
+
+
     // 更新処理。
     public static function updateRow()
     {
@@ -104,8 +115,11 @@ class Product extends Model
 
         // sort_orderの連番で更新・保存の方法。
 
+        // 最初に、全体のsort_orderの連番を振り直しておく。
+        // （飛び飛びや重複番号があると、正しくorderが触れない。）
+        self::orderSort($shopId);
+
         // まず、更新のsort_orderを入れる隙間を空ける。
-        $shopId = auth()->user()->shop->id;
         $newSortOrder = request()->post('sort_order');
         // もとより大きくなる場合、目的まで-1して入れれば、詰めると合う。
         if ( $product->sort_order < $newSortOrder ) {
@@ -135,12 +149,7 @@ class Product extends Model
 
         // 全体のsort_orderの連番を振り直す。
         // （全体のsort_orderが飛び飛びや重複を防ぐため。）
-        DB::unprepared("
-            set @cnt_i:=0;
-            update products set sort_order = (@cnt_i := @cnt_i + 1 )
-            WHERE shop_id={$shopId} AND deleted_at IS NULL
-            ORDER BY sort_order;
-        ");
+        self::orderSort($shopId);
 
         // ソフトデリート済の商品は、sort_order=0にする。
         $trashedProducts = Product::onlyTrashed()->where('shop_id', $shopId)->update(['sort_order' => 0]);

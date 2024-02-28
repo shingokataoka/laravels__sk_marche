@@ -16,6 +16,8 @@ const lightStyle =  {
 
 const darkStyle = {
     base: {
+        display: 'block',
+        width: '100%',
         iconColor: '#c4f0ff',
         color: '#fff',
         // fontFamily: 'Roboto, Open Sans, Segoe UI, sans-serif',

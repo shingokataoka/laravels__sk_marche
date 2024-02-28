@@ -116,10 +116,10 @@ export default function Index({ auth, user, productImageDirUrl, noImageUrl }) {
                                 `}
                             >{ __('Total price') } </div>
                             <Stack
-                                direction="row"
+                                direction="column"
                                 justifyContent="center"
                                 alignItems="center"
-                                spacing={2}
+                                spacing={4}
                                 css={css`  `}
                             >
                                 <div css={css` font-size:1.5rem; `}>
@@ -143,8 +143,6 @@ export default function Index({ auth, user, productImageDirUrl, noImageUrl }) {
                                             <LoadingButton variant="contained"
                                                 disabled={disabled}
                                                 loading={orderProcessing}
-                                                // component={ Link }
-                                                // href={ route('user.purchase.index') }
                                             >
                                                 {__('Proceed to Checkout')}
                                             </LoadingButton>

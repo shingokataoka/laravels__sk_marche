@@ -35,7 +35,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                 css={css`
                     margin:0 auto;
                     max-width: 1200px;
-                    padding:32px 16px;
+                    padding:32px 16px 16px 16px;
                 `}
             >
                 <h1 css={css`
@@ -53,49 +53,48 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
 
                 `) }</div>
 
-                <div css={css`
-                    text-align:center;
-                    width:400px;
-                    background:${palette.bg2};
-                    text-align:center;
-                    padding:16px;
-                `}>
-                    <span css={css`font-size:1.5rem;`}>テスト用ユーザー</span><br/ >
-                    <br/ >
-                    当サイトはポートフォリオです。<br/ >
-                    <span css={css`text-decoration:underline;`}>遠慮なくログイン</span>していただければ幸いです。<br/ >
-                    <br/ >
-
-                    <hr css={css` margin:8px 0; border-color:${palette.bg4}; `} />
-                    メールアドレス :	user1@test.com<br/ >
-                    パスワード :	user1111<br/ >
-                    <LoadingButton variant="contained" component={Link}
-                        href={ route('login') }
-                    >一般ユーザー<br />ログインページ</LoadingButton>
-
-                    <hr css={css` margin:8px 0; border-color:${palette.bg4}; `} />
-                    メールアドレス :	owner1@test.com<br/ >
-                    パスワード :	owner1111<br/ >
-                    <LoadingButton variant="contained" component={Link}
-                        href={ route('owner.login') }
-                    >ショップオーナー<br />ログインページ</LoadingButton>
-
-                    <hr css={css` margin:8px 0; border-color:${palette.bg4}; `} />
-                    メールアドレス :	admin1@test.com<br/ >
-                    パスワード :	admin1111<br/ >
-                    <LoadingButton variant="contained" component={Link}
-                        href={ route('admin.login') }
-                    >ECシステム管理者<br />ログインページ</LoadingButton>
-
-
-                </div>
-
-
-
-
-
             </Stack>
 
+
+            <div css={css`
+                text-align:center;
+                width:400px;
+                max-width:100%;
+                background:${palette.bg2};
+                text-align:center;
+                margin: 0 auto;
+                margin-bottom:32px;
+                padding:16px;
+            `}>
+                <span css={css`font-size:1.5rem;`}>テスト用ユーザー</span><br/ >
+                <br/ >
+                当サイトはポートフォリオです。<br/ >
+                <span css={css`text-decoration:underline;`}>遠慮なくログイン</span>していただければ幸いです。<br/ >
+                <br/ >
+
+                <hr css={css` margin:8px 0; border-color:${palette.bg4}; `} />
+                メールアドレス :	user1@test.com<br/ >
+                パスワード :	user1111<br/ >
+                <LoadingButton variant="contained" component={Link}
+                    href={ route('login') }
+                >一般ユーザー<br />ログインページ</LoadingButton>
+
+                <hr css={css` margin:8px 0; border-color:${palette.bg4}; `} />
+                メールアドレス :	owner1@test.com<br/ >
+                パスワード :	owner1111<br/ >
+                <LoadingButton variant="contained" component={Link}
+                    href={ route('owner.login') }
+                >ショップオーナー<br />ログインページ</LoadingButton>
+
+                <hr css={css` margin:8px 0; border-color:${palette.bg4}; `} />
+                メールアドレス :	admin1@test.com<br/ >
+                パスワード :	admin1111<br/ >
+                <LoadingButton variant="contained" component={Link}
+                    href={ route('admin.login') }
+                >ECシステム管理者<br />ログインページ</LoadingButton>
+
+
+            </div>
 
 
 

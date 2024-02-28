@@ -71,7 +71,6 @@ export default function Authenticated({ user, header, children }) {
                                     </Dropdown.Trigger>
 
                                     <Dropdown.Content>
-                                        <Dropdown.Link href={route('profile.edit')}>{ __("Profile") }</Dropdown.Link>
                                         <Dropdown.Link href={route('logout')} method="post" as="button">
                                             { __("Log Out") }
                                         </Dropdown.Link>
@@ -132,7 +131,6 @@ export default function Authenticated({ user, header, children }) {
                         </div>
 
                         <div className="mt-3 space-y-1">
-                            <ResponsiveNavLink href={route('profile.edit')}>{ __("Profile") }</ResponsiveNavLink>
                             <ResponsiveNavLink method="post" href={route('logout')} as="button">
                                 { __("Log Out") }
                             </ResponsiveNavLink>

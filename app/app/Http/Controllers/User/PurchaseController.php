@@ -16,6 +16,7 @@ use App\Models\User;
 use App\Models\Order;
 use App\Models\OrderedProduct;
 use App\Models\Product;
+use App\Models\Stock;
 
 class PurchaseController extends Controller
 {
@@ -50,7 +51,7 @@ class PurchaseController extends Controller
     // カート内商品の支払いの処理をする。
     public function create()
     {
-        // まず合計金額を取得。
+        // ---まず合計金額を取得。---
         $userId = auth()->id();
         $user = User::with('products.image_1')->findOrfail($userId);
         // [商品ID、価格、数量]な配列を作成。
@@ -79,8 +80,36 @@ class PurchaseController extends Controller
             $amount += $product['price'] * $product['quantity'];
         }
 
-        // 支払い処理をしていく。
-        // DB::beginTransaction();
+
+        // ---数量が足りない場合の処理---
+        // 数量が足りない商品があれば配列に入れる。
+        $missingProducts = [];
+        foreach ($user->products as $product) {
+            $cartQuantity = (int)$product->pivot->quantity;
+            $stockQuantity = (int)Stock::where('product_id', $product->id)->sum('quantity');
+            if ($stockQuantity < $cartQuantity) {
+                $missingProducts[] = $product;
+            }
+        }
+        // 数量不足の商品のフラッシュメッセージを配列に入れる。
+        $flashTexts = [];
+        foreach($missingProducts as $row) {
+            $flashTexts[] = __("Product \":name\" is out of stock.", ["name" => $row->name]);
+        }
+        // 数量不足の商品のフラッシュメッセージがある場合の処理。
+        // フラッシュを\r\nで繋いで完成させセットして、カートにリダイレクト移動する。
+        if ($flashTexts !== []) {
+            $flashTexts[] = __("Please delete it from your cart and try again.");
+            $flashText = implode("\r\n", $flashTexts);
+            session()->flash('status', 'warning');
+            session()->flash('message', $flashText);
+            return to_route('user.cart.index');
+        }
+
+
+        // ---支払い処理をしていく。---
+
+        // cashierの支払い。
         try {
             // cashier Stripeで一回支払い決済を実行。
             $paymentMethodId = request()->post('paymentMethodId');
@@ -91,13 +120,25 @@ class PurchaseController extends Controller
                     'return_url' => route('user.cart.index'),
                 ],
             );
+        // 失敗したらフラッシュをセットしてcart.indexにリダイレクト移動。
+        } catch (IncompletePayment $exception) {
+            // 「支払い失敗」のフラッシュをセット。
+            session()->flash('status', 'error');
+            session()->flash('message', __("Payment processing failed.\r\nPlease try again.") );
+            // 「カート」ページにリダイレクト移動。
+            return to_route('user.cart.index');
+        }
+
+        // 支払い後のDB処理をしていく。
+        DB::beginTransaction();
+        try {
             // ordersテーブルに購入履歴を追加。
             $order = Order::create([
                 'user_id' => $user->id,
                 'payment_id' => $payment->id,
             ]);
 
-            // orderd_productsテーブルに購入履歴の商品データを追加する。
+            // ordered_productsテーブルに購入履歴の商品データを追加する。
             $insertRows = [];
             foreach ($products as $product) {
                 $insertRows[] = [
@@ -111,18 +152,37 @@ class PurchaseController extends Controller
             }
             OrderedProduct::insert($insertRows);
 
+            // t_stocksから、購入した分の在庫を引く。
+            foreach ($user->products as $product) {
+                Stock::create([
+                    'product_id' => $product->id,
+                    'type' => \Constant::PRODUCT_REDUCE,
+                    'quantity' => $product->pivot->quantity,
+                ]);
+            }
+
             // ユーザーのカートを空にする。
             $user->products()->detach();
 
-            // DB::commit();
             // 支払い成功後の処理。
+            DB::commit();
             session()->flash('status', 'success');
             session()->flash('message', __('Payment completion.') );
-        } catch (IncompletePayment $exception) {
-            // DB::rollBack();
-            // cashier stripe支払い失敗時の処理。
+        } catch (\Exception $e) {
+            // 支払い後のDB処理で失敗時の処理。
+            DB::rollBack();
+            // cashierで返金処理をする。
+            $user->refund($payment->id);
+            // 開発環境ならエラー内容を表示。
+            if ( config('app.debug') ) {
+                echo "支払い後のDB処理で失敗<br /><br />";
+                echo $e->getMessage() . "<br /><br />";
+                echo $e->getTraceAsString();
+                exit;
+            }
+            // 「決済完了後にシステムにエラーでたから、返金した」趣旨のフラッシュをセット。
             session()->flash('status', 'error');
-            session()->flash('message', __('Payment processing failed.\r\nPlease try again.') );
+            session()->flash('message', __("An error occurred in the system after completing the payment. \r\nTherefore, I have processed the refund. \r\nPlease try again.") );
         }
 
         return to_route('user.cart.index');

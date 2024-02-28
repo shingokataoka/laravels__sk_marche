@@ -1,7 +1,7 @@
 import AdminAuthenticatedLayout from '@/Layouts/AdminAuthenticatedLayout';
 import { Head, Link, router, usePage } from '@inertiajs/react';
 import { useState } from 'react';
-
+import nl2br from '@/Functions/nl2br';
 import Button from '@mui/lab/LoadingButton';
 
 
@@ -259,7 +259,7 @@ function BasicTable({owners, useStates, className}) {
                     disabled={disabled}
                     loading={ row.id === processingId && pushedButtonType === 'delete' }
                     onClick={ e => deleteSubmit(e, row.id) }
-                >{ __('Delete Completely') }</Button>
+                >{ nl2br(__('Delete Completely')) }</Button>
               </TableCell>
             </TableRow>
           ))}

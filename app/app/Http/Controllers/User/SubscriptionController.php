@@ -112,7 +112,7 @@ class SubscriptionController extends Controller
             $lastDate = Subscription::getLastDate();
             $lastDateStr = substr($lastDate, 0, 10);
             session()->flash('status', 'success');
-            session()->flash('message', __("Your cancellation request has been completed.\r\n After :date, you will no longer be a premium member.", ['date' => $lastDateStr]));
+            session()->flash('message', __("Your cancellation request has been completed.\r\n You will no longer be a premium member on :date.", ['date' => $lastDateStr]));
         } catch( IncompletePayment $exception ) {
             // 「解約申請が失敗。やり直し」趣旨のフラッシュをセット。
             session()->flash('status', 'error');

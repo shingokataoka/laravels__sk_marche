@@ -193,8 +193,12 @@ class ProductController extends Controller
     {
         $current_page = $this->getProductPage($product->id);
         $name = $product->name;
+        $shopId = auth()->user()->shop->id;
         // ソフトデリート
         $product->delete();
+        // ソフトデリートしていない商品のorderの連番を振り直す。
+        Product::orderSort($shopId);
+
         session()->flash('status', 'error');
         session()->flash('message', __("Product \":name\" has been deleted.", ['name' => $name]) );
 

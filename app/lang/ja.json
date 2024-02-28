@@ -132,7 +132,7 @@
     "Restore": "復元",
     "data update completed": "データが更新されました。",
     "Update Completed": "更新完了",
-    "Delete Completely": "完全に削除",
+    "Delete Completely": "完全に\r\n削除",
 
     "Created at" : "作成日",
     "Deleted at": "削除日",
@@ -214,11 +214,15 @@
 
     "Free shipping for premium members!": "プレミアム会員になれば送料！",
     "Loading": "読込中",
+    "- Enter credit card information -": "- クレジットカード情報を入力 -",
     "Checkout": "購入画面",
     "Place your order": "注文を確定する",
+    "Product \":name\" is out of stock.": "商品「:name」が在庫不足です。",
+    "Please delete it from your cart and try again.": "一度カートから消して、やり直してください。",
 
     "Payment completion.": "支払いが完了しました。",
     "Payment processing failed.\r\nPlease try again.": "支払い処理に失敗しました。\r\nもう一度やり直してください。",
+    "An error occurred in the system after completing the payment. \r\nTherefore, I have processed the refund. \r\nPlease try again.": "決済完了後にシステムエラーが発生しました。\r\nそのため、返金処理をさせていただきました。\r\nもう一度やり直してください。",
 
     "Purchase history list": "購入履歴 一覧",
     "There is no purchase history yet.": "まだ購入履歴はありません。",
@@ -233,7 +237,7 @@
     "Contract date": "登録した日",
     "Cancellation date": "解約日",
     "The date you applied": "申請した日",
-    "Premium membership until :date": "残り :date までプレミアム会員",
+    "Premium membership until :date": ":date に解約",
     "Cancel the contract": "解約する",
     "\"No remaining period\"": "（残り期間なし）",
     "Do you really want to cancel your premium membership?": "本当にプレミアム会員を解約しますか？",
@@ -247,7 +251,7 @@
     "Payment has been completed.\r\n From today you are a premium member.": "支払いが完了しました。\r\n 今日からあなたもプレミアム会員です。",
     "I'm sorry. Payment failed.\r\n Please start over from the beginning.": "申し訳ございません。\r\n支払いに失敗しました。最初からやり直してくだい。",
 
-    "Your cancellation request has been completed.\r\n After :date, you will no longer be a premium member.": "解約申請が完了しました。\r\n:dateを過ぎるとプレミアム会員ではなくなります。",
+    "Your cancellation request has been completed.\r\n You will no longer be a premium member on :date.": "解約申請が完了しました。\r\n:dateにプレミアム会員ではなくなります。",
     "Your cancellation request has been completed.\r\nYou are no longer a premium member.": "解約申請が完了しました。\r\nあなたはすでにプレミアム会員ではありません。",
 
     "Information": "情報",
@@ -264,6 +268,7 @@
     "The owner information for ID \":id\" has been updated.": "ID「:id」のオーナー情報を更新しました。",
     "Owner \":name\" has been deleted.": "オーナー「:name」を削除しました。",
     "Owner \":name\" has been permanently deleted.": "オーナー「:name」を完全に削除しました。",
+    "This owner has already released the product. Cannot be deleted.": "このオーナーはすでに商品を出しています。削除できません。",
     "Becomes an \"expired owner\". \r\nDo you want to run it?": "「期限切れオーナー」に入れる事になります。\r\n実行しますか？",
 
     "It will be “owner managed”. \r\nDo you want to run it?": "「オーナー管理」に戻す事になります。\r\n実行しますか？",

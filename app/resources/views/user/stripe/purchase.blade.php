@@ -48,6 +48,14 @@
 
 {{-- CSSコード含むstyleタグを読み込み --}}
 @include('user.stripe.styles')
+<style>
+    /* スマホ幅でのcss */
+    header { flex-direction:column; }
+    /* タブレット幅以上でのcss */
+    @media screen and (min-width: 640px){
+        header { flex-direction: row; }
+    }
+</style>
 
  <header
     class="font-semibold text-xl leading-tight bg1"
@@ -83,13 +91,14 @@
     style="padding:16px; border-radius:8px;"
 >
 
-        {{-- スマホ幅での表示 --}}
+        {{-- スマホ幅で表示の 購入商品の情報 --}}
         <style>
             #mobile_show { display:block; }
             @media screen and (min-width:640px) {
                #mobile_show { display:none; }
             }
         </style>
+
         <div id="mobile_show">
         @foreach ($user->products as $product)
             <div
@@ -124,8 +133,7 @@
 
 
 
-
-    {{-- タブレット幅かそれ以上で表示のレイアウト --}}
+    {{-- タブレット幅かそれ以上で表示の 購入商品の情報 --}}
     <style>
         #tablet_show { display:none; }
         @media screen and (min-width:640px) {
@@ -159,6 +167,9 @@
     </div>
 
 
+
+
+
     {{-- 送料があれば（サブスクでないなら）表示する。 --}}
     @if ( $postage !== null )
     <div style="padding:16px 0 ; text-align:center; font-size:1rem;">
@@ -171,6 +182,9 @@
     </div>
     <hr class="bg3" />
     @endif
+
+
+
 
 
     {{-- 合計金額 --}}
@@ -189,7 +203,13 @@
         </span>
     </div>
 
+
+
+
+
+    {{-- クレジットカード情報入力欄の表示 --}}
     <style>
+        /* 読み込み中のアニメーション */
         @keyframes rotation{
             0%{ opacity:0.2; }
             50%{ opacity:0.7; }
@@ -206,12 +226,36 @@
         よって、ここで会計しても<span style="text-decoration:underline;">実際の決済・支払いはいっさい発生しません</span>。
         この画面下部「テスト用カード番号」を入力して、安心してお試しください。') !!}</div>
 
-        {{-- Stripeのjsコードにより、クレジットカード入力欄になる。 --}}
-        <div id="card-element">
-            <div style="
-                animation:1.7s linear infinite rotation;
-            ">{{ __('Loading') }}...</div>
+        {{-- 「読込中」か「-クレジットカード入力欄- 」の表示 --}}
+        <div id="loading-container">
+            <div id="stripe-loading" style="
+
+            ">
+                {{ __('Loading') }}...
+            </div><br />
+            <div id="stripe-loaded">
+                {{ __('- Enter credit card information -') }}
+            </div>
         </div>
+
+        {{-- ---以下3つはStripeのjsコードにより、クレジットカード関係の入力欄になる。--- --}}
+        <div style="
+            display:flex;
+            flex-direction: column;
+            gap: 16px;
+            margin: 0 auto;
+            width: 230px;
+            max-width:calc(100% - 16px);
+        ">
+            {{-- クレジットカード「番号」の入力欄になる。 --}}
+            <div class="card-container" id="card-number"></div>
+            {{-- クレジットカードの「有効期限」の入力欄になる。 --}}
+            <div class="card-container" id="card-expiry"></div>
+            {{-- クレジットカードの「セキュリティコード」の入力欄になる。 --}}
+            <div class="card-container" id="card-cvc"></div>
+        </div>
+
+        {{-- 上記クレジットカード系入力欄のエラーがあれば表示。 --}}
         <div id="card_error" style="
             padding: 16px;
             color:red;
@@ -220,6 +264,7 @@
             opacity:0;
         ">　</div>
 
+        {{-- 「注文を確定する」送信ボタン。 --}}
         <div style="
             text-align:center;
             margin:16px 0;
@@ -231,6 +276,8 @@
         </div>
 
     </form>
+
+
 
 </div>
 
@@ -262,33 +309,43 @@ const isDarkmode = window.matchMedia('(prefers-color-scheme: dark)').matches
 // bodyタグに、ダークモードならclass="dark"を付ける。
 const bodyDOM = document.querySelector('body')
 if (isDarkmode) bodyDOM.classList.add('dark')
-// cardElement（stripeのカード入力欄）のstyleをダークモードかに合わせて取得。
+// cardNumber（stripeのカード入力欄）のstyleをダークモードかに合わせて取得。
 const cartElementStyle =(isDarkmode)? darkStyle : lightStyle
-
-
 
 const stripe = Stripe( "{{ config('stripe.public_key') }}" );
 
 const elements = stripe.elements();
 
-// stripeのカード入力系のオブジェクトを作成。
-const cardElement = elements.create('card', {
-    // クレジットカード入力欄のcss。
-    style: cartElementStyle,
-});
-// カード系オブジェクトにより、<div id="card-element"></div>タグにマウントする。
-// つまり、<div id="card-element"></div>タグをクレジットカード入力欄にする。
-cardElement.mount('#card-element');
+
+// クレジットカード「番号」入力のオブジェクトを作成。
+var cardNumberElement = elements.create('cardNumber', {style:cartElementStyle});
+// クレジットカード「番号」入力欄を生成、div#card-numberにマウント(上書き)で生成。
+cardNumberElement.mount('#card-number');
+
+// 「有効期限」入力のオブジェクトを作成。
+var cardExpiryElement = elements.create('cardExpiry', {style:cartElementStyle});
+// 「有効期限」入力欄を生成、div#card-expiryにマウント(上書き)で生成。
+cardExpiryElement.mount('#card-expiry');
+
+// 「セキュリティコード」入力のオブジェクトを作成。
+var cardCvcElement = elements.create('cardCvc', {style:cartElementStyle});
+// 「セキュリティコード」入力欄を生成、div#card-cvcにマウント(上書き)で生成。
+cardCvcElement.mount('#card-cvc');
 
 
-// stripeのcardElementが読み込み完了したら、ボタンを有効にして表示する。
+// stripeのcardNumberが読み込み完了したら、ボタンを有効にして表示する。
 // 「iframeが読み込み完了したら処理」で実現している。
 document.addEventListener('DOMContentLoaded', event => {
      // HTMLのDOMツリーが読み込み完了した時に実行される
-    document.querySelector('#card-element iframe').onload = () => {
-        // iframe要素が読み込まれた時に実行される
+    document.querySelector('#card-number iframe').onload = () => {
+        // iframe要素が読み込まれた時に実行される。
+
+        // ボタンを、無効を消して、表示する。
         processing = false
         cardButton.classList.remove('not_show')
+
+        // 「読込中」が消えたり、入力欄のopacityが1になったりする。
+        document.querySelector('body').classList.add('loaded');
     };
 });
 
@@ -314,7 +371,7 @@ cardButton.addEventListener('click', async (e) => {
     // カード情報をStripeに送信
     // 「automatic_payment_methods[enabled]」を「true」に、「automatic_payment_methods[allow_redirects]」を「never」
     const { paymentMethod, error } = await stripe.createPaymentMethod(
-        'card', cardElement, {
+        'card', cardNumberElement, {
             // billing_details: {
             //     name: cardHolderName.value,
             // }

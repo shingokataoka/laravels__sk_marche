@@ -4,6 +4,8 @@ import { Head, usePage } from '@inertiajs/react';
 import { defaultTheme } from '@/Components/DefaultThemeProvider';
 import { DefaultThemeProvider } from '@/Components/DefaultThemeProvider';
 import { css } from '@emotion/react';
+import {useMediaQuery} from '@mui/material';
+
 
 import { router } from '@inertiajs/react';
 
@@ -42,6 +44,7 @@ dayjs.tz.setDefault(defaultTimezone);
 export default function Index({ auth, products, productDirUrl, primaryCategories, initialCategoryId, initialKeyword, initialSortType }) {
     const palette = defaultTheme().palette
     const bp = defaultTheme().breakpoints
+    const isMobile = useMediaQuery(`(max-width:${bp.values.tablet - 0.1}px)`)
 
     const SORT_ORDER = usePage().props.Constant.SORT_ORDER
     const [disabled, setDisabled] = useState(false)
@@ -181,7 +184,7 @@ export default function Index({ auth, products, productDirUrl, primaryCategories
 
                             <Stack
                             direction="row"
-                            justifyContent="flex-start"
+                            justifyContent={ isMobile? 'center' : 'frex-start' }
                             alignItems="flex-start"
                             useFlexGap={true}
                             flexWrap="wrap"

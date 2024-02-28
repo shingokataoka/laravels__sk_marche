@@ -8,7 +8,7 @@ import { css } from '@emotion/react';
 import { router } from '@inertiajs/react';
 
 import {Link} from '@inertiajs/react';
-import { Stack } from '@mui/material';
+import { Stack, useMediaQuery } from '@mui/material';
 import Pagination from '@mui/material/Pagination';
 import {Button} from '@mui/material';
 
@@ -43,6 +43,7 @@ export default function Index({ auth, products, productDirUrl, primaryCategories
 
     const palette = defaultTheme().palette
     const bp = defaultTheme().breakpoints
+    const isMobile = useMediaQuery(`(max-width:${bp.values.tablet -0.1}px)`)
 
     const SORT_ORDER = usePage().props.Constant.SORT_ORDER
     const [disabled, setDisabled] = useState(false)
@@ -172,7 +173,7 @@ export default function Index({ auth, products, productDirUrl, primaryCategories
 
                             <Stack
                             direction="row"
-                            justifyContent="flex-start"
+                            justifyContent={ isMobile? 'center' : 'flex-start' }
                             alignItems="flex-start"
                             useFlexGap={true}
                             flexWrap="wrap"

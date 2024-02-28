@@ -118,10 +118,12 @@ class ExpiredProductController extends Controller
     // update「商品一覧に戻す」処理。
     public function update(Request $request, string $id)
     {
-
+        $shopId = auth()->user()->shop->id;
         // ゴミ箱から出す。
         $product = Product::onlyTrashed()->findOrFail($id);
         $product->restore();
+        // 表示順に連番を振り直す。
+        Product::orderSort($shopId);
         // フラッシュをセット。
         session()->flash('status', 'success');
         session()->flash('message', __("Product \":name\" has been restored.", ['name' => $product->name]));

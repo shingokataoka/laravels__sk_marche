@@ -170,11 +170,18 @@ class OwnersController extends Controller
     public function expiredOwnersDestroy ($id)
     {
         $page = request()->page;
-
         $owner = Owner::onlyTrashed()->findOrFail($id);
-        $name = $owner->name;
-        $owner->forceDelete();
+        try {
+            $name = $owner->name;
+            $owner->forceDelete();
+        } catch (\Exception $e) {
+            // 削除に失敗した場合のエラーを表示（外部キー制約で商品があると消せないエラーがでる。）
+            session()->flash('status', 'warning');
+            session()->flash('message', __('This owner has already released the product. Cannot be deleted.') );
+            return to_route('admin.expired-owners.index', ['page' => $page]);
+        }
 
+        // 「削除完了」のフラッシュをセット。赤表示なのでstatusはerrorにする。
         session()->flash('status', 'error');
         session()->flash('message', __("Owner \":name\" has been permanently deleted.", ['name' => $name]) );
         return to_route('admin.expired-owners.index', ['page' => $page]);

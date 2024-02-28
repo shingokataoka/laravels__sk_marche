@@ -22,7 +22,7 @@ export default function InputImageFile({
     errorText,
     // 親要素側から無効ならtrue
     disabled,
-    // fieldsetタグのlegendタグのラベル文字
+    // fieldsetタグのlegendタグのラベル文字、「画像その１」など。
     label,
     // 元画像のURL。
     oldUrl,
@@ -36,12 +36,8 @@ export default function InputImageFile({
     const palette = defaultTheme().palette
     const bp = defaultTheme().breakpoints
 
-    const errors = usePage().props.errors
-
     // 表示する画像のURL。
-    const [url, setUrl] = useState(oldUrl)
-    // デフォのファイル選択を閉じたかステート。true false。
-    const [closed, setClosed] = useState(false)
+    const [showUrl, showSetUrl] = useState(oldUrl)
 
     // ボタン押し時やドロップ時の読み込み遅延時間。
     const delayTime = 400
@@ -50,11 +46,22 @@ export default function InputImageFile({
     // ---「画像なしにする」ボタン押した時の処理 ---
     // 状態='none'にする。
     const buttonClicked = e => {
-        setStatus('none')  // 状態を画像なしにする。
-        setFileLoading(true)  //  読み込み中にする。
-        // 読み込み解除を、遅延で行う。（見た目のため）
-        setTimeout(() => { setFileLoading(false) }, delayTime)
+        // 元の状態が'none'以外なら、読み込み中にする。
+        if (status !== 'none') setFileLoading(true)
+        // 状態を画像なしにする。
+        setStatus('none')
+        // 画像なしにする。
+        setFile(null)
     }
+
+    // 動作確認用のuseEffect。ステートが変更されればちゃんと確認できる。
+    // useEffect(() => {
+    //     console.log('showUrl', showUrl)
+    //     console.log('status', status)
+    //     console.log('file', file)
+    //     console.log('fileLoading', fileLoading)
+    //     console.log('ーーーーーーーー')
+    // }, )
 
 
     // --- ドロップ時の処理 ---
@@ -64,75 +71,66 @@ export default function InputImageFile({
         e.stopPropagation() // 親要素へのイベント伝播を防ぐ。
         if ( disabled ) return    // 親が送信中なら処理しない。
         if ( fileLoading ) return  // 読み込み中なら処理しない。
-        const newFile = e.dataTransfer.items[0].getAsFile()  // ファイルを取得する。
-        if ( newFile.type.indexOf('image/') !== 0 ) return   // 画像でないなら処理しない。
+        // ファイルを取得する。
+        const newFile = e.dataTransfer.items[0].getAsFile()
+        // 画像でないなら処理しない。
+        if ( newFile.type.indexOf('image/') !== 0 ) return
+
+        // 読み込み中にする。
+        setFileLoading(true)
 
         setFile( newFile )  // ステートにファイルを入れる。
         setStatus('new')    // 状態を新規ファイルにする。
-        setFileLoading(true)    // 読み込み中にする。
-        // 読み込み解除を、遅延で行う。（見た目のため）
-        setTimeout(() => { setFileLoading(false) }, delayTime)
     }
 
 
-    // --- デフォinput file を をクリックした瞬間時の処理 ---
-    // 紐づけたlabelタグをクリックも発火する。
-    // デフォの「ファイル選択ウィンドウ」が開く直前に用意の処理。
-    // 状態='old'、にしておく。（キャンセルハンドラないので、最初をキャンセルの値にしとく。）
-    const inputClicked = e => {
-        e.stopPropagation() // 親要素へのイベント伝播をキャンセル。
-        // 親が送信中ならデフォの「ファイル選択」を防ぎ、処理しない。
-        if ( disabled ) { e.preventDefault(); return }
-        // 読み込み中ならデフォの「ファイル選択」を防ぎ、処理しない。
-        if ( fileLoading ) { e.preventDefault(); return }
-        setFileLoading(true)    // 読み込み中にする。
-        // setFile(null)
-        setStatus('old')    // 状態='old'にする。（「キャンセル」の値にしとく。）
-        setClosed(true)     // デフォの「ファイル選択ウィンドウ」を閉じた状態にセット。
-    }
+
 
 
     // --- デフォのファイル変更時の処理 ---
     // 状態='new'、ファイルを変更する。
     const fileChange = e => {
         const newFile = e.target.files[0]
+
         // - 画像じゃないなら処理しない。（状態='old'のままになる。）
         if ( newFile.type.indexOf('image/') !== 0 ) return
+
+        // 読み込み中にする。
+        setFileLoading(true)
+
         setFile(newFile)    // - ファイルを変更する。
         setStatus('new')    // - 変更区別の値を’new'にする。
         // - input file のvalueを’’にする。次回同じファイルを選択した場合でも発火させるため。
         e.target.value = ''
     }
 
-    // --- デフォの「ファイル選択ウィンドウ」を閉じた時に、読み込み中を終了する。 ---（どんな状態で閉じても確実に「読み込み終了」させるため、addEventListenerとuseEffectの合わせ技が必要。removeEventListenerでメモリリーク対策も必要。）
-    const closeSelectFileWindow = () => {
-        // デフォのファイル選択ウィンドウを閉じた直後なら、読み込み解除とclosed解除をする。
-        if ( closed ) {
-            setClosed(false)
-            setFileLoading(false)
-        }
-    }
-    // このuseEffectで「ファイル選択ウィンドウ」が閉じたとき、確実に処理を発火させる。
-    useEffect( () => {
-        window.addEventListener('focus', closeSelectFileWindow)
-        return () => window.removeEventListener('focus', closeSelectFileWindow)
-    })
 
 
 
-    // --- 「読み込み終了時」の共通処理 ---
-    // （useEffectの[loading,status] かつ if( !loading )で発火できる）
-    useEffect( () => {
-        if ( fileLoading ) return   // 読み込み中なら処理しない。
+
+    // --- 画像ファイルが変更された時の処理 ---
+    useEffect(() => {
         // 状態のURLに設定する。new以外はファイルをnullにする。
-        if ( status === 'none' ) { setUrl('/images/no_image.png'); setFile(null) }
-        else if ( status === 'old' ) { setUrl(oldUrl); setFile(null) }
+        if ( status === 'none' ) { showSetUrl('/images/no_image.png'); setFile(null) }
+        else if ( status === 'old' ) { showSetUrl(oldUrl); setFile(null) }
         else if ( status === 'new' ) {
             const newUrl = URL.createObjectURL(file)    // 選択ファイルのURLを取得する。
-            setUrl(newUrl)
-            return () => URL.revokeObjectURL(url) // 上記「ファイルのURL取得」のメモリ対策。
+            showSetUrl(newUrl)
+            return () => URL.revokeObjectURL(showUrl) // 上記「ファイルのURL取得」のメモリ対策。
         }
-    }, [fileLoading, status] )
+    }, [file, status])
+
+
+
+    // --- 「読み込み中」が変更された時の処理 ---
+    useEffect( () => {}, [fileLoading] )
+        // 読み込み中なら、読み込み解除を、遅延で行う。（見た目のため）
+        if (fileLoading) {
+            setTimeout(() => { setFileLoading(false) }, delayTime)
+        }
+
+
+
 
 
     // 表示画像のjsx
@@ -150,7 +148,7 @@ export default function InputImageFile({
             `}
         >
             <img
-                src={ url }
+                src={ showUrl }
                 css={css`
                     max-width: 100%; max-height: 100%;
                     opacity: 1;
@@ -183,7 +181,7 @@ export default function InputImageFile({
         {/* デフォのinput file。見た目を変えるため、cssで隠している。 */}
         <input type="file" id="input_file"
             css={css` display: none; `}
-            onClick={ inputClicked }
+            disabled={ fileLoading || disabled }
             onChange={ fileChange }
         />
 

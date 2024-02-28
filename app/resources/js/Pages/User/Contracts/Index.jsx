@@ -4,11 +4,9 @@ import { Head, router, usePage } from '@inertiajs/react';
 import { defaultTheme } from '@/Components/DefaultThemeProvider';
 import { css } from '@mui/material/styles';
 
-import { Link } from '@inertiajs/react';
 import { Stack } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 
-import nl2br from '@/Functions/nl2br';
 
 // ---  dayjsと必要なものをimport ---
 import dayjs from "dayjs";
@@ -36,6 +34,26 @@ export default function Index({ auth, isPremium, addDate, cancelDate, lastDate,}
     const [processing, setProcessing] = useState(false)
 
 
+    // 判別用のtatusを取得する。
+    // 一度も未契約=none
+    // 完全解約済=removed
+    // 契約中(キャンセルしてない)=infinity
+    // 契約中(キャンセル申請した)=limited
+    let status = ''
+    // 一度も未契約=none
+    if (!isPremium && addDateStr  === null) status = 'none'
+    // 完全解約済=removed
+    else if (!isPremium && lastDateStr !== null) status = 'removed'
+    // 契約中(キャンセルしてない)=infinity
+    else if (isPremium && lastDateStr === null) status = 'infinity'
+    // 契約中(キャンセル申請した)=limited
+    else if (isPremium && lastDateStr !== null) status = 'limited'
+console.log('status', status)
+
+
+
+
+
 
     // 「解約する」を押した処理
     const clickedCancel = (e, period) => {
@@ -52,7 +70,7 @@ export default function Index({ auth, isPremium, addDate, cancelDate, lastDate,}
         } );
     }
 
-    const allProps = { palette, bp, isPremium, addDateStr, cancelDateStr, lastDateStr, clickedCancel, processing, setProcessing }
+    const allProps = { palette, bp, isPremium, addDateStr, cancelDateStr, lastDateStr, status, clickedCancel, processing, setProcessing }
 
 
     return (
@@ -97,7 +115,7 @@ export default function Index({ auth, isPremium, addDate, cancelDate, lastDate,}
 
 // スマホ(tablet幅未満)で表示のJSX
 function MobileJsx({ allProps }) {
-    const { palette, isPremium, addDateStr } = allProps
+    const { palette, isPremium, addDateStr, status } = allProps
 
     const stackProps = {
         direction:"column",
@@ -110,36 +128,58 @@ function MobileJsx({ allProps }) {
         border: 1px ${palette.bg5} solid;
         text-align:center;
         overflow:hidden;
-        div { padding:8px; }
+    `
+
+    const titleCss = css`
+        background:${palette.bg8};
+        color:${palette.bg1};
+        padding:8px 0;
     `
 
     return (<Stack
         direction="column"
         justifyContent="flex-start"
         alignItems="stretch"
-        spacing={2}
+        spacing={4}
+        css={css` margin:8px; `}
     >
         {/* 会員ランク */}
         <Stack {...stackProps} css={ css`${stackCss} font-weight:bold; `  }>
-            <div css={css`
-                background:${palette.bg8};
-                color:${palette.bg1};
-            `}>{ __('Member rank') }</div>
-            <div>{ (isPremium)? __('Premium member') : __('General member') }</div>
+            <div css={titleCss}>{ __('Member rank') }</div>
+            <div css={css`padding:8px 0;`}>{ (isPremium)? __('Premium member') : __('General member') }</div>
         </Stack>
 
         {/* 登録した日 */}
         <Stack {...stackProps} css={stackCss}>
-            <div css={css` background:${palette.bg3}; `}>{ __('Contract date') }</div>
-            <div><AddDateJsx allProps={ allProps } /></div>
+            <div css={titleCss}>{ __('Contract date') }</div>
+            <div css={css`padding:8px 0;`}>
+                <AddDateJsx allProps={ allProps } />
+            </div>
         </Stack>
 
         {/* 解約した日 */}
-        {/* 一度も契約なし（解約日なし）。項目「解約日」自体なし。なら表示しない。 */}
-        { (!isPremium && addDateStr === null)? '' :
-            <Stack {...stackProps} css={stackCss}>
-                <div css={css` background:${palette.bg2}; `}>{ __('Cancellation date') }</div>
-                <div><CancelDateJsx allProps={ allProps } /></div>
+        {/* 一度も契約自体なしなら、表示しない。 */}
+        { (status === 'none')? '' :
+        <Stack {...stackProps} css={stackCss}>
+                <div css={titleCss}>{ __('Cancellation date') }</div>
+
+                <Stack
+                    direction="column"
+                    justifyContent="flex-start"
+                    alignItems="center"
+                    spacing={2}
+                    css={css` padding:8px 0; `}
+                >
+                    {/* 解約日のJSX。完全解約済 なら表示 */}
+                    <RemovedDateJsx allProps={allProps} />
+                    {/* 「解約する」ボタンのJSX。statusが'infinity'で表示。 */}
+                    <InfinityJsx allProps={allProps} />
+                    {/* キャンセルを「申請した日」のJSX。status=limitedで表示。 */}
+                    <CanceledDateJsx allProps={allProps} />
+                    {/* 「解約する<br>（残り期間なし）」ボタンのJSX。statusが'infinity'と'limited'で表示。 */}
+                    <RemoveButtonJsx allProps={allProps} />
+                </Stack>
+
             </Stack>
         }
 
@@ -158,7 +198,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -246,7 +286,7 @@ function AddDateJsx({ allProps }) {
     // 契約切れ。プレミアム会員になると送料無料！<br />「登録するボタン」JSX。
     if ( !isPremium ) return (<div>
         <div>プレミアム会員になると送料無料！</div>
-        <div>
+        <div css={css`margin-top:8px;`}>
             <a href={ route('user.subscription.index') }>
                 <LoadingButton variant="contained">{ __('register') }</LoadingButton>
             </a>
@@ -316,8 +356,94 @@ function CancelDateJsx({ allProps }) {
             </LoadingButton>
         </div>
     </Stack>)
+}
 
 
 
+
+
+// 解約日のJSX。完全解約済 なら表示。
+function RemovedDateJsx({allProps}) {
+    const { lastDateStr, status } = allProps
+
+    // 完全解約済以外なら空のJSXを返す。
+    if (status !== 'removed') return ''
+    // 解約日を表示。
+    return (<div>{lastDateStr}</div>)
+}
+
+
+
+
+
+// 「解約する」ボタンのJSX。statusが'infinity'で表示。
+function InfinityJsx({allProps}) {
+    const { clickedCancel, processing, status } = allProps
+
+    if (status !== 'infinity') return ''
+
+    return (<LoadingButton variant="outlined" color="error"
+            loading={ processing }
+            onClick={ e => clickedCancel(e, false) }
+        >
+            { __('Cancel the contract') }
+    </LoadingButton>)
+}
+
+
+
+
+
+// キャンセルを「申請した日」のJSX。status=limitedで表示。
+function CanceledDateJsx({allProps}) {
+    const { cancelDateStr, lastDateStr, status } = allProps
+
+    // status=limited以外なら非表示。
+    if (status !== 'limited') return ''
+
+    return (<div>
+        { __('The date you applied') }：{ cancelDateStr }
+        <br />
+        （ { __('Premium membership until :date', {'date':lastDateStr}) } ）
+    </div>)
+}
+
+
+
+
+// 「解約する」ボタンのJSX。status='infinity'で表示。
+function CanceledButton({allProps}) {
+    const { clickedCancel, processing, status } = allProps
+
+    // status='infinity'以外は表示しない。
+    if (status !== 'infinity') return ''
+
+    return (<LoadingButton variant="outlined" color="error"
+        loading={ processing }
+        onClick={ e => clickedCancel(e, false) }
+    >
+        { __('Cancel the contract') }
+    </LoadingButton>)
+}
+
+
+
+
+
+// 「解約する<br>（残り期間なし）」ボタンのJSX。statusが'infinity'と'limited'で表示。
+function RemoveButtonJsx({allProps}) {
+    const { clickedCancel, processing, status } = allProps
+
+    // statusが'infinity'と'limited'以外なら、表示しない。
+    if ( status !== 'infinity' && status !== 'limited' ) return ''
+
+    return (<LoadingButton variant="outlined" color="error"
+        loading={ processing }
+        // 残り期間なし解約なら、trueを渡す。
+        onClick={ e => clickedCancel(e, true) }
+    >
+        { __('Cancel the contract') }<br />{ __("\"No remaining period\"") }
+    </LoadingButton>)
 
 }
+

@@ -1,10 +1,49 @@
 <style>
     /* 共通のcss */
 
-    #card-element {
+    /*「読込中」と「- クレジットカード情報を入力 -」の親div */
+    #loading-container {
+        margin-top: 16px;
+        display:flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position:relative;
+    }
+
+    /* 「読込中」のcss。読み込み後に消す。 */
+    #stripe-loading {
+        user-select:none;
+        animation:1.7s linear infinite rotation;
+        transition:all 0.5s;
+        opacity: 1;
+    }
+    body.loaded #stripe-loading {
+        animation:none;
+        opacity: 0;
+    }
+
+    /* 「- クレジットカード情報を入力 -」のcss。読み込み後に表示する。 */
+    #stripe-loaded{
+        margin-top:-1em;
+        position:absolute;
+        transition: all 0.5s;
+        opacity:1;
+    }
+    body:not(.loaded) #stripe-loaded{
+        opacity:0;
+    }
+
+    /* カード番号入力欄を囲むdiv。この中にstripeでiframeが挿入される。 */
+    .card-container {
         border: 1px #000 solid;
         border-radius: 6px;
         padding: 16px;
+        transition: all 0.5s;
+        opacity: 0.3;
+    }
+    body.loaded .card-container{
+        opacity:1;
     }
 
     /* ボタン系のCSS */
@@ -116,7 +155,7 @@
         background:#9b27b024;
     }
 
-    #card-element {
+    .card-container {
         border-color: rgba(0,0,0, 0.5);
         background: rgba(0,0,0, 0.1);
     }
@@ -176,7 +215,7 @@
         background:#ce93d82c;
     }
 
-    body.dark #card-element {
+    body.dark .card-container {
         border-color: rgba(255,255,255,0.5);
         background: rgba(255,255,255, 0.1);
     }

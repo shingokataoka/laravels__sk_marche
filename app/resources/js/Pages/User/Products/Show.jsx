@@ -2,24 +2,19 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, usePage } from '@inertiajs/react';
 
 import { defaultTheme } from '@/Components/DefaultThemeProvider';
-import { DefaultThemeProvider } from '@/Components/DefaultThemeProvider';
 import { css } from '@emotion/react';
 
 import nl2br from '@/Functions/nl2br';
 
 import { router } from '@inertiajs/react';
 
-import {Link} from '@inertiajs/react';
-import { Stack, useMediaQuery } from '@mui/material';
-import Pagination from '@mui/material/Pagination';
+import { Stack } from '@mui/material';
 import {Button} from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import RemoveShoppingCartIcon from '@mui/icons-material/RemoveShoppingCart';
 
-import SelectCategory from '@/Components/SelectCategory';
 import ImageCaroucel from '@/Components/ImageCaroucel';
 
-import {TextField} from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // セレクトボックス
 import InputLabel from '@mui/material/InputLabel';
@@ -119,7 +114,7 @@ export default function Dashboard({ auth, product, maxQuantity, imageUrls, shop,
 
 
 
-    return (<DefaultThemeProvider>
+    return (<>
         <AuthenticatedLayout
             user={auth.user}
             header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">{ __('Product details') }</h2>}
@@ -145,10 +140,11 @@ export default function Dashboard({ auth, product, maxQuantity, imageUrls, shop,
                                 { ProductJsx }
                                 {/* 価格と数量 */}
                                 <Stack
-                                    direction="row"
+                                    direction="column"
                                     justifyContent="center"
                                     alignItems="center"
                                     spacing={2}
+                                    css={css` padding-bottom:16px; `}
                                 >
                                     { PriceJsx }
                                     { QuantityJsx }
@@ -224,7 +220,7 @@ export default function Dashboard({ auth, product, maxQuantity, imageUrls, shop,
                 </div>
             </div>
         </AuthenticatedLayout>
-    </DefaultThemeProvider>);
+    </>);
 }
 
 
@@ -289,6 +285,7 @@ function ShopModal({ shop }) {
         left: '50%',
         transform: 'translate(-50%, -50%)',
         width: 400,
+        maxWidth: 'calc(100% - 16px)',
         bgcolor: 'background.paper',
         border: `1px ${palette.bg3} solid`,
         boxShadow: 24,
