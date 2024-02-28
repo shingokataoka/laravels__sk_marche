@@ -10,8 +10,8 @@ import { Head, Link, useForm, usePage } from '@inertiajs/react';
 export default function Login({ status, canResetPassword }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         _token: usePage().props._token,
-        email: '',
-        password: '',
+        email: 'admin1@test.com',
+        password: 'admin1111',
         remember: false,
     });
 

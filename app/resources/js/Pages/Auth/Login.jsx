@@ -11,8 +11,8 @@ import { DefaultThemeProvider } from '@/Components/DefaultThemeProvider';
 
 export default function Login({ status, canResetPassword }) {
     const { data, setData, post, processing, errors, reset } = useForm({
-        email: '',
-        password: '',
+        email: 'user1@test.com',
+        password: 'user1111',
         remember: false,
     });
 
