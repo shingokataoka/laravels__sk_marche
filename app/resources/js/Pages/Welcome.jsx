@@ -48,6 +48,8 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                     laravelのCashierによるStripe決済を導入してECサイトを構築してみました。
                     このCashier + Stripeのサブスク契約機能を使い、プレミアム会員（送料無料）も実装しました。
 
+                    レスポンシブサイトでスマホに対応しています。
+
                     ダークモードにも対応しています。
                     （PC側をダークモードにしてください。）
 
