@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use Laravel\Cashier\Exceptions\IncompletePayment;
 use App\Models\Subscription;
+use Illuminate\Support\Facades\DB;
 
 class SubscriptionController extends Controller
 {
@@ -37,6 +38,16 @@ class SubscriptionController extends Controller
     {
         // すでにプレミアム会員なら「契約情報」ページにリダイレクト移動。
         if ( Subscription::getIsPremium() ) {
+            return to_route('user.constracts.index');
+        }
+
+        $userId = auth()->id();
+        // 登録前に、過去のサブスク(解約済)のDBレコードを消す。
+        try {
+            Subscription::where('user_id', $userId)->delete();
+        } catch (\Exception $e) {
+            // 失敗したら、「契約情報」ページへリダイレクト移動のみ。
+            // （処理されていないからそのままの表示でOKだから）
             return to_route('user.constracts.index');
         }
 
