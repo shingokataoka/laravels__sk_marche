@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   # [プロジェクトごとに設定]webアプリケーションのコンテナ
   sk_marche:
